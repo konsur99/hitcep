@@ -14,9 +14,7 @@ export default async function Statistik() {
       ...rawData,
       medals: rawData.medals?.map((m: any) => ({
         ...m,
-        createdAt: m.createdAt && typeof m.createdAt.toDate === 'function' 
-          ? m.createdAt.toDate().getTime() 
-          : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : null)
+        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
       })) || []
     };
   const cabors: any[] = cacheData.cabors || [];

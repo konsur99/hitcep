@@ -15,15 +15,11 @@ export default async function Pelaporan() {
       ...rawData,
       reports: rawData.reports?.map((r: any) => ({
         ...r,
-        createdAt: r.createdAt && typeof r.createdAt.toDate === 'function' 
-          ? r.createdAt.toDate().getTime() 
-          : (r.createdAt?.seconds ? r.createdAt.seconds * 1000 : null)
+        createdAt: r.createdAt ? (typeof r.createdAt.toDate === 'function' ? r.createdAt.toDate().getTime() : (r.createdAt.seconds ? r.createdAt.seconds * 1000 : (typeof r.createdAt === 'string' ? new Date(r.createdAt).getTime() : (typeof r.createdAt === 'number' ? r.createdAt : null)))) : null
       })) || [],
       medals: rawData.medals?.map((m: any) => ({
         ...m,
-        createdAt: m.createdAt && typeof m.createdAt.toDate === 'function' 
-          ? m.createdAt.toDate().getTime() 
-          : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : null)
+        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
       })) || []
     };
 
