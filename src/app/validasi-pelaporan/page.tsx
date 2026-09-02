@@ -36,6 +36,7 @@ export default function ValidasiPelaporan() {
     const { showLoading, hideLoading } = useGlobalLoader();
   const { confirm } = useConfirmDialog();
   const [isAuthChecking, setIsAuthChecking] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
   const [reports, setReports] = useState<any[]>([]);
@@ -140,6 +141,8 @@ export default function ValidasiPelaporan() {
         setReports(rData);
       } catch (e) {
         console.error(e);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -400,7 +403,12 @@ export default function ValidasiPelaporan() {
 
       <div className="px-5 mt-6 relative z-20 space-y-6 pb-20 max-w-4xl mx-auto w-full">
 
-        {reports.length === 0 ? (
+        {isLoading ? (
+          <div className="py-20 flex flex-col items-center justify-center">
+            <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+            <p className="text-gray-500 font-bold text-sm animate-pulse">Memuat data pelaporan...</p>
+          </div>
+        ) : reports.length === 0 ? (
           <div className="text-center py-10">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <i className="fa-solid fa-folder-open text-2xl text-gray-400"></i>
