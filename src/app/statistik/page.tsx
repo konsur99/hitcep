@@ -1,4 +1,4 @@
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
+
 import StatistikClient from './StatistikClient';
 
  // Cache 60 detik (ISR)

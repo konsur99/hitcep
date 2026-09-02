@@ -1,13 +1,12 @@
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
+
 import MedaliClient from './MedaliClient';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 10;
 
 export default async function Medali() {
   try {
-    const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
-  const rawCacheData = cacheSnap.data() || { cabors: [], medals: [] };
-  const cacheData = JSON.parse(JSON.stringify(rawCacheData));
+    const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
+    const cacheData = await res.json();
 
   const cabors: any[] = cacheData.cabors || [];
   let medals: any[] = cacheData.medals || [];

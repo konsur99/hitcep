@@ -1,12 +1,11 @@
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
+
 import CaborClient from './CaborClient';
 
  // Cache 60 detik (ISR) dengan Aggregated Document
 
 export default async function Cabor() {
-  const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
-  const rawCacheData = cacheSnap.data() || { cabors: [] };
-  const cacheData = JSON.parse(JSON.stringify(rawCacheData));
+  const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
+    const cacheData = await res.json();
   const cabors: any[] = cacheData.cabors || [];
   let medals: any[] = cacheData.medals || [];
   medals = medals.filter((m: any) => m.status === 'approved' || !m.status);

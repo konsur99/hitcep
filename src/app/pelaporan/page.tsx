@@ -1,13 +1,12 @@
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
+
 import PelaporanClient from './PelaporanClient';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 10;
 
 export default async function Pelaporan() {
   try {
-    const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
-  const rawCacheData = cacheSnap.data() || { cabors: [], reports: [] };
-  const cacheData = JSON.parse(JSON.stringify(rawCacheData));
+    const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
+    const cacheData = await res.json();
 
   const cabors: any[] = cacheData.cabors || [];
   cabors.sort((a: any, b: any) => a.name.localeCompare(b.name));

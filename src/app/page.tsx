@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import nextDynamic from 'next/dynamic';
@@ -16,14 +15,13 @@ const getMedalImage = (type: string) => {
   return '/medal-bronze.webp';
 };
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 10;
 
 export default async function Home() {
   try {
-    // 1. Fetch data dari Super Cache (Hanya 1 Read Firestore!)
-    const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
-    const rawCacheData = cacheSnap.data() || { cabors: [], medals: [], reports: [] };
-    const cacheData = JSON.parse(JSON.stringify(rawCacheData));
+    // 1. Fetch data dari endpoint public_cache menggunakan native fetch agar ISR berfungsi!
+    const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
+    const cacheData = await res.json();
     
     const cabors: any[] = cacheData.cabors || [];
   
