@@ -164,7 +164,7 @@ export default function Header() {
       <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
         <div className="relative w-full max-w-[1920px] mx-auto flex justify-between items-center px-4 md:px-8 xl:px-12 py-3 md:py-4">
         {/* Left Side: Logo */}
-        <div className="flex items-center gap-2 sm:gap-3 md:gap-2 lg:gap-3 shrink-0 z-10">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 md:gap-2 lg:gap-3 shrink-0 z-10 hover:opacity-80 transition-opacity cursor-pointer">
           <Image 
             src="/logo-koni.webp" 
             alt="KONI Logo" 
@@ -182,7 +182,7 @@ export default function Header() {
           />
           <div className="w-px h-6 sm:h-7 md:h-6 lg:h-8 bg-gray-200 hidden md:block"></div>
           <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800 text-sm sm:text-base md:text-sm lg:text-lg xl:text-xl tracking-tight shrink-0" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>QuikKONI</span>
-        </div>
+        </Link>
 
         {/* Center: Desktop Navigation */}
         <div className="hidden xl:flex items-center justify-center gap-1 xl:gap-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-max z-0">
