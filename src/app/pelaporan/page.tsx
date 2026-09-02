@@ -1,7 +1,7 @@
 import { adminDb } from '@/lib/firebase-admin';
 import PelaporanClient from './PelaporanClient';
 
-export const revalidate = 10; // ISR cache for 10 seconds
+export const dynamic = 'force-dynamic';
 
 export default async function Pelaporan() {
   const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();

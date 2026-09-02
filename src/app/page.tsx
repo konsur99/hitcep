@@ -16,7 +16,7 @@ const getMedalImage = (type: string) => {
   return '/medal-bronze.webp';
 };
 
-export const revalidate = 10; // ISR cache for 10 seconds
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   // 1. Fetch data dari Super Cache (Hanya 1 Read Firestore!)
