@@ -142,6 +142,7 @@ export default function InputMedali() {
     }
 
     setIsSubmitting(true);
+    showLoading("Mengunggah foto...");
 
     let finalPortraitUrl = "";
     let finalPortraitPublicId = "";
@@ -151,6 +152,7 @@ export default function InputMedali() {
     try {
       // Upload portrait image if exists
       if (portraitPreview) {
+        showLoading("Mengunggah foto atlet...");
         const uploadRes = await uploadImageToCloudinary(portraitPreview);
         finalPortraitUrl = uploadRes.secure_url;
         finalPortraitPublicId = uploadRes.public_id;
@@ -158,6 +160,7 @@ export default function InputMedali() {
       
       // Upload ceremony image if exists
       if (ceremonyPreview) {
+        showLoading("Mengunggah foto UPP...");
         const uploadRes = await uploadImageToCloudinary(ceremonyPreview);
         finalCeremonyUrl = uploadRes.secure_url;
         finalCeremonyPublicId = uploadRes.public_id;
@@ -166,10 +169,12 @@ export default function InputMedali() {
       console.error("Cloudinary upload failed:", err);
       toast.error("Gagal mengunggah foto ke server (Cloudinary): " + err.message);
       setIsSubmitting(false);
+      hideLoading();
       return;
     }
 
     try {
+      showLoading("Menyimpan medali...");
       // 1. Simpan history medali
       const isAutoApprove = true;
       const finalStatus = 'approved';
@@ -238,7 +243,6 @@ export default function InputMedali() {
       // Purge public Vercel cache immediately
       await fetch('/api/revalidate', { method: 'POST' }).catch(e => console.error("Cache purge failed:", e));
       toast.success("Sukses! Medali berhasil ditambahkan ke klasemen publik.");
-      hideLoading();
       
       // Reset form
       setSelectedCabor(null);
@@ -253,6 +257,7 @@ export default function InputMedali() {
       toast.error("Terjadi kesalahan sistem saat menyimpan medali.");
     } finally {
       setIsSubmitting(false);
+      hideLoading();
     }
   };
 

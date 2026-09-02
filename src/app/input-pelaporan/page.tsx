@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, addDoc, doc, getDoc, serverTimestamp, runTransaction } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc, updateDoc, serverTimestamp, runTransaction } from 'firebase/firestore';
 import { convertFileToWebP } from '@/utils/imageOptimization';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import DatePicker from '@/components/DatePicker';
@@ -177,6 +177,7 @@ export default function InputPelaporan() {
     if (!isConfirmed) return;
 
     setIsSubmitting(true);
+    showLoading("Mengunggah bukti laporan...");
     
     try {
       let finalImageUrl = null;
@@ -192,6 +193,7 @@ export default function InputPelaporan() {
         }
       }
 
+      showLoading("Menyimpan laporan...");
       const reportData = {
         title,
         description,
@@ -202,52 +204,60 @@ export default function InputPelaporan() {
         specificLocation,
         categories: selectedCategories,
         customCategory: isOtherCategorySelected ? customCategory : null,
-        incidentTime: incidentTime ? new Date(incidentTime).toISOString() : null, // Store as ISO string in cache
         imageUrl: finalImageUrl,
         imagePublicId: finalImagePublicId,
         status: 'approved',
         authorUid: auth.currentUser?.uid || 'unknown',
         createdAt: new Date().toISOString()
       };
-
-      await runTransaction(db, async (transaction) => {
-        // 1. EXECUTE ALL READS FIRST
-        const cacheRef = doc(db, "public_cache", "v1");
-        const cacheDoc = await transaction.get(cacheRef);
-        
-        // 2. EXECUTE ALL WRITES AFTERWARDS
-        const newReportRef = doc(collection(db, "reports"));
-        transaction.set(newReportRef, {
-          ...reportData,
-          incidentTime: incidentTime ? new Date(incidentTime) : null, // Real date object for DB
-          createdAt: serverTimestamp() // Real timestamp for DB
-        });
-
-        if (cacheDoc.exists()) {
-          const cacheData = cacheDoc.data();
-          cacheData.reports = cacheData.reports || [];
-          cacheData.reports.push({ id: newReportRef.id, ...reportData });
-          transaction.update(cacheRef, { reports: cacheData.reports });
-        }
+      
+      const colRef = collection(db, 'reports');
+      const docRef = await addDoc(colRef, {
+        ...reportData,
+        incidentTime: incidentTime ? new Date(incidentTime) : null, // Store as Date/Timestamp in DB
+        createdAt: serverTimestamp() // Store as serverTimestamp in DB
       });
-  
-      await fetch('/api/revalidate', { method: 'POST' }).catch(e => console.error(e));
-      toast.success("Laporan berhasil dikirim dan ditambahkan ke beranda publik.");
+
+      // Update public_cache directly on client (optimistic)
+      const cacheRef = doc(db, 'public_cache', 'v1');
+      const cacheDoc = await getDoc(cacheRef);
+      if (cacheDoc.exists()) {
+        const cacheData = cacheDoc.data();
+        cacheData.reports = cacheData.reports || [];
+        cacheData.reports.push({
+          id: docRef.id,
+          ...reportData
+        });
+        await updateDoc(cacheRef, { reports: cacheData.reports });
+      }
+
+      // Trigger revalidation immediately (non-blocking)
+      try {
+        fetch('/api/revalidate', { method: 'POST' }).catch(() => {});
+      } catch(e) {}
+
+      toast.success("Berhasil! Laporan berhasil dikirim dan terpublikasi.");
+      hideLoading();
       
       // Reset form
       setTitle('');
       setDescription('');
-      setImagePreview(null);
+      setCaborName('');
+      setReporterRole('');
+      setReporterName('');
       setLocation('');
       setSpecificLocation('');
-      setIncidentTime('');
-      setReporterName('');
       setSelectedCategories([]);
       setCustomCategory('');
-    } catch (e: any) {
-      toast.error("Gagal mengirim laporan: " + e.message);
+      setIncidentTime(null);
+      setImagePreview(null);
+      router.push('/pelaporan');
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "Gagal mengirim laporan.");
     } finally {
       setIsSubmitting(false);
+      hideLoading();
     }
   };
 

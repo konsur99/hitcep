@@ -250,6 +250,7 @@ export default function ValidasiPelaporan() {
     }
     
     setIsSavingEdit(true);
+      showLoading("Menyimpan...");
     try {
       let finalImageUrl = editingReport.imageUrl;
       let finalImagePublicId = editingReport.imagePublicId;
@@ -316,6 +317,7 @@ export default function ValidasiPelaporan() {
     } finally {
       fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
       setIsSavingEdit(false);
+      hideLoading();
     }
   };
 
@@ -329,6 +331,7 @@ export default function ValidasiPelaporan() {
     if (!isConfirmed) return;
     
     setIsProcessingId(report.id);
+      showLoading("Memproses...");
     try {
       if (report.imagePublicId) {
         const token = await auth.currentUser?.getIdToken();
@@ -362,6 +365,8 @@ export default function ValidasiPelaporan() {
     } finally {
       fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
       setIsProcessingId(null);
+      hideLoading();
+      showLoading("Memproses...");
     }
   };
 

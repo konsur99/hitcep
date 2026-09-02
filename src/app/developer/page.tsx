@@ -15,6 +15,8 @@ import caborData from '@/data/cabor.json';
 import summaryData from '@/data/summary.json';
 import { toast } from 'sonner';
 import { useConfirmDialog } from '@/components/ConfirmDialog';
+import { useGlobalLoader } from '@/components/GlobalLoader';
+
 
 type UserData = {
   id: string;
@@ -37,6 +39,7 @@ type UserData = {
 };
 
 export default function DeveloperDashboard() {
+  const { showLoading, hideLoading } = useGlobalLoader();
   const router = useRouter();
   const { confirm } = useConfirmDialog();
   const [isAuthChecking, setIsAuthChecking] = useState(true);
