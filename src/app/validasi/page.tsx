@@ -386,6 +386,7 @@ export default function ValidasiMedali() {
       } finally {
         fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
         setIsSavingEdit(false);
+        hideLoading();
       }
   };
 

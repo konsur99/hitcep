@@ -355,7 +355,6 @@ export default function ValidasiPelaporan() {
       fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
       setIsProcessingId(null);
       hideLoading();
-      showLoading("Memproses...");
     }
   };
 
