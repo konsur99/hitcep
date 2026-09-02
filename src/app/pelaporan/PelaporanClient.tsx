@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import LoadingUI from '@/components/LoadingUI';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
@@ -139,10 +140,11 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
   return (
     <>
       {/* Lightbox Overlay */}
-      {lightboxImage && (
+      {lightboxImage && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4 animate-in fade-in"
+          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4 animate-in fade-in"
           onClick={() => setLightboxImage(null)}
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
         >
           {/* Loading Spinner */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -151,7 +153,7 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
           
           <button 
             className="absolute top-6 right-6 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full text-white flex items-center justify-center backdrop-blur-md z-10"
-            onClick={() => setLightboxImage(null)}
+            onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}
           >
             <i className="fa-solid fa-xmark"></i>
           </button>
@@ -159,8 +161,10 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
             src={getFullImageOptimized(lightboxImage)} 
             alt="Fullscreen" 
             className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl relative z-10" 
+            onClick={(e) => e.stopPropagation()}
           />
-        </div>
+        </div>,
+        document.body
       )}
 
       <div className="px-5 mt-6 relative z-20 space-y-4 max-w-4xl mx-auto pb-12">
