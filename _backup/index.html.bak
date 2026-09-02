@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Porprov 2026 Quick Count - Solo Juara</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'solo-red': '#cc0000',
+            'solo-red-dark': '#8b0000',
+            'solo-blue': '#0a1930',
+            'solo-gold': '#f5a623',
+            'solo-gold-light': '#fdf2d5',
+            'medal-gold': '#ffd700',
+            'medal-silver': '#c0c0c0',
+            'medal-bronze': '#cd7f32',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style data-purpose="custom-styles">
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+    .hero-bg {
+      background: 
+        url('hero-bg.png') center calc(100% - 40px) / contain no-repeat,
+        linear-gradient(to right, #960309, #520111, #67030B) center bottom / 100% 50px no-repeat,
+        #010F2B;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+    .shadow-card { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .medal-icon-large { font-size: 3rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .podium-1 { background: linear-gradient(to bottom, #fceabb, #f8b500); }
+    .podium-2 { background: linear-gradient(to bottom, #e2e2e2, #999999); }
+    .podium-3 { background: linear-gradient(to bottom, #f5d0b5, #c87a41); }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center">
+<!-- Mobile Container -->
+<div class="w-full max-w-[390px] bg-white min-h-screen relative pb-32 overflow-x-hidden shadow-xl" data-purpose="mobile-container">
+<!-- BEGIN: Header -->
+<header class="flex justify-between items-center p-4 bg-white sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<img alt="KONI Logo" class="h-10 w-auto object-contain mix-blend-multiply -mt-1" src="logo-koni.png"/>
+<div class="w-px h-10 bg-gray-300 ml-2"></div>
+<img alt="Porprov Logo" class="h-16 w-14 object-cover object-center mix-blend-multiply" src="logo-porprov-transparent.png"/>
+</div>
+<button class="text-gray-700 text-2xl">
+<i class="fa-solid fa-bars"></i>
+</button>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: PAGE BERANDA -->
+<div id="page-beranda" class="page-content block">
+<!-- BEGIN: Hero Section -->
+<section class="hero-bg pt-6 pb-16 px-5 text-white rounded-b-3xl">
+<div class="hero-content">
+<div class="inline-flex items-center bg-solo-red-dark text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+<span class="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse"></span> LIVE DATA
+        </div>
+<h1 class="text-4xl font-extrabold leading-tight mb-2">
+          SOLO <span class="text-solo-gold">JUARA</span>
+</h1>
+<h2 class="text-xl font-semibold mb-3">Porprov 2026 Quick Count</h2>
+<p class="text-sm text-gray-300 max-w-[250px] leading-relaxed">
+          Pantau perjuangan dan prestasi kontingen Kota Surakarta secara real-time.
+        </p>
+</div>
+<!-- Background image handles decoration -->
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: Main Content Area -->
+<main class="px-4 -mt-12 relative z-10 space-y-4">
+<!-- BEGIN: Medal Tally Cards -->
+<section data-purpose="medal-tally">
+<div class="grid grid-cols-3 gap-3 mb-3">
+<!-- Gold -->
+<div class="bg-white rounded-2xl p-2 pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
+<img src="medal-gold.png" alt="Emas" class="h-24 w-24 object-contain drop-shadow-md">
+<span class="text-xs font-bold text-solo-gold mb-1">EMAS</span>
+<span class="text-3xl font-extrabold text-gray-800">12</span>
+</div>
+<!-- Silver -->
+<div class="bg-white rounded-2xl p-2 pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
+<img src="medal-silver.png" alt="Perak" class="h-24 w-24 object-contain drop-shadow-md">
+<span class="text-xs font-bold text-gray-500 mb-1">PERAK</span>
+<span class="text-3xl font-extrabold text-gray-800">8</span>
+</div>
+<!-- Bronze -->
+<div class="bg-white rounded-2xl p-2 pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
+<img src="medal-bronze.png" alt="Perunggu" class="h-24 w-24 object-contain drop-shadow-md">
+<span class="text-xs font-bold text-amber-700 mb-1">PERUNGGU</span>
+<span class="text-3xl font-extrabold text-gray-800">15</span>
+</div>
+</div>
+<!-- Total Medals -->
+<div class="bg-white rounded-2xl p-4 flex items-center justify-between shadow-card border border-gray-100 relative overflow-hidden">
+<div class="flex-1 text-center">
+<div class="text-xs font-bold text-gray-800 tracking-widest mb-1">TOTAL MEDALI</div>
+<div class="text-4xl font-black text-gray-900">35</div>
+</div>
+<img src="daun.png" alt="Daun" class="h-24 w-auto absolute -bottom-2 right-0 opacity-40 object-contain drop-shadow-sm mix-blend-multiply">
+</div>
+</section>
+<!-- END: Medal Tally Cards -->
+<!-- BEGIN: Kontribusi Cabor -->
+<section class="bg-white rounded-2xl p-4 shadow-card border border-gray-100" data-purpose="kontribusi-cabor">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-gray-800 text-sm">KONTRIBUSI CABOR</h3>
+<a class="text-xs text-solo-red font-semibold hover:underline" href="#">Lihat Semua</a>
+</div>
+<ul class="space-y-3">
+<!-- Item 1 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="bg-solo-red text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded">01</span>
+<i class="fa-solid fa-person-running w-5 text-center text-gray-700"></i>
+<span class="text-sm font-semibold text-gray-800">Atletik</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold justify-end">
+<span class="flex items-center justify-between w-7"><img src="medal-gold.png" alt="Emas" class="h-4 w-4 object-contain"> <span>3</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-silver.png" alt="Perak" class="h-4 w-4 object-contain"> <span>2</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-bronze.png" alt="Perunggu" class="h-4 w-4 object-contain"> <span>1</span></span>
+</div>
+</li>
+<!-- Item 2 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="bg-gray-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded">02</span>
+<i class="fa-solid fa-person-swimming w-5 text-center text-gray-700"></i>
+<span class="text-sm font-semibold text-gray-800">Renang</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold justify-end">
+<span class="flex items-center justify-between w-7"><img src="medal-gold.png" alt="Emas" class="h-4 w-4 object-contain"> <span>2</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-silver.png" alt="Perak" class="h-4 w-4 object-contain"> <span>4</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-bronze.png" alt="Perunggu" class="h-4 w-4 object-contain"> <span>3</span></span>
+</div>
+</li>
+<!-- Item 3 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="bg-amber-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded">03</span>
+<i class="fa-solid fa-bullseye w-5 text-center text-gray-700"></i>
+<span class="text-sm font-semibold text-gray-800">Panahan</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold justify-end">
+<span class="flex items-center justify-between w-7"><img src="medal-gold.png" alt="Emas" class="h-4 w-4 object-contain"> <span>2</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-silver.png" alt="Perak" class="h-4 w-4 object-contain"> <span>1</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-bronze.png" alt="Perunggu" class="h-4 w-4 object-contain"> <span>2</span></span>
+</div>
+</li>
+<!-- Item 4 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="bg-gray-400 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded">04</span>
+<i class="fa-solid fa-user-ninja w-5 text-center text-gray-700"></i>
+<span class="text-sm font-semibold text-gray-800">Pencak Silat</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold justify-end">
+<span class="flex items-center justify-between w-7"><img src="medal-gold.png" alt="Emas" class="h-4 w-4 object-contain"> <span>1</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-silver.png" alt="Perak" class="h-4 w-4 object-contain"> <span>2</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-bronze.png" alt="Perunggu" class="h-4 w-4 object-contain"> <span>3</span></span>
+</div>
+</li>
+<!-- Item 5 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="bg-gray-400 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded">05</span>
+<i class="fa-solid fa-table-tennis-paddle-ball w-5 text-center text-gray-700"></i>
+<span class="text-sm font-semibold text-gray-800">Bulu Tangkis</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold justify-end">
+<span class="flex items-center justify-between w-7"><img src="medal-gold.png" alt="Emas" class="h-4 w-4 object-contain"> <span>1</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-silver.png" alt="Perak" class="h-4 w-4 object-contain"> <span>1</span></span>
+<span class="flex items-center justify-between w-7"><img src="medal-bronze.png" alt="Perunggu" class="h-4 w-4 object-contain"> <span>1</span></span>
+</div>
+</li>
+</ul>
+</section>
+<!-- END: Kontribusi Cabor -->
+<!-- BEGIN: Medali Terbaru -->
+<section class="bg-white rounded-2xl p-4 shadow-card border border-gray-100" data-purpose="medali-terbaru">
+<div class="flex justify-between items-center mb-3">
+<h3 class="font-bold text-gray-800 text-sm">MEDALI TERBARU</h3>
+<a class="text-xs text-solo-red font-semibold hover:underline" href="#">Lihat Semua</a>
+</div>
+<div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg border border-gray-100">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img src="medal-gold.png" alt="Medal" class="h-8 w-8 object-contain">
+</div>
+<div>
+<div class="text-sm font-bold text-gray-800">Agus Prayogo</div>
+<div class="text-xs text-gray-500">Atletik - Lari 10K Putra</div>
+</div>
+</div>
+<div class="text-xs font-semibold text-solo-red">10:46 PM</div>
+</div>
+</section>
+<!-- END: Medali Terbaru -->
+<!-- BEGIN: Klasemen Kecamatan -->
+<section class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 mb-6" data-purpose="klasemen-kecamatan">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-gray-800 text-sm">KLASEMEN KECAMATAN</h3>
+<a class="text-xs text-solo-red font-semibold hover:underline" href="#">Lihat Semua</a>
+</div>
+<!-- Podium -->
+<div class="flex items-end justify-center gap-2 mb-6 h-32">
+<!-- Rank 2 -->
+<div class="w-24 podium-2 rounded-t-lg flex flex-col items-center justify-end pb-2 shadow-inner h-24">
+<div class="bg-white rounded-full p-1 -mt-8 mb-1 shadow-md border-2 border-gray-200 flex items-center justify-center">
+<img src="podium-medals.png" alt="Rank 2" class="h-12 w-12 object-cover object-center">
+</div>
+<span class="text-xs font-bold text-gray-800">Laweyan</span>
+<span class="text-lg font-extrabold text-gray-900">8</span>
+</div>
+<!-- Rank 1 -->
+<div class="w-28 podium-1 rounded-t-lg flex flex-col items-center justify-end pb-2 shadow-inner h-32 relative z-10 shadow-lg">
+<div class="bg-white rounded-full p-1 -mt-10 mb-1 shadow-md border-2 border-yellow-200 flex items-center justify-center">
+<img src="podium-medals.png" alt="Rank 1" class="h-14 w-14 object-cover object-left">
+</div>
+<span class="text-xs font-bold text-gray-900">Banjarsari</span>
+<span class="text-xl font-extrabold text-gray-900">10</span>
+<span class="text-[10px] text-gray-800">Medali</span>
+</div>
+<!-- Rank 3 -->
+<div class="w-24 podium-3 rounded-t-lg flex flex-col items-center justify-end pb-2 shadow-inner h-20">
+<div class="bg-white rounded-full p-1 -mt-8 mb-1 shadow-md border-2 border-orange-200 flex items-center justify-center">
+<img src="podium-medals.png" alt="Rank 3" class="h-12 w-12 object-cover object-right">
+</div>
+<span class="text-xs font-bold text-gray-900">Jebres</span>
+<span class="text-lg font-extrabold text-gray-900">7</span>
+</div>
+</div>
+<!-- List below podium -->
+<ul class="space-y-0 divide-y divide-gray-100">
+<li class="flex justify-between items-center py-2">
+<div class="flex items-center gap-3">
+<span class="font-bold text-gray-800 w-4 text-center text-sm">4</span>
+<span class="text-sm font-semibold text-gray-700">Pasar Kliwon</span>
+</div>
+<div class="text-sm font-bold text-gray-900">5 <span class="text-xs text-gray-500 font-normal">Medali</span></div>
+</li>
+<li class="flex justify-between items-center py-2">
+<div class="flex items-center gap-3">
+<span class="font-bold text-gray-800 w-4 text-center text-sm">5</span>
+<span class="text-sm font-semibold text-gray-700">Serengan</span>
+</div>
+<div class="text-sm font-bold text-gray-900">4 <span class="text-xs text-gray-500 font-normal">Medali</span></div>
+</li>
+</ul>
+</section>
+<!-- END: Klasemen Kecamatan -->
+</main>
+<!-- END: Main Content Area -->
+</div>
+<!-- END: PAGE BERANDA -->
+
+<!-- BEGIN: PAGE CABOR -->
+<div id="page-cabor" class="page-content hidden">
+  <main class="px-5 pt-6 relative z-10 space-y-5 pb-6">
+    <!-- Header Title -->
+    <div>
+      <h2 class="text-2xl font-extrabold text-gray-800">Daftar Cabor</h2>
+      <p class="text-sm text-gray-500 mt-1">Pantau perolehan medali per cabang olahraga.</p>
+    </div>
+    
+    <!-- Search Bar -->
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <i class="fa-solid fa-search text-gray-400"></i>
+      </div>
+      <input type="text" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-solo-red focus:border-solo-red sm:text-sm shadow-sm transition-all" placeholder="Cari cabang olahraga...">
+    </div>
+
+    <!-- Cabor Grid -->
+    <div class="grid grid-cols-2 gap-4">
+      
+      <!-- Cabor Item 1 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-solo-red">
+          <i class="fa-solid fa-person-running text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Atletik</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 3</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 1</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 2</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cabor Item 2 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+          <i class="fa-solid fa-person-swimming text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Renang</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 5</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 2</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 0</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cabor Item 3 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
+          <i class="fa-solid fa-bullseye text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Panahan</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 1</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 2</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 1</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cabor Item 4 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center text-orange-500">
+          <i class="fa-solid fa-basketball text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Bola Basket</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 1</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 0</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 0</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cabor Item 5 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+          <i class="fa-solid fa-hand-fist text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Pencak Silat</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 2</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 3</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 4</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cabor Item 6 -->
+      <a href="#" class="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col items-center justify-center gap-3 hover:border-solo-red transition-colors relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-solo-red to-solo-gold opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-14 h-14 rounded-full bg-sky-50 flex items-center justify-center text-sky-500">
+          <i class="fa-solid fa-bicycle text-2xl"></i>
+        </div>
+        <div class="text-center">
+          <h3 class="font-bold text-gray-800 text-sm mb-1">Balap Sepeda</h3>
+          <div class="flex items-center justify-center gap-2 text-[10px] font-bold">
+            <span class="text-solo-gold"><i class="fa-solid fa-medal"></i> 0</span>
+            <span class="text-gray-500"><i class="fa-solid fa-medal"></i> 0</span>
+            <span class="text-amber-700"><i class="fa-solid fa-medal"></i> 8</span>
+          </div>
+        </div>
+      </a>
+      
+    </div>
+  </main>
+</div>
+<!-- END: PAGE CABOR -->
+
+<!-- BEGIN: PAGE MEDALI -->
+<div id="page-medali" class="page-content hidden">
+  <main class="px-5 pt-6 relative z-10 space-y-6 pb-6">
+    <!-- Header Title -->
+    <div>
+      <h2 class="text-2xl font-extrabold text-gray-800">Detail Medali</h2>
+      <p class="text-sm text-gray-500 mt-1">Rincian perolehan medali kontingen Surakarta.</p>
+    </div>
+
+    <!-- Summary Banner -->
+    <div class="bg-gradient-to-r from-[#010F2B] to-[#960309] rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+      <!-- Decorative graphic -->
+      <div class="absolute right-0 top-0 h-full opacity-10">
+        <i class="fa-solid fa-trophy text-8xl -mr-4 mt-2"></i>
+      </div>
+      
+      <p class="text-xs font-bold text-gray-300 mb-1">TOTAL PEROLEHAN</p>
+      <div class="text-4xl font-black mb-3">35 <span class="text-lg font-semibold text-gray-300">Medali</span></div>
+      
+      <div class="flex gap-4">
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+          <i class="fa-solid fa-medal text-solo-gold"></i>
+          <span class="font-bold text-sm">12</span>
+        </div>
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+          <i class="fa-solid fa-medal text-gray-300"></i>
+          <span class="font-bold text-sm">8</span>
+        </div>
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+          <i class="fa-solid fa-medal text-amber-600"></i>
+          <span class="font-bold text-sm">15</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medali Terbaru (Timeline) -->
+    <div>
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-gray-800 text-sm">MEDALI TERBARU</h3>
+        <a class="text-xs text-solo-red font-semibold hover:underline" href="#">Filter</a>
+      </div>
+      
+      <div class="space-y-4">
+        <!-- Item 1 -->
+        <div class="flex gap-3 relative">
+          <div class="w-px h-full bg-gray-200 absolute left-5 top-8 -z-10"></div>
+          <div class="w-10 h-10 rounded-full bg-yellow-100 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
+            <i class="fa-solid fa-medal text-solo-gold text-lg"></i>
+          </div>
+          <div class="bg-white p-3 rounded-xl shadow-card border border-gray-100 flex-1">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-[10px] font-bold text-solo-red bg-red-50 px-2 py-0.5 rounded-full">Atletik</span>
+              <span class="text-[10px] text-gray-400 font-medium">10 mnt lalu</span>
+            </div>
+            <h4 class="font-bold text-gray-800 text-sm">Budi Santoso</h4>
+            <p class="text-xs text-gray-500">Lari 100m Putra</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="flex gap-3 relative">
+          <div class="w-px h-full bg-gray-200 absolute left-5 top-8 -z-10"></div>
+          <div class="w-10 h-10 rounded-full bg-gray-100 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
+            <i class="fa-solid fa-medal text-gray-400 text-lg"></i>
+          </div>
+          <div class="bg-white p-3 rounded-xl shadow-card border border-gray-100 flex-1">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Renang</span>
+              <span class="text-[10px] text-gray-400 font-medium">1 jam lalu</span>
+            </div>
+            <h4 class="font-bold text-gray-800 text-sm">Tim Estafet Putra</h4>
+            <p class="text-xs text-gray-500">Gaya Bebas 4x100m</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="flex gap-3 relative">
+          <div class="w-10 h-10 rounded-full bg-amber-100 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
+            <i class="fa-solid fa-medal text-amber-600 text-lg"></i>
+          </div>
+          <div class="bg-white p-3 rounded-xl shadow-card border border-gray-100 flex-1">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Panahan</span>
+              <span class="text-[10px] text-gray-400 font-medium">3 jam lalu</span>
+            </div>
+            <h4 class="font-bold text-gray-800 text-sm">Siti Aminah</h4>
+            <p class="text-xs text-gray-500">Recurve Putri Individu</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+</div>
+<!-- END: PAGE MEDALI -->
+
+<!-- BEGIN: PAGE KLASEMEN -->
+<div id="page-klasemen" class="page-content hidden">
+  <main class="px-4 pt-6 relative z-10 space-y-6 pb-6">
+    <!-- Header Title -->
+    <div class="px-1">
+      <h2 class="text-2xl font-extrabold text-gray-800">Klasemen Sementara</h2>
+      <p class="text-sm text-gray-500 mt-1">Peringkat perolehan medali antar Kabupaten/Kota.</p>
+    </div>
+
+    <!-- Podium Top 3 -->
+    <section class="bg-gradient-to-b from-[#010F2B] to-[#0a1f44] rounded-3xl p-5 pt-8 shadow-card border border-gray-800 relative overflow-hidden mt-4">
+      <div class="absolute inset-0 bg-[url('hero-bg.png')] opacity-10 bg-cover bg-center"></div>
+      
+      <div class="flex items-end justify-center gap-2 h-44 relative z-10">
+        <!-- Rank 2 -->
+        <div class="w-[30%] podium-2 rounded-t-xl flex flex-col items-center justify-end pb-3 shadow-inner h-28 relative">
+          <div class="absolute -top-12 flex flex-col items-center">
+            <img src="podium-medals.png" alt="Rank 2" class="h-10 w-10 object-cover object-center rounded-full border-2 border-gray-300 shadow-lg bg-white p-0.5">
+            <span class="text-[10px] font-bold text-white mt-1 text-center leading-tight">Semarang</span>
+          </div>
+          <span class="text-xs font-bold text-gray-800">2</span>
+          <span class="text-lg font-black text-gray-900">45</span>
+        </div>
+        
+        <!-- Rank 1 (Surakarta) -->
+        <div class="w-[35%] podium-1 rounded-t-xl flex flex-col items-center justify-end pb-4 shadow-[0_-10px_20px_rgba(248,181,0,0.3)] h-40 relative z-20">
+          <div class="absolute -top-14 flex flex-col items-center">
+            <img src="podium-medals.png" alt="Rank 1" class="h-14 w-14 object-cover object-left rounded-full border-4 border-yellow-400 shadow-[0_0_15px_rgba(248,181,0,0.5)] bg-white p-0.5">
+            <span class="text-[11px] font-black text-yellow-400 mt-1 text-center leading-tight">Surakarta</span>
+          </div>
+          <span class="text-sm font-bold text-gray-900">1</span>
+          <span class="text-2xl font-black text-gray-900">58</span>
+        </div>
+        
+        <!-- Rank 3 -->
+        <div class="w-[30%] podium-3 rounded-t-xl flex flex-col items-center justify-end pb-2 shadow-inner h-24 relative">
+          <div class="absolute -top-12 flex flex-col items-center">
+            <img src="podium-medals.png" alt="Rank 3" class="h-10 w-10 object-cover object-right rounded-full border-2 border-orange-300 shadow-lg bg-white p-0.5">
+            <span class="text-[10px] font-bold text-white mt-1 text-center leading-tight">Banyumas</span>
+          </div>
+          <span class="text-xs font-bold text-gray-900">3</span>
+          <span class="text-lg font-black text-gray-900">32</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full Leaderboard -->
+    <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+      <!-- Table Header -->
+      <div class="flex items-center px-4 py-3 bg-gray-50 border-b border-gray-100 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+        <div class="w-8 text-center">Rnk</div>
+        <div class="flex-1 pl-2">Kab / Kota</div>
+        <div class="flex justify-end gap-3 w-28 text-center">
+          <span class="w-6"><i class="fa-solid fa-circle text-solo-gold"></i></span>
+          <span class="w-6"><i class="fa-solid fa-circle text-gray-400"></i></span>
+          <span class="w-6"><i class="fa-solid fa-circle text-amber-700"></i></span>
+        </div>
+      </div>
+      
+      <!-- Table Body -->
+      <ul class="divide-y divide-gray-100">
+        <!-- Item Surakarta (Highlight) -->
+        <li class="flex items-center px-4 py-3 bg-red-50/50">
+          <div class="w-8 text-center font-black text-solo-red">1</div>
+          <div class="flex-1 pl-2 font-bold text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-solo-red"></i> Kota Surakarta
+          </div>
+          <div class="flex justify-end gap-3 w-28 text-center text-sm font-semibold text-gray-700">
+            <span class="w-6">25</span>
+            <span class="w-6">18</span>
+            <span class="w-6">15</span>
+          </div>
+        </li>
+        
+        <li class="flex items-center px-4 py-3">
+          <div class="w-8 text-center font-bold text-gray-500">2</div>
+          <div class="flex-1 pl-2 font-medium text-gray-800">Kota Semarang</div>
+          <div class="flex justify-end gap-3 w-28 text-center text-sm text-gray-600">
+            <span class="w-6">20</span>
+            <span class="w-6">15</span>
+            <span class="w-6">10</span>
+          </div>
+        </li>
+        
+        <li class="flex items-center px-4 py-3">
+          <div class="w-8 text-center font-bold text-gray-500">3</div>
+          <div class="flex-1 pl-2 font-medium text-gray-800">Kab. Banyumas</div>
+          <div class="flex justify-end gap-3 w-28 text-center text-sm text-gray-600">
+            <span class="w-6">12</span>
+            <span class="w-6">10</span>
+            <span class="w-6">10</span>
+          </div>
+        </li>
+        
+        <li class="flex items-center px-4 py-3">
+          <div class="w-8 text-center font-bold text-gray-500">4</div>
+          <div class="flex-1 pl-2 font-medium text-gray-800">Kab. Sukoharjo</div>
+          <div class="flex justify-end gap-3 w-28 text-center text-sm text-gray-600">
+            <span class="w-6">8</span>
+            <span class="w-6">12</span>
+            <span class="w-6">9</span>
+          </div>
+        </li>
+        
+        <li class="flex items-center px-4 py-3">
+          <div class="w-8 text-center font-bold text-gray-500">5</div>
+          <div class="flex-1 pl-2 font-medium text-gray-800">Kab. Klaten</div>
+          <div class="flex justify-end gap-3 w-28 text-center text-sm text-gray-600">
+            <span class="w-6">5</span>
+            <span class="w-6">8</span>
+            <span class="w-6">11</span>
+          </div>
+        </li>
+      </ul>
+      
+      <a href="#" class="block text-center w-full py-3 text-xs font-bold text-solo-red hover:bg-gray-50 border-t border-gray-100">
+        Lihat Selengkapnya <i class="fa-solid fa-chevron-down ml-1"></i>
+      </a>
+    </div>
+  </main>
+</div>
+<!-- END: PAGE KLASEMEN -->
+
+<!-- BEGIN: PAGE PROFIL -->
+<div id="page-profil" class="page-content hidden">
+  <main class="relative z-10 pb-6">
+    <!-- Profile Header Background -->
+    <div class="bg-gradient-to-b from-solo-red to-red-900 pt-10 pb-16 px-5 rounded-b-[40px] text-center shadow-lg relative overflow-hidden">
+      <div class="absolute inset-0 bg-[url('hero-bg.png')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
+      
+      <!-- Avatar -->
+      <div class="relative inline-block mt-4">
+        <div class="w-24 h-24 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white mx-auto">
+          <img src="logo-koni.png" alt="Profile" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
+      </div>
+      
+      <h2 class="text-2xl font-extrabold text-white mt-3">Admin KONI</h2>
+      <p class="text-red-100 text-sm font-medium">Tim Satgas Porprov 2026</p>
+    </div>
+
+    <!-- Menu List -->
+    <div class="px-5 -mt-8 relative z-20 space-y-4">
+      
+      <!-- Section 1 -->
+      <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+        <a href="#" class="flex items-center px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+            <i class="fa-regular fa-bell text-lg"></i>
+          </div>
+          <div class="ml-3 flex-1">
+            <h4 class="text-sm font-bold text-gray-800">Notifikasi</h4>
+            <p class="text-[11px] text-gray-500">Pembaruan medali & jadwal</p>
+          </div>
+          <div class="w-6 h-6 bg-solo-red text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+            3
+          </div>
+          <i class="fa-solid fa-chevron-right text-gray-300 ml-3 text-xs"></i>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-4 hover:bg-gray-50 transition-colors">
+          <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+            <i class="fa-regular fa-calendar-check text-lg"></i>
+          </div>
+          <div class="ml-3 flex-1">
+            <h4 class="text-sm font-bold text-gray-800">Jadwal Pertandingan</h4>
+            <p class="text-[11px] text-gray-500">Agenda kontingen Surakarta</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-gray-300 ml-3 text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+        <a href="#" class="flex items-center px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-gear text-lg"></i>
+          </div>
+          <div class="ml-3 flex-1">
+            <h4 class="text-sm font-bold text-gray-800">Pengaturan Akun</h4>
+            <p class="text-[11px] text-gray-500">Ubah profil & preferensi</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-gray-300 ml-3 text-xs"></i>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+            <i class="fa-regular fa-circle-question text-lg"></i>
+          </div>
+          <div class="ml-3 flex-1">
+            <h4 class="text-sm font-bold text-gray-800">Pusat Bantuan</h4>
+            <p class="text-[11px] text-gray-500">FAQ & Kontak Panitia</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-gray-300 ml-3 text-xs"></i>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-4 hover:bg-red-50 transition-colors">
+          <div class="w-10 h-10 rounded-full bg-red-100 text-solo-red flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
+          </div>
+          <div class="ml-3 flex-1">
+            <h4 class="text-sm font-bold text-solo-red">Keluar</h4>
+          </div>
+        </a>
+      </div>
+      
+    </div>
+  </main>
+</div>
+<!-- END: PAGE PROFIL -->
+
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 w-full max-w-[390px] bg-white border-t border-gray-200 flex justify-around py-3 px-2 pb-5 z-50 rounded-t-xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="bottom-nav">
+<a class="nav-item flex flex-col items-center text-solo-red transition-colors" href="javascript:void(0)" onclick="switchPage('beranda', this)">
+<i class="fa-solid fa-house text-xl mb-1"></i>
+<span class="text-[10px] font-bold">Beranda</span>
+</a>
+<a class="nav-item flex flex-col items-center text-gray-500 hover:text-solo-red transition-colors" href="javascript:void(0)" onclick="switchPage('cabor', this)">
+<i class="fa-solid fa-dharmachakra text-xl mb-1"></i>
+<span class="text-[10px] font-medium">Cabor</span>
+</a>
+<a class="nav-item flex flex-col items-center text-gray-500 hover:text-solo-red transition-colors" href="javascript:void(0)" onclick="switchPage('medali', this)">
+<i class="fa-solid fa-medal text-xl mb-1"></i>
+<span class="text-[10px] font-medium">Medali</span>
+</a>
+<a class="nav-item flex flex-col items-center text-gray-500 hover:text-solo-red transition-colors" href="javascript:void(0)" onclick="switchPage('klasemen', this)">
+<i class="fa-solid fa-chart-simple text-xl mb-1"></i>
+<span class="text-[10px] font-medium">Klasemen</span>
+</a>
+<a class="nav-item flex flex-col items-center text-gray-500 hover:text-solo-red transition-colors" href="javascript:void(0)" onclick="switchPage('profil', this)">
+<i class="fa-regular fa-user text-xl mb-1"></i>
+<span class="text-[10px] font-medium">Profil</span>
+</a>
+</nav>
+<!-- END: Bottom Navigation -->
+</div>
+
+<script>
+  function switchPage(pageId, element) {
+    // Hide all pages
+    const pages = document.querySelectorAll('.page-content');
+    pages.forEach(page => {
+      page.classList.remove('block');
+      page.classList.add('hidden');
+    });
+
+    // Show target page
+    document.getElementById('page-' + pageId).classList.remove('hidden');
+    document.getElementById('page-' + pageId).classList.add('block');
+
+    // Reset all nav icons
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.classList.remove('text-solo-red');
+      item.classList.add('text-gray-500');
+      // Reset font weight
+      const span = item.querySelector('span');
+      span.classList.remove('font-bold');
+      span.classList.add('font-medium');
+    });
+
+    // Set active nav icon
+    element.classList.remove('text-gray-500');
+    element.classList.add('text-solo-red');
+    const activeSpan = element.querySelector('span');
+    activeSpan.classList.remove('font-medium');
+    activeSpan.classList.add('font-bold');
+    
+    // Scroll to top when changing page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body></html>

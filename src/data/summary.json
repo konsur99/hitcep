@@ -1,0 +1,55 @@
+{
+  "tally": {
+    "emas": 12,
+    "perak": 8,
+    "perunggu": 15,
+    "total": 35
+  },
+  "klasemen": [
+    {
+      "id": "k1",
+      "name": "Banjarsari",
+      "total": 11,
+      "gold": 5,
+      "silver": 3,
+      "bronze": 3,
+      "rank": 1
+    },
+    {
+      "id": "k2",
+      "name": "Laweyan",
+      "total": 8,
+      "gold": 3,
+      "silver": 3,
+      "bronze": 2,
+      "rank": 2
+    },
+    {
+      "id": "k3",
+      "name": "Jebres",
+      "total": 7,
+      "gold": 2,
+      "silver": 1,
+      "bronze": 4,
+      "rank": 3
+    },
+    {
+      "id": "k4",
+      "name": "Pasar Kliwon",
+      "total": 5,
+      "gold": 1,
+      "silver": 1,
+      "bronze": 3,
+      "rank": 4
+    },
+    {
+      "id": "k5",
+      "name": "Serengan",
+      "total": 4,
+      "gold": 1,
+      "silver": 0,
+      "bronze": 3,
+      "rank": 5
+    }
+  ]
+}

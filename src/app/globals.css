@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-solo-red: #cc0000;
+  --color-solo-red-dark: #8b0000;
+  --color-solo-blue: #0a1930;
+  --color-solo-gold: #f5a623;
+  --color-solo-gold-light: #fdf2d5;
+  --color-medal-gold: #ffd700;
+  --color-medal-silver: #c0c0c0;
+  --color-medal-bronze: #cd7f32;
+  --font-sans: 'Inter', sans-serif;
+  
+  --animate-shimmer: shimmer 3.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes shimmer {
+    0%, 15% { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+    35%, 65% { opacity: 1; }
+    85%, 100% { transform: translateX(100%) skewX(-15deg); opacity: 0; }
+  }
+
+  --animate-page-transition: page-transition 0.35s ease-out forwards;
+  @keyframes page-transition {
+    0% { opacity: 0; transform: translateX(-12px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+  @apply text-gray-900;
+}
+
+
+@utility shadow-card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@utility podium-1 {
+  background: linear-gradient(to bottom, #fceabb, #f8b500);
+}
+
+@utility podium-2 {
+  background: linear-gradient(to bottom, #e2e2e2, #999999);
+}
+
+@utility podium-3 {
+  background: linear-gradient(to bottom, #f5d0b5, #c87a41);
+}

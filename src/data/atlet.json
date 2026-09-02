@@ -1,0 +1,52 @@
+[
+  {
+    "id": "atl-1",
+    "caborId": "atletik",
+    "name": "Budi Santoso",
+    "medal": "emas",
+    "category": "Lari 100m Putra",
+    "portrait": "/portrait-1.webp",
+    "ceremonyPhoto": "/ceremony-1.webp",
+    "date": "12 Okt 2026"
+  },
+  {
+    "id": "atl-2",
+    "caborId": "atletik",
+    "name": "Siti Aminah",
+    "medal": "emas",
+    "category": "Lari 400m Putri",
+    "portrait": "/portrait-2.webp",
+    "ceremonyPhoto": "/ceremony-2.webp",
+    "date": "13 Okt 2026"
+  },
+  {
+    "id": "atl-3",
+    "caborId": "aeromodelling",
+    "name": "Rina Wijaya",
+    "medal": "perunggu",
+    "category": "F3J Putri",
+    "portrait": "/portrait-2.webp",
+    "ceremonyPhoto": "/ceremony-2.webp",
+    "date": "11 Okt 2026"
+  },
+  {
+    "id": "atl-4",
+    "caborId": "anggar",
+    "name": "Maya Indah",
+    "medal": "perunggu",
+    "category": "Epee Putri",
+    "portrait": "/portrait-2.webp",
+    "ceremonyPhoto": "/ceremony-1.webp",
+    "date": "15 Okt 2026"
+  },
+  {
+    "id": "atl-5",
+    "caborId": "angkat-besi",
+    "name": "Doni Kusuma",
+    "medal": "emas",
+    "category": "Snatch Putra",
+    "portrait": "/portrait-1.webp",
+    "ceremonyPhoto": "/ceremony-2.webp",
+    "date": "14 Okt 2026"
+  }
+]

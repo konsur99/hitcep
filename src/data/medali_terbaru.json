@@ -1,0 +1,317 @@
+[
+  {
+    "id": 1,
+    "name": "Agus Prayogo",
+    "detail": "Atletik - Lari 10K Putra",
+    "type": "emas",
+    "time": "12 Okt 2026",
+    "cabor": "Atletik",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 2,
+    "name": "Tim Estafet Putra",
+    "detail": "Renang - Gaya Bebas 4x100m",
+    "type": "perak",
+    "time": "11 Okt 2026",
+    "cabor": "Renang",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 3,
+    "name": "Siti Aminah",
+    "detail": "Panahan - Recurve Putri",
+    "type": "perunggu",
+    "time": "10 Okt 2026",
+    "cabor": "Panahan",
+    "kecamatan": "Pasar Kliwon"
+  },
+  {
+    "id": 4,
+    "name": "Budi Santoso",
+    "detail": "Pencak Silat - Kelas A Putra",
+    "type": "emas",
+    "time": "09 Okt 2026",
+    "cabor": "Pencak Silat",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 5,
+    "name": "Dian Pertiwi",
+    "detail": "Bulu Tangkis - Tunggal Putri",
+    "type": "perak",
+    "time": "08 Okt 2026",
+    "cabor": "Badminton",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 6,
+    "name": "Eko Yuli",
+    "detail": "Angkat Besi - 61kg Putra",
+    "type": "emas",
+    "time": "07 Okt 2026",
+    "cabor": "Angkat Besi",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 7,
+    "name": "Joko Supriyanto",
+    "detail": "Judo - Kelas 66kg Putra",
+    "type": "perunggu",
+    "time": "07 Okt 2026",
+    "cabor": "Judo",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 8,
+    "name": "Rina Marlina",
+    "detail": "Karate - Kata Perorangan Putri",
+    "type": "emas",
+    "time": "06 Okt 2026",
+    "cabor": "Karate",
+    "kecamatan": "Serengan"
+  },
+  {
+    "id": 9,
+    "name": "Tim Bola Voli Putri",
+    "detail": "Bola Voli - Beregu Putri",
+    "type": "emas",
+    "time": "06 Okt 2026",
+    "cabor": "Bola Voli",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 10,
+    "name": "Andi Darmawan",
+    "detail": "Tinju - Kelas Ringan Putra",
+    "type": "perak",
+    "time": "05 Okt 2026",
+    "cabor": "Tinju",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 11,
+    "name": "Wati Susilawati",
+    "detail": "Senam Lantai - Perorangan Putri",
+    "type": "perunggu",
+    "time": "05 Okt 2026",
+    "cabor": "Senam Lantai",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 12,
+    "name": "Bambang Pamungkas",
+    "detail": "Menembak - 10m Air Rifle Putra",
+    "type": "emas",
+    "time": "05 Okt 2026",
+    "cabor": "Menembak",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 13,
+    "name": "Tim Sepak Takraw",
+    "detail": "Sepak Takraw - Beregu Putra",
+    "type": "perunggu",
+    "time": "04 Okt 2026",
+    "cabor": "Sepak Takraw",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 14,
+    "name": "Ayu Lestari",
+    "detail": "Atletik - Lempar Lembing Putri",
+    "type": "emas",
+    "time": "04 Okt 2026",
+    "cabor": "Atletik",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 15,
+    "name": "Hendra Setiawan",
+    "detail": "Bulu Tangkis - Ganda Putra",
+    "type": "perunggu",
+    "time": "03 Okt 2026",
+    "cabor": "Badminton",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 16,
+    "name": "Kevin Sanjaya",
+    "detail": "Bulu Tangkis - Ganda Putra",
+    "type": "perunggu",
+    "time": "03 Okt 2026",
+    "cabor": "Badminton",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 17,
+    "name": "Tim Basket Putra",
+    "detail": "Bola Basket - Beregu Putra",
+    "type": "perak",
+    "time": "03 Okt 2026",
+    "cabor": "Basket",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 18,
+    "name": "Susi Susanti",
+    "detail": "Renang - Gaya Kupu-kupu 50m Putri",
+    "type": "emas",
+    "time": "02 Okt 2026",
+    "cabor": "Renang",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 19,
+    "name": "Deni Saputra",
+    "detail": "Gulat - Kelas Bebas Putra",
+    "type": "perunggu",
+    "time": "02 Okt 2026",
+    "cabor": "Gulat",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 20,
+    "name": "Rika Indah",
+    "detail": "Taekwondo - Under 49kg Putri",
+    "type": "emas",
+    "time": "01 Okt 2026",
+    "cabor": "Taekwondo",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 21,
+    "name": "Taufik Hidayat",
+    "detail": "Tenis Meja - Tunggal Putra",
+    "type": "perak",
+    "time": "01 Okt 2026",
+    "cabor": "Tenis Meja",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 22,
+    "name": "Ratna Galih",
+    "detail": "Catur - Kilat Perorangan Putri",
+    "type": "perunggu",
+    "time": "30 Sep 2026",
+    "cabor": "Catur",
+    "kecamatan": "Serengan"
+  },
+  {
+    "id": 23,
+    "name": "Tim Balap Sepeda",
+    "detail": "Balap Sepeda - Beregu Putra",
+    "type": "perunggu",
+    "time": "30 Sep 2026",
+    "cabor": "Balap Sepeda",
+    "kecamatan": "Serengan"
+  },
+  {
+    "id": 24,
+    "name": "Iwan Fals",
+    "detail": "Kempo - Randori Kelas 60kg Putra",
+    "type": "emas",
+    "time": "29 Sep 2026",
+    "cabor": "Beladiri",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 25,
+    "name": "Gita Gutawa",
+    "detail": "Wushu - Taolu Taijiquan Putri",
+    "type": "perak",
+    "time": "29 Sep 2026",
+    "cabor": "Wushu",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 26,
+    "name": "Tim Dayung Putra",
+    "detail": "Dayung - TBR 12 Kru Putra",
+    "type": "emas",
+    "time": "28 Sep 2026",
+    "cabor": "Dayung",
+    "kecamatan": "Jebres"
+  },
+  {
+    "id": 27,
+    "name": "Reza Rahadian",
+    "detail": "Panjat Tebing - Speed Putra",
+    "type": "perunggu",
+    "time": "28 Sep 2026",
+    "cabor": "Panjat Tebing",
+    "kecamatan": "Pasar Kliwon"
+  },
+  {
+    "id": 28,
+    "name": "Ariel Noah",
+    "detail": "Biliar - Bola 9 Single Putra",
+    "type": "perunggu",
+    "time": "27 Sep 2026",
+    "cabor": "Biliar",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 29,
+    "name": "Isyana Sarasvati",
+    "detail": "Senam Ritmik - Bola Putri",
+    "type": "perunggu",
+    "time": "27 Sep 2026",
+    "cabor": "Senam Ritmik",
+    "kecamatan": "Serengan"
+  },
+  {
+    "id": 30,
+    "name": "Tim Tenis Lapangan",
+    "detail": "Tenis Lapangan - Ganda Campuran",
+    "type": "perak",
+    "time": "26 Sep 2026",
+    "cabor": "Tenis Lapangan",
+    "kecamatan": "Pasar Kliwon"
+  },
+  {
+    "id": 31,
+    "name": "Raisa Andriana",
+    "detail": "Aeromodelling - F1A Putri",
+    "type": "perunggu",
+    "time": "26 Sep 2026",
+    "cabor": "Aeromodelling",
+    "kecamatan": "Banjarsari"
+  },
+  {
+    "id": 32,
+    "name": "Afgan Syahreza",
+    "detail": "Tarung Derajat - Kelas 55kg Putra",
+    "type": "perunggu",
+    "time": "25 Sep 2026",
+    "cabor": "Tarung Derajat",
+    "kecamatan": "Pasar Kliwon"
+  },
+  {
+    "id": 33,
+    "name": "Yura Yunita",
+    "detail": "Sepatu Roda - 500m ITT Putri",
+    "type": "emas",
+    "time": "25 Sep 2026",
+    "cabor": "Sepatu Roda",
+    "kecamatan": "Pasar Kliwon"
+  },
+  {
+    "id": 34,
+    "name": "Judika",
+    "detail": "Binaraga - Kelas 75kg Putra",
+    "type": "perak",
+    "time": "24 Sep 2026",
+    "cabor": "Binaraga",
+    "kecamatan": "Laweyan"
+  },
+  {
+    "id": 35,
+    "name": "Tulus",
+    "detail": "Anggar - Floret Perorangan Putra",
+    "type": "perunggu",
+    "time": "24 Sep 2026",
+    "cabor": "Anggar",
+    "kecamatan": "Jebres"
+  }
+]
