@@ -62,9 +62,8 @@ export const getOptimizedUrl = (url: string | null | undefined, width?: number):
     transformations.push('c_limit');
   }
   
-  // Replace the first occurrence of '/upload/' to inject transformations
-  // And rewrite any trailing extension to .jpg to prevent older Safari from preemptively blocking .webp URLs
+  // And rewrite any trailing extension to .webp so that users downloading the file get it as webp
   let optimized = url.replace('/upload/', `/upload/${transformations.join(',')}/`);
-  optimized = optimized.replace(/\.[^/.]+$/, '.jpg');
+  optimized = optimized.replace(/\.[^/.]+$/, '.webp');
   return optimized;
 };
