@@ -117,6 +117,7 @@ export default function Profil() {
 
       const maxDevices = settingsDoc.exists() ? (settingsDoc.data().max_devices_per_user || 4) : 4;
       const userRole = userDocSnap.exists() && userDocSnap.data().role ? String(userDocSnap.data().role).trim().toLowerCase() : '';
+      const userEmail = user.email ? user.email.toLowerCase() : '';
 
       // Cek apakah device ini sudah ada di daftar sesi sebelumnya
       let isExistingDevice = false;
@@ -126,8 +127,11 @@ export default function Profil() {
         }
       });
 
-      // Jika ini adalah device BARU, cek kuotanya (Kecuali untuk Developer dan Admin)
-      if (!isExistingDevice && sessionsSnap.size >= maxDevices && userRole !== 'developer' && userRole !== 'admin') {
+      const bypassEmails = ['raynaldoanantawijaya180@gmail.com', 'admin@quikkoni.com', 'superadmin@quikkoni.com'];
+      const isPrivileged = userRole === 'developer' || userRole === 'admin' || bypassEmails.includes(userEmail);
+
+      // Jika ini adalah device BARU, cek kuotanya (Kecuali untuk VIP)
+      if (!isExistingDevice && sessionsSnap.size >= maxDevices && !isPrivileged) {
         await signOut(auth);
         setLoginError(`Gagal Login! Batas maksimal ${maxDevices} perangkat telah tercapai. Harap logout dari perangkat Anda yang lain terlebih dahulu.`);
         hideLoading();
