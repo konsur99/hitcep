@@ -17,32 +17,8 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        router.replace('/');
-        return;
-      }
-      try {
-        const d = await getDoc(doc(db, 'users', user.uid));
-        if (d.exists()) {
-          const role = d.data().role;
-          if (role !== 'Developer' && role !== 'Admin') {
-             router.replace('/');
-             return;
-          }
-        } else {
-          router.replace('/');
-          return;
-        }
-      } catch (e) {
-        router.replace('/');
-        return;
-      }
-      setIsAuthChecking(false);
-    });
-    return () => unsub();
-  }, [router]);
-  
+    setIsAuthChecking(false);
+  }, []);
   // Filtering & Sorting State
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');

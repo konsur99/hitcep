@@ -238,9 +238,20 @@ export default function InputPelaporan() {
   
       await fetch('/api/revalidate', { method: 'POST' }).catch(e => console.error(e));
       toast.success("Laporan berhasil dikirim dan ditambahkan ke beranda publik.");
-      // router.push('/pelaporan'); // Handled by SessionGuard
+      
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setImagePreview(null);
+      setLocation('');
+      setSpecificLocation('');
+      setIncidentTime('');
+      setReporterName('');
+      setSelectedCategories([]);
+      setCustomCategory('');
     } catch (e: any) {
       toast.error("Gagal mengirim laporan: " + e.message);
+    } finally {
       setIsSubmitting(false);
     }
   };
