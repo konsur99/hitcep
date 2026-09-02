@@ -4,7 +4,8 @@ import PelaporanClient from './PelaporanClient';
 export const dynamic = 'force-dynamic';
 
 export default async function Pelaporan() {
-  const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
+  try {
+    const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
   const rawCacheData = cacheSnap.data() || { cabors: [], reports: [] };
   const cacheData = JSON.parse(JSON.stringify(rawCacheData));
 
@@ -41,4 +42,22 @@ export default async function Pelaporan() {
       <PelaporanClient initialReports={reports} cabors={cabors} />
     </main>
   );
+  } catch (error: any) {
+    return (
+      <main className="min-h-screen bg-gray-50 flex items-center justify-center p-5">
+        <div className="bg-white p-8 rounded-2xl shadow-lg max-w-2xl w-full border border-red-100">
+          <div className="flex items-center gap-4 text-red-600 mb-4">
+            <i className="fa-solid fa-triangle-exclamation text-3xl"></i>
+            <h1 className="text-2xl font-bold">Terjadi Kesalahan Server</h1>
+          </div>
+          <p className="text-gray-700 mb-6">Maaf, sistem tidak dapat memuat data Pelaporan.</p>
+          <div className="bg-red-50 p-4 rounded-xl overflow-x-auto text-sm text-red-900 border border-red-100 mb-6">
+            <pre className="whitespace-pre-wrap font-mono">
+              {error?.message || String(error)}
+            </pre>
+          </div>
+        </div>
+      </main>
+    );
+  }
 }
