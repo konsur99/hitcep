@@ -144,13 +144,22 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
           className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4 animate-in fade-in"
           onClick={() => setLightboxImage(null)}
         >
+          {/* Loading Spinner */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <i className="fa-solid fa-circle-notch fa-spin text-white/50 text-4xl"></i>
+          </div>
+          
           <button 
-            className="absolute top-6 right-6 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full text-white flex items-center justify-center backdrop-blur-md"
+            className="absolute top-6 right-6 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full text-white flex items-center justify-center backdrop-blur-md z-10"
             onClick={() => setLightboxImage(null)}
           >
             <i className="fa-solid fa-xmark"></i>
           </button>
-          <img src={getFullImageOptimized(lightboxImage)} alt="Fullscreen" className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" />
+          <img 
+            src={getFullImageOptimized(lightboxImage)} 
+            alt="Fullscreen" 
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl relative z-10" 
+          />
         </div>
       )}
 
