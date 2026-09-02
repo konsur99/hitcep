@@ -1,11 +1,11 @@
 
 import StatistikClient from './StatistikClient';
 
- // Cache 60 detik (ISR)
+export const revalidate = 10; // Cache 10 detik (ISR)
 
 export default async function Statistik() {
-  const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
-  const cacheData = cacheSnap.data() || { cabors: [] };
+  const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
+  const cacheData = await res.json();
   const cabors: any[] = cacheData.cabors || [];
 
   // Hitung total keseluruhan medali Surakarta

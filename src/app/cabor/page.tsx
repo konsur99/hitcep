@@ -1,7 +1,6 @@
-
 import CaborClient from './CaborClient';
 
- // Cache 60 detik (ISR) dengan Aggregated Document
+export const revalidate = 10;
 
 export default async function Cabor() {
   const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
