@@ -871,7 +871,7 @@ export default function DeveloperDashboard() {
               {users.filter(u => u.role === 'Developer').map(u => (
                 <div key={u.id} className="p-3 border rounded-xl flex flex-col gap-2 relative overflow-hidden bg-gradient-to-br from-amber-100 via-yellow-200 to-yellow-100 border-yellow-400 ring-2 ring-yellow-300 shadow-[0_0_15px_rgba(250,204,21,0.4)]">
                   {/* Shimmer Effect for Developer */}
-                  <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer pointer-events-none -translate-x-full"></div>
+                  
                   
                   <div className="flex justify-between items-center relative z-10">
                     <div className="flex-1">
@@ -890,7 +890,7 @@ export default function DeveloperDashboard() {
                         Developer
                       </div>
                       <div className="absolute inset-0 rounded-md overflow-hidden pointer-events-none z-20 isolate" style={{ transform: 'translateZ(0)' }}>
-                        <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer -translate-x-full"></div>
+                        
                       </div>
                     </div>
                   </div>
