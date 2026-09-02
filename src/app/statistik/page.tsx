@@ -4,8 +4,19 @@ import StatistikClient from './StatistikClient';
 export const revalidate = 10; // Cache 10 detik (ISR)
 
 export default async function Statistik() {
-  const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
-  const cacheData = await res.json();
+  const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
+    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
+    
+    // Normalize timestamps for Server Component serialization
+    const cacheData = {
+      ...rawData,
+      medals: rawData.medals?.map((m: any) => ({
+        ...m,
+        createdAt: m.createdAt && typeof m.createdAt.toDate === 'function' 
+          ? m.createdAt.toDate().getTime() 
+          : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : null)
+      })) || []
+    };
   const cabors: any[] = cacheData.cabors || [];
 
   // Hitung total keseluruhan medali Surakarta

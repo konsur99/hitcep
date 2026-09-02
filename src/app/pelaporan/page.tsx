@@ -5,8 +5,25 @@ export const revalidate = 10;
 
 export default async function Pelaporan() {
   try {
-    const res = await fetch('https://hitcep.vercel.app/api/public_cache', { next: { revalidate: 10 } });
-    const cacheData = await res.json();
+    const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
+    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
+    
+    // Normalize timestamps for Server Component serialization
+    const cacheData = {
+      ...rawData,
+      reports: rawData.reports?.map((r: any) => ({
+        ...r,
+        createdAt: r.createdAt && typeof r.createdAt.toDate === 'function' 
+          ? r.createdAt.toDate().getTime() 
+          : (r.createdAt?.seconds ? r.createdAt.seconds * 1000 : null)
+      })) || [],
+      medals: rawData.medals?.map((m: any) => ({
+        ...m,
+        createdAt: m.createdAt && typeof m.createdAt.toDate === 'function' 
+          ? m.createdAt.toDate().getTime() 
+          : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : null)
+      })) || []
+    };
 
   const cabors: any[] = cacheData.cabors || [];
   cabors.sort((a: any, b: any) => a.name.localeCompare(b.name));

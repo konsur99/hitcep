@@ -9,7 +9,12 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 export default function SessionGuard({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
   const [systemFrozen, setSystemFrozen] = useState(false);
-  const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [currentUserRole, setCurrentUserRole] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('userRole');
+    }
+    return null;
+  });
   const pathname = usePathname();
   const router = useRouter();
 
@@ -24,7 +29,9 @@ export default function SessionGuard({ children }: { children: React.ReactNode }
         const userRef = doc(db, "users", user.uid);
         unsubscribeUser = onSnapshot(userRef, (userSnap) => {
           if (userSnap.exists()) {
-            setCurrentUserRole(userSnap.data().role);
+            const role = userSnap.data().role;
+            setCurrentUserRole(role);
+            localStorage.setItem('userRole', role);
           }
         }, (error) => {
           if (error.code !== "permission-denied") console.error("SessionGuard user snapshot error:", error);

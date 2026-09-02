@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const revalidate = 60; // Cache on Edge for 60 seconds
 
 export async function GET() {
   try {
-    const cacheSnap = await getAdminDb().collection('public_cache').doc('v1').get();
+    const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
     const data = cacheSnap.data();
     return NextResponse.json({ version: data?.lastUpdatedAt || 0 });
   } catch (error) {
