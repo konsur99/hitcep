@@ -104,16 +104,19 @@ export default function Profil() {
       const deviceType = result.device.type === 'mobile' ? 'Ponsel' : result.device.type === 'tablet' ? 'Tablet' : 'Komputer';
       const deviceModel = result.device.model ? `${result.device.vendor || ''} ${result.device.model}`.trim() : (result.os.name ? `${result.os.name} - ${result.browser.name}` : 'Unknown Device');
 
-      // 4. Lakukan Fetch Settings dan Sessions secara PARALEL untuk mempercepat login
+      // 4. Lakukan Fetch Settings, Sessions, dan Profil User secara PARALEL untuk mempercepat login
       const settingsDocRef = doc(db, 'settings', 'app_settings');
       const sessionsRef = collection(db, 'users', user.uid, 'sessions');
+      const userDocRef = doc(db, 'users', user.uid);
       
-      const [settingsDoc, sessionsSnap] = await Promise.all([
+      const [settingsDoc, sessionsSnap, userDocSnap] = await Promise.all([
         getDoc(settingsDocRef),
-        getDocs(sessionsRef)
+        getDocs(sessionsRef),
+        getDoc(userDocRef)
       ]);
 
       const maxDevices = settingsDoc.exists() ? (settingsDoc.data().max_devices_per_user || 4) : 4;
+      const userRole = userDocSnap.exists() ? userDocSnap.data().role : null;
 
       // Cek apakah device ini sudah ada di daftar sesi sebelumnya
       let isExistingDevice = false;
@@ -123,8 +126,8 @@ export default function Profil() {
         }
       });
 
-      // Jika ini adalah device BARU, cek kuotanya
-      if (!isExistingDevice && sessionsSnap.size >= maxDevices) {
+      // Jika ini adalah device BARU, cek kuotanya (Kecuali untuk Developer)
+      if (!isExistingDevice && sessionsSnap.size >= maxDevices && userRole !== 'Developer') {
         await signOut(auth);
         setLoginError(`Gagal Login! Batas maksimal ${maxDevices} perangkat telah tercapai. Harap logout dari perangkat Anda yang lain terlebih dahulu.`);
         hideLoading();
