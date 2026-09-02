@@ -800,7 +800,7 @@ export default function DeveloperDashboard() {
                               className="w-full pl-7 pr-2 py-1.5 bg-white border border-gray-200 rounded text-[11px] font-medium focus:outline-none focus:border-yellow-400 transition-all"
                               value={roleSearchQuery}
                               onChange={(e) => setRoleSearchQuery(e.target.value)}
-                              autoFocus
+                              
                             />
                           </div>
                         </div>
@@ -876,34 +876,10 @@ export default function DeveloperDashboard() {
                   <div className="flex justify-between items-center relative z-10">
                     <div className="flex-1">
                       <h3 className="text-[11px] font-black text-yellow-900 tracking-tight">RAYNALDO ANANTA WIJAYA</h3>
-                      {/* Fake Email Sensor Animation */}
+                      {/* Simple Classified Badge */}
                       <div className="mt-1 flex items-center group cursor-not-allowed" title="Classified">
-                        <div className="h-[14px] w-[140px] bg-yellow-900/10 backdrop-blur-sm rounded relative overflow-hidden border border-yellow-900/10 shadow-inner">
-                          {/* Barcode / Glitch Pattern */}
-                          <div className="absolute inset-0 flex items-center gap-[1px] px-1 opacity-50 mix-blend-multiply">
-                            {[...Array(40)].map((_, i) => (
-                              <div 
-                                key={i} 
-                                className={`bg-yellow-900 rounded-[1px] animate-pulse ${
-                                  i % 9 === 0 ? 'h-2.5 w-1.5' : 
-                                  i % 5 === 0 ? 'h-1.5 w-1' : 
-                                  i % 3 === 0 ? 'h-2 w-[2px]' : 
-                                  i % 2 === 0 ? 'h-full w-0.5' : 
-                                  'h-1 w-[1px]'
-                                }`} 
-                                style={{
-                                  animationDelay: `${(i % 7) * 0.15}s`, 
-                                  animationDuration: `${0.5 + (i % 4) * 0.25}s`
-                                }}
-                              ></div>
-                            ))}
-                          </div>
-                          
-                          {/* Scanning Laser Line */}
-                          <div className="absolute inset-y-0 w-0.5 bg-yellow-300 shadow-[0_0_10px_2px_rgba(253,224,71,0.8)] opacity-70 animate-[shimmer_2s_infinite]"></div>
-                          
-                          {/* Overlay gradient for depth */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-yellow-900/20 via-transparent to-yellow-900/20"></div>
+                        <div className="px-2 py-0.5 bg-gray-100 rounded text-[10px] font-bold text-gray-400 border border-gray-200 flex items-center">
+                          <i className="fa-solid fa-lock mr-1.5"></i> Classified
                         </div>
                       </div>
                     </div>
@@ -1040,7 +1016,7 @@ export default function DeveloperDashboard() {
                                           className="w-full px-1 py-1.5 bg-white border border-gray-200 rounded text-[9px] font-medium focus:outline-none focus:border-yellow-400 text-center"
                                           value={tableRoleSearch}
                                           onChange={(e) => setTableRoleSearch(e.target.value)}
-                                          autoFocus
+                                          
                                         />
                                       </div>
                                       <ul className="max-h-[140px] overflow-y-auto text-left">
