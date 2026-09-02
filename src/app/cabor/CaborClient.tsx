@@ -111,7 +111,7 @@ export default function CaborClient({ initialCabors, initialMedals = [] }: { ini
   };
 
   const getMicroThumbnail = (url: string, id: string) => {
-    if (!url) return `/cabor/${normalizeCaborId(id)}.png`;
+    if (!url) return `/cabor/${normalizeCaborId(id)}.webp`;
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       return url.replace('/upload/', '/upload/c_fill,w_100,q_auto,f_webp/');
     }
