@@ -104,7 +104,7 @@ export default async function Home() {
   const getMicroThumbnail = (url: string | undefined, id: string) => {
     if (url && url.includes('cloudinary.com') && url.includes('/upload/')) {
       let optimized = url.replace('/upload/', '/upload/c_fill,w_100,q_auto:eco,f_auto/');
-      optimized = optimized.replace(/\.[^/.]+$/, '.jpg');
+      optimized = optimized.replace(/\.[^/.]+$/, '.webp');
       return optimized;
     }
     if (url) return url;

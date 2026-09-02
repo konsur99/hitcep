@@ -123,7 +123,7 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
     if (!url) return "";
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       let optimized = url.replace('/upload/', '/upload/c_fill,w_300,q_auto:eco,f_auto/');
-      optimized = optimized.replace(/\.[^/.]+$/, '.jpg');
+      optimized = optimized.replace(/\.[^/.]+$/, '.webp');
       return optimized;
     }
     return url;
@@ -132,7 +132,8 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
   const getFullImageOptimized = (url: string) => {
     if (!url) return "";
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
-      return url.replace('/upload/', '/upload/c_limit,w_1080,q_auto:good,f_auto/');
+      let opt = url.replace('/upload/', '/upload/c_limit,w_1080,q_auto:good,f_auto/');
+      return opt.replace(/\.[^/.]+$/, '.webp');
     }
     return url;
   };
