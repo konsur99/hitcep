@@ -128,6 +128,14 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
     return url;
   };
 
+  const getFullImageOptimized = (url: string) => {
+    if (!url) return "";
+    if (url.includes('cloudinary.com') && url.includes('/upload/')) {
+      return url.replace('/upload/', '/upload/c_limit,w_1080,q_auto:good,f_auto/');
+    }
+    return url;
+  };
+
   return (
     <>
       {/* Lightbox Overlay */}
@@ -142,7 +150,7 @@ export default function PelaporanClient({ initialReports, cabors }: { initialRep
           >
             <i className="fa-solid fa-xmark"></i>
           </button>
-          <img src={lightboxImage} alt="Fullscreen" className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" />
+          <img src={getFullImageOptimized(lightboxImage)} alt="Fullscreen" className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" />
         </div>
       )}
 
