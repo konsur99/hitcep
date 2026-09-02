@@ -50,7 +50,7 @@ export default function ValidasiMedali() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // router.replace('/profil'); // Handled by SessionGuard
+        setIsAuthChecking(false);
         return;
       }
       
@@ -58,21 +58,11 @@ export default function ValidasiMedali() {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          const role = userData.role;
-          const canValidate = userData.permissions?.can_validate_medals;
-          
-          if (role !== 'Developer' && role !== 'Admin' && !canValidate) {
-            // router.replace('/profil'); // Handled by SessionGuard
-            return;
-          }
-        } else {
-          // router.replace('/profil'); // Handled by SessionGuard
-          return;
+          // We don't need to manually redirect here, SessionGuard handles it.
+          // Just fetch data if needed, but we do that in the next useEffect anyway.
         }
       } catch (e) {
         console.error("Gagal memeriksa hak akses:", e);
-        // router.replace('/profil'); // Handled by SessionGuard
-        return;
       }
       
       setIsAuthChecking(false);

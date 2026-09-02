@@ -25,21 +25,21 @@ export default function InputMedali() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // Redirect to profil (login) if not authenticated
-        // router.replace('/profil'); // Handled by SessionGuard
-      } else {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            setCurrentUserRole(userData.role || '');
-            setCurrentUserPermissions(userData.permissions || {});
-          }
-        } catch (e) {
-          console.error("Gagal mengambil data user:", e);
-        }
         setIsAuthChecking(false);
+        return;
       }
+      
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setCurrentUserRole(userData.role || '');
+          setCurrentUserPermissions(userData.permissions || {});
+        }
+      } catch (e) {
+        console.error("Gagal mengambil data user:", e);
+      }
+      setIsAuthChecking(false);
     });
     return () => unsubscribe();
   }, [router]);

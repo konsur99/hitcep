@@ -130,7 +130,7 @@ export default function DeveloperDashboard() {
     let unsubscribeUsers: () => void;
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // router.replace('/profil'); // Handled by SessionGuard
+        setIsAuthChecking(false);
         return;
       }
       
@@ -150,13 +150,13 @@ export default function DeveloperDashboard() {
           const hasAnyPermission = perms.manage_accounts || perms.can_add_account || perms.can_edit_account || perms.can_delete_account || perms.can_kill_session;
           
           if (data.role !== 'Developer' && !hasAnyPermission) {
-            // router.replace('/profil'); // Handled by SessionGuard
+            // Handled by SessionGuard
           } else {
             setCurrentUserRole(data.role);
             setCurrentUserPermissions(perms);
-            setIsAuthChecking(false);
             loadUsers();
           }
+          setIsAuthChecking(false);
         }
       }, (error) => {
         console.error("Developer page user snapshot error:", error);
