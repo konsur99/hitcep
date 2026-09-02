@@ -1,11 +1,11 @@
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import { notFound } from 'next/navigation';
 import CaborDetailClient from './CaborDetailClient';
 
 export const revalidate = 60; // ISR cache for 60 seconds
 
 export async function generateStaticParams() {
-  const cacheSnap = await adminDb.collection('public_cache').doc('v1').get();
+  const cacheSnap = await getAdminDb().collection('public_cache').doc('v1').get();
   const cacheData = cacheSnap.data() || { cabors: [] };
   return cacheData.cabors.map((c: any) => ({
     id: c.id,
@@ -16,7 +16,7 @@ export default async function CaborDetailPage({ params }: { params: Promise<{ id
   const { id } = await params;
   
   // Ambil dari Super Cache saja! HANYA 1 READ dari Firebase!
-  const cacheSnap = await adminDb.collection('public_cache').doc('v1').get();
+  const cacheSnap = await getAdminDb().collection('public_cache').doc('v1').get();
   const cacheData = cacheSnap.data() || { cabors: [], medals: [] };
   
   const caborData = cacheData.cabors.find((c: any) => c.id === id);

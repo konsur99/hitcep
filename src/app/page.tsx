@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import nextDynamic from 'next/dynamic';
@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic';
 export default async function Home() {
   try {
     // 1. Fetch data dari Super Cache (Hanya 1 Read Firestore!)
-    const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
+    const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
     const rawCacheData = cacheSnap.data() || { cabors: [], medals: [], reports: [] };
     const cacheData = JSON.parse(JSON.stringify(rawCacheData));
     

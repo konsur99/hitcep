@@ -1,10 +1,10 @@
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import StatistikClient from './StatistikClient';
 
  // Cache 60 detik (ISR)
 
 export default async function Statistik() {
-  const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
+  const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
   const cacheData = cacheSnap.data() || { cabors: [] };
   const cabors: any[] = cacheData.cabors || [];
 

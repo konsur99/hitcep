@@ -1,11 +1,11 @@
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import PelaporanClient from './PelaporanClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Pelaporan() {
   try {
-    const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
+    const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
   const rawCacheData = cacheSnap.data() || { cabors: [], reports: [] };
   const cacheData = JSON.parse(JSON.stringify(rawCacheData));
 

@@ -1,10 +1,10 @@
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 import CaborClient from './CaborClient';
 
  // Cache 60 detik (ISR) dengan Aggregated Document
 
 export default async function Cabor() {
-  const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();
+  const cacheSnap = await getAdminDb().collection("public_cache").doc("v1").get();
   const rawCacheData = cacheSnap.data() || { cabors: [] };
   const cacheData = JSON.parse(JSON.stringify(rawCacheData));
   const cabors: any[] = cacheData.cabors || [];

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebase-admin";
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 
 export async function GET() {
   // Only allow in development mode for safety
@@ -9,7 +9,7 @@ export async function GET() {
 
   try {
     let count = 0;
-    const snap = await adminDb.collection('reports').get();
+    const snap = await getAdminDb().collection('reports').get();
     for (const doc of snap.docs) {
       const data = doc.data();
       if (data.imageUrl && data.imageUrl.includes('placeholder.com')) {
@@ -18,7 +18,7 @@ export async function GET() {
       }
     }
     
-    const cacheRef = adminDb.collection('public_cache').doc('v1');
+    const cacheRef = getAdminDb().collection('public_cache').doc('v1');
     const cacheSnap = await cacheRef.get();
     if (cacheSnap.exists) {
       let cacheData = cacheSnap.data();

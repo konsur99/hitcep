@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 
 export const revalidate = 3600; // Cache sitemap for 1 hour
 
@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Fetch cabors dynamically from cache to generate specific sport pages
-    const cacheSnap = await adminDb.collection('public_cache').doc('v1').get();
+    const cacheSnap = await getAdminDb().collection('public_cache').doc('v1').get();
     const data = cacheSnap.data();
     
     if (data && data.cabors) {

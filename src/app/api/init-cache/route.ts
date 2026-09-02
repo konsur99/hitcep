@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 
 export async function GET(request: Request) {
   // Hanya bisa dipanggil secara lokal atau dengan rahasia untuk keamanan
@@ -11,11 +11,11 @@ export async function GET(request: Request) {
     console.log("Memulai Inisialisasi Public Cache v1...");
     
     // 1. Ambil Cabors
-    const caborsSnap = await adminDb.collection("cabors").get();
+    const caborsSnap = await getAdminDb().collection("cabors").get();
     const cabors = caborsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     // 2. Ambil Medals 
-    const medalsSnap = await adminDb.collection("medals").get();
+    const medalsSnap = await getAdminDb().collection("medals").get();
     const medals = medalsSnap.docs.map(doc => {
       const data = doc.data();
       return {
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     });
 
     // 3. Ambil Reports 
-    const reportsSnap = await adminDb.collection("reports").orderBy("createdAt", "desc").get();
+    const reportsSnap = await getAdminDb().collection("reports").orderBy("createdAt", "desc").get();
     const reports = reportsSnap.docs.map(doc => {
       const data = doc.data();
       return {
@@ -44,7 +44,7 @@ export async function GET(request: Request) {
       lastUpdated: new Date().toISOString()
     };
 
-    await adminDb.collection("public_cache").doc("v1").set(cacheData);
+    await getAdminDb().collection("public_cache").doc("v1").set(cacheData);
 
     return NextResponse.json({
       success: true,
