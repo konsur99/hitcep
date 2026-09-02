@@ -1,8 +1,7 @@
 import { adminDb } from '@/lib/firebase-admin';
 import PelaporanClient from './PelaporanClient';
 
- // Cache 30 detik (ISR) dengan Aggregated Document
-export const revalidate = 30;
+export const revalidate = 10; // ISR cache for 10 seconds
 
 export default async function Pelaporan() {
   const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();

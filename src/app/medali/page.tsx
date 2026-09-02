@@ -1,8 +1,7 @@
 import { adminDb } from '@/lib/firebase-admin';
 import MedaliClient from './MedaliClient';
 
- // Cache 30 detik (ISR) dengan Aggregated Document
-export const revalidate = 30;
+export const revalidate = 10; // ISR cache for 10 seconds
 
 export default async function Medali() {
   const cacheSnap = await adminDb.collection("public_cache").doc("v1").get();

@@ -8,13 +8,15 @@ const AnimatedBarChart = nextDynamic(() => import('@/components/AnimatedBarChart
   loading: () => <div className="h-[250px] md:h-[300px] w-full bg-gray-100 animate-pulse rounded-2xl flex items-center justify-center"><span className="text-gray-400 font-medium">Memuat Grafik...</span></div>
 });
 
-export const revalidate = 30;
+
 
 const getMedalImage = (type: string) => {
   if (type === 'emas') return '/medal-gold.webp';
   if (type === 'perak') return '/medal-silver.webp';
   return '/medal-bronze.webp';
 };
+
+export const revalidate = 10; // ISR cache for 10 seconds
 
 export default async function Home() {
   // 1. Fetch data dari Super Cache (Hanya 1 Read Firestore!)
