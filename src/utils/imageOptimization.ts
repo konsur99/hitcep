@@ -45,9 +45,17 @@ export const convertFileToWebP = (file: File, quality: number = 0.8, maxSize: nu
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert the drawn image to JPEG format (safer and consistently compressed across all browsers)
-        const webpDataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve(webpDataUrl);
+        // Convert the drawn image to WebP format
+        let dataUrl = canvas.toDataURL('image/webp', quality);
+        
+        // If the browser does not support WebP, canvas.toDataURL will silently fall back to PNG.
+        // PNG ignores the quality parameter and can produce massive files (5-20 MB), causing uploads to fail.
+        // To prevent this, if we detect a PNG fallback, we force a fallback to JPEG instead.
+        if (dataUrl.startsWith('data:image/png')) {
+          dataUrl = canvas.toDataURL('image/jpeg', quality);
+        }
+        
+        resolve(dataUrl);
       };
 
       img.onerror = (error) => reject(error);
