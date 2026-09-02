@@ -753,11 +753,11 @@ export default function DeveloperDashboard() {
           <p className="text-[10px] text-yellow-900 font-bold uppercase tracking-wide">Control keseluruhan</p>
         </div>
       </div>
-      <div className="px-5 mt-6 relative z-20 max-w-7xl mx-auto w-full columns-1 lg:columns-2 gap-6 pb-20">
+      <div className="px-5 mt-6 relative z-20 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 items-start pb-20">
       
         {/* Form Create Account (Only if Dev or has can_add_account) */}
         {(currentUserRole === 'Developer' || currentUserPermissions?.can_add_account) && (
-          <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 break-inside-avoid inline-block w-full mb-6">
+          <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 w-full h-fit flex flex-col">
             <h2 className="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                  <i className="fa-solid fa-user-plus text-[10px]"></i>
@@ -857,7 +857,7 @@ export default function DeveloperDashboard() {
         )}
 
         {/* Section: Manajemen Pengguna */}
-        <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 break-inside-avoid inline-block w-full mb-6">
+        <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 w-full h-fit flex flex-col">
           <h2 className="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                <i className="fa-solid fa-users text-[10px]"></i>
@@ -1156,7 +1156,7 @@ export default function DeveloperDashboard() {
         {currentUserRole === 'Developer' && (
           <>
             {/* Manajemen Data & Backup */}
-            <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 break-inside-avoid inline-block w-full mb-6">
+            <section className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 w-full h-fit flex flex-col">
               <h2 className="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                   <i className="fa-solid fa-cloud-arrow-down text-[10px]"></i>
@@ -1183,7 +1183,7 @@ export default function DeveloperDashboard() {
               </button>
             </section>
 
-            <section className="bg-red-50 rounded-2xl p-5 shadow-card border border-red-200 relative overflow-hidden break-inside-avoid inline-block w-full mb-6">
+            <section className="bg-red-50 rounded-2xl p-5 shadow-card border border-red-200 relative overflow-hidden w-full h-fit flex flex-col">
             {/* Warning Background Pattern */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, #fff 25%, #fff 75%, #000 75%, #000)', backgroundPosition: '0 0, 10px 10px', backgroundSize: '20px 20px' }}></div>
             
