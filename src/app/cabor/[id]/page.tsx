@@ -2,7 +2,7 @@ import { adminDb } from '@/lib/firebase-admin';
 import { notFound } from 'next/navigation';
 import CaborDetailClient from './CaborDetailClient';
 
-export const dynamic = 'force-static';
+export const revalidate = 60; // ISR cache for 60 seconds
 
 export default async function CaborDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
