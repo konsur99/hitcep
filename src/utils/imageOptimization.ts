@@ -45,8 +45,8 @@ export const convertFileToWebP = (file: File, quality: number = 0.8, maxSize: nu
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert the drawn image to WebP format
-        const webpDataUrl = canvas.toDataURL('image/webp', quality);
+        // Convert the drawn image to JPEG format (safer and consistently compressed across all browsers)
+        const webpDataUrl = canvas.toDataURL('image/jpeg', quality);
         resolve(webpDataUrl);
       };
 

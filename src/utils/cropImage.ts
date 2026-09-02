@@ -40,5 +40,6 @@ export async function getCroppedImg(
     targetSize
   )
 
-  return canvas.toDataURL('image/webp', 0.8)
+  // Return as base64 JPEG instead of WebP to prevent massive PNG fallbacks on iOS Safari
+  return canvas.toDataURL('image/jpeg', 0.8)
 }
