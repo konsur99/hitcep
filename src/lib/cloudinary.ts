@@ -1,27 +1,40 @@
 export const uploadImageToCloudinary = async (fileOrBase64: string | File): Promise<{ secure_url: string, public_id: string }> => {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-  if (!cloudName || !uploadPreset) {
-    throw new Error("Kredensial Cloudinary (Cloud Name / Upload Preset) belum diatur di Environment Variables (.env.local).");
+  if (!uploadPreset) {
+    throw new Error("Upload Preset belum diatur di Environment Variables (.env.local).");
   }
 
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
-  const formData = new FormData();
-  formData.append("file", fileOrBase64);
-  formData.append("upload_preset", uploadPreset);
+  // Determine if it's a File or base64
+  let fileData = fileOrBase64;
+  if (typeof fileOrBase64 !== 'string') {
+    // If it's a File object, we need to convert it to base64 first to send as JSON
+    const reader = new FileReader();
+    const base64Promise = new Promise<string>((resolve, reject) => {
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+    reader.readAsDataURL(fileOrBase64);
+    fileData = await base64Promise;
+  }
 
   try {
-    const response = await fetch(url, {
+    // Gunakan internal API Route untuk mem-bypass pemblokiran koneksi (AdBlocker/ISP) di browser client
+    const response = await fetch('/api/upload', {
       method: "POST",
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        file: fileData,
+        uploadPreset: uploadPreset
+      }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error?.message || "Gagal mengunggah gambar ke Cloudinary.");
+      throw new Error(data.error?.message || "Gagal mengunggah gambar ke server perantara.");
     }
 
     return {
@@ -29,7 +42,7 @@ export const uploadImageToCloudinary = async (fileOrBase64: string | File): Prom
       public_id: data.public_id,
     };
   } catch (error) {
-    console.error("Cloudinary upload error:", error);
+    console.error("Internal upload proxy error:", error);
     throw error;
   }
 };
