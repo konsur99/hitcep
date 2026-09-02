@@ -879,7 +879,7 @@ export default function DeveloperDashboard() {
                       {/* Simple Classified Badge */}
                       <div className="mt-1 flex items-center group cursor-not-allowed" title="Classified">
                           <div className="px-2 py-0.5 bg-gray-100 rounded text-[10px] font-bold text-gray-400 border border-gray-200 flex items-center">
-                            <i className="fa-solid fa-lock mr-1.5"></i> Classified <span className="ml-1 text-emerald-500"><i className="fa-solid fa-check-circle"></i> V2</span>
+                            <i className="fa-solid fa-lock mr-1.5"></i> Classified <span className="ml-1 text-emerald-500"><i className="fa-solid fa-check-circle"></i> V3</span>
                           </div>
                       </div>
                     </div>
