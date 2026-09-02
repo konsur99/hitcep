@@ -768,7 +768,7 @@ export default function DeveloperDashboard() {
               Buat Akun Akses Baru
             </h2>
           
-          <form onSubmit={handleCreateUser} className="space-y-4">
+          <form onSubmit={handleCreateUser} className="space-y-4" autoComplete="off">
             {createMessage.text && (
               <div className={`p-3 rounded-xl text-xs font-bold text-center border ${createMessage.type === 'error' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}>
                 <i className={`fa-solid ${createMessage.type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-check'} mr-1.5`}></i>
@@ -778,7 +778,7 @@ export default function DeveloperDashboard() {
           
             <div>
                 <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Nama</label>
-                <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Misal: John Doe" />
+                <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Misal: John Doe" autoComplete="off" />
               </div>
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Role / Peran</label>
@@ -843,6 +843,7 @@ export default function DeveloperDashboard() {
                       onChange={e => setNewEmail(e.target.value.replace(/[^a-zA-Z0-9_.]/g, '').toLowerCase())} 
                       className="w-full px-3 py-2 bg-transparent text-[11px] font-semibold focus:outline-none" 
                       placeholder="Misal: budi_99" 
+                      autoComplete="off"
                     />
                     <div className="border-l border-gray-200 bg-gray-100 flex items-center shrink-0">
                       <select 
@@ -860,7 +861,7 @@ export default function DeveloperDashboard() {
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Password Baru</label>
                 <div className="relative">
-                  <input type={showNewPassword ? "text" : "password"} required value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full pl-3 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Minimal 6 karakter" />
+                  <input type={showNewPassword ? "text" : "password"} required value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full pl-3 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Minimal 6 karakter" autoComplete="new-password" />
                   <button 
                     type="button" 
                     onClick={() => setShowNewPassword(!showNewPassword)}
