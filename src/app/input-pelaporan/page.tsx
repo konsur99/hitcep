@@ -100,7 +100,7 @@ export default function InputPelaporan() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // router.replace('/profil'); // Handled by SessionGuard
+        setIsAuthChecking(false);
         return;
       }
       
@@ -118,14 +118,9 @@ export default function InputPelaporan() {
             setCaborName(userData.role);
             setReporterRole(userData.role);
           }
-        } else {
-          // router.replace('/profil'); // Handled by SessionGuard
-          return;
         }
       } catch (e) {
         console.error("Gagal memeriksa hak akses:", e);
-        // router.replace('/profil'); // Handled by SessionGuard
-        return;
       }
       
       setIsAuthChecking(false);
