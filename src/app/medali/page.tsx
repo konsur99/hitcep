@@ -1,3 +1,5 @@
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 import MedaliClient from './MedaliClient';
 
@@ -9,7 +11,7 @@ export default async function Medali() {
     const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
     
     // Normalize timestamps for Server Component serialization
-    const cacheData = {
+    const cacheData: any = {
       ...rawData,
       medals: rawData.medals?.map((m: any) => ({
         ...m,

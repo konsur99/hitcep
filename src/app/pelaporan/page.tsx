@@ -1,3 +1,5 @@
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 import PelaporanClient from './PelaporanClient';
 
@@ -9,7 +11,7 @@ export default async function Pelaporan() {
     const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
     
     // Normalize timestamps for Server Component serialization
-    const cacheData = {
+    const cacheData: any = {
       ...rawData,
       reports: rawData.reports?.map((r: any) => ({
         ...r,

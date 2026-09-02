@@ -1,3 +1,5 @@
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 import StatistikClient from './StatistikClient';
 
@@ -8,7 +10,7 @@ export default async function Statistik() {
     const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
     
     // Normalize timestamps for Server Component serialization
-    const cacheData = {
+    const cacheData: any = {
       ...rawData,
       medals: rawData.medals?.map((m: any) => ({
         ...m,

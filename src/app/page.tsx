@@ -1,3 +1,5 @@
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -24,7 +26,7 @@ export default async function Home() {
     const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
     
     // Normalize timestamps for Server Component serialization
-    const cacheData = {
+    const cacheData: any = {
       ...rawData,
       medals: rawData.medals?.map((m: any) => ({
         ...m,
