@@ -103,6 +103,8 @@ export default function CaborClient({ initialCabors, initialMedals = [] }: { ini
       'pencaksilat': 'pencak-silat',
       'sepak-bola': 'sepakbola',
       'softball-baseball': 'softball-dan-baseball',
+      'soft-ball': 'softball-dan-baseball',
+      'shorinji-kempo': 'kempo',
       'tinju-amatir': 'tinju'
     };
     return map[id] || id;
