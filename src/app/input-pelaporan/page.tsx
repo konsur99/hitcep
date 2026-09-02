@@ -249,7 +249,7 @@ export default function InputPelaporan() {
       setSpecificLocation('');
       setSelectedCategories([]);
       setCustomCategory('');
-      setIncidentTime(null);
+      setIncidentTime('');
       setImagePreview(null);
       router.push('/pelaporan');
     } catch (err: any) {
