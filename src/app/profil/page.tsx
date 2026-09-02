@@ -337,18 +337,18 @@ export default function Profil() {
             )}
             
             <div>
-              <label className="block text-[10px] md:text-xs font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Alamat Email Gmail</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                  <i className="fa-solid fa-envelope text-sm md:text-base"></i>
-                </div>
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 md:py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm md:text-base font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-solo-red transition-all"
-                  placeholder="nama@gmail.com"
-                  required
+                <label className="block text-xs md:text-sm font-bold text-gray-600 mb-2">Username / Email</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i className="fa-solid fa-user text-sm md:text-base"></i>
+                  </div>
+                  <input 
+                    type="text" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ''))}
+                    className="w-full pl-10 pr-4 py-3 md:py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm md:text-base font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-solo-red transition-all"
+                    placeholder="misal: budi@quikkoni.admin"
+                    required
                 />
               </div>
             </div>

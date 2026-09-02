@@ -50,6 +50,7 @@ export default function DeveloperDashboard() {
   // Create user form state
   const [isCreating, setIsCreating] = useState(false);
   const [newEmail, setNewEmail] = useState('');
+  const [newDomainSuffix, setNewDomainSuffix] = useState('@quikkoni.admin');
   const [newPassword, setNewPassword] = useState('');
   const [newName, setNewName] = useState('');
   const [newRole, setNewRole] = useState('Admin');
@@ -227,13 +228,14 @@ export default function DeveloperDashboard() {
       const secondaryAuth = getAuth(secondaryApp);
       
       // 2. Create the user
-      const userCredential = await createUserWithEmailAndPassword(secondaryAuth, newEmail, newPassword);
+      const finalEmail = `${newEmail}${newDomainSuffix}`;
+      const userCredential = await createUserWithEmailAndPassword(secondaryAuth, finalEmail, newPassword);
       const newUserId = userCredential.user.uid;
       
       // 3. Save profile to Firestore
       await setDoc(doc(db, "users", newUserId), {
         name: newName,
-        email: newEmail,
+        email: finalEmail,
         role: newRole,
         createdAt: new Date().toISOString()
       });
@@ -832,9 +834,29 @@ export default function DeveloperDashboard() {
                 </div>
               </div>
             <div>
-                <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Email (@gmail.com)</label>
-                <input type="email" required value={newEmail} onChange={e => setNewEmail(e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="contoh@gmail.com" />
-              </div>
+                  <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Username Login</label>
+                  <div className="flex rounded-lg shadow-sm border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-yellow-400 bg-gray-50">
+                    <input 
+                      type="text" 
+                      required 
+                      value={newEmail} 
+                      onChange={e => setNewEmail(e.target.value.replace(/[^a-zA-Z0-9_.]/g, '').toLowerCase())} 
+                      className="w-full px-3 py-2 bg-transparent text-[11px] font-semibold focus:outline-none" 
+                      placeholder="Misal: budi_99" 
+                    />
+                    <div className="border-l border-gray-200 bg-gray-100 flex items-center shrink-0">
+                      <select 
+                        value={newDomainSuffix} 
+                        onChange={e => setNewDomainSuffix(e.target.value)}
+                        className="bg-transparent border-none text-[11px] font-bold text-gray-700 pl-3 pr-6 py-2 focus:outline-none cursor-pointer appearance-none outline-none ring-0"
+                        style={{ backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="%234B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center' }}
+                      >
+                        <option value="@quikkoni.admin">@quikkoni.admin</option>
+                        <option value="@quikkoni.cabor">@quikkoni.cabor</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 mb-1 ml-1">Password Baru</label>
                 <div className="relative">
