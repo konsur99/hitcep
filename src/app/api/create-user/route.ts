@@ -1,24 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getAdminAuth, getAdminDb } from '@/lib/firebase-admin';
 import { checkRateLimit } from '@/lib/rateLimit';
-
-// Initialize Firebase Admin if not already initialized
-if (!getApps().length) {
-  try {
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Replace literal \n with actual newlines
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      }),
-    });
-  } catch (error) {
-    console.error('Firebase admin initialization error', error);
-  }
-}
 
 export async function POST(request: Request) {
   try {
@@ -35,12 +17,12 @@ export async function POST(request: Request) {
     
     let decodedToken;
     try {
-      decodedToken = await getAuth().verifyIdToken(token);
+      decodedToken = await getAdminAuth().verifyIdToken(token);
     } catch (e) {
       return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
     }
     
-    const callerDoc = await getFirestore().collection('users').doc(decodedToken.uid).get();
+    const callerDoc = await getAdminDb().collection('users').doc(decodedToken.uid).get();
     const callerData = callerDoc.data();
     
     if (callerData?.role !== 'Developer' && !callerData?.permissions?.can_add_account && !callerData?.permissions?.manage_accounts) {
@@ -54,14 +36,14 @@ export async function POST(request: Request) {
     }
 
     // Create user in Firebase Authentication
-    const userRecord = await getAuth().createUser({
+    const userRecord = await getAdminAuth().createUser({
       email,
       password,
       displayName: name,
     });
     
     // Save profile to Firestore
-    await getFirestore().collection('users').doc(userRecord.uid).set({
+    await getAdminDb().collection('users').doc(userRecord.uid).set({
       name,
       email,
       role,
