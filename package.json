@@ -13,7 +13,7 @@
     "cloudinary": "^2.10.0",
     "date-fns": "^4.4.0",
     "firebase": "^12.17.0",
-    "firebase-admin": "^14.2.0",
+    "firebase-admin": "^11.11.1",
     "jszip": "^3.10.1",
     "next": "16.2.12",
     "nextjs-toploader": "^3.9.17",

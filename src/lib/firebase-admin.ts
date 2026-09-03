@@ -1,14 +1,13 @@
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import { getAuth } from 'firebase-admin/auth';
+import * as admin from 'firebase-admin';
 
 function initFirebaseAdmin() {
-  if (!getApps().length) {
+  if (!admin.apps.length) {
     try {
-      initializeApp({
-        credential: cert({
+      admin.initializeApp({
+        credential: admin.credential.cert({
           projectId: process.env.FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          // Handle Next.js Vercel env var formatting
           privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n').replace(/^"|"$/g, ''),
         }),
       });
@@ -21,10 +20,10 @@ function initFirebaseAdmin() {
 
 export function getAdminDb() {
   initFirebaseAdmin();
-  return getFirestore();
+  return admin.firestore();
 }
 
 export function getAdminAuth() {
   initFirebaseAdmin();
-  return getAuth();
+  return admin.auth();
 }

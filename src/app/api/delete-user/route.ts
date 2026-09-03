@@ -1,24 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getAdminAuth, getAdminDb } from '@/lib/firebase-admin';
 import { checkRateLimit } from '@/lib/rateLimit';
-
-// Initialize Firebase Admin if not already initialized
-if (!getApps().length) {
-  try {
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Replace literal \n with actual newlines
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      }),
-    });
-  } catch (error) {
-    console.error('Firebase admin initialization error', error);
-  }
-}
 
 export async function POST(request: Request) {
   try {
@@ -35,12 +17,12 @@ export async function POST(request: Request) {
     
     let decodedToken;
     try {
-      decodedToken = await getAuth().verifyIdToken(token);
+      decodedToken = await getAdminAuth().verifyIdToken(token);
     } catch (e) {
       return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
     }
     
-    const callerDoc = await getFirestore().collection('users').doc(decodedToken.uid).get();
+    const callerDoc = await getAdminDb().collection('users').doc(decodedToken.uid).get();
     const callerData = callerDoc.data();
     
     if (callerData?.role !== 'Developer' && !callerData?.permissions?.can_delete_account && !callerData?.permissions?.manage_accounts) {
@@ -55,7 +37,7 @@ export async function POST(request: Request) {
 
     // Delete user from Firebase Authentication if they exist
     try {
-      await getAuth().deleteUser(uid);
+      await getAdminAuth().deleteUser(uid);
     } catch (e: any) {
       if (e.code !== 'auth/user-not-found') {
         throw e;
@@ -64,7 +46,7 @@ export async function POST(request: Request) {
     }
     
     // Also delete user profile from Firestore to ensure clean state
-    await getFirestore().collection('users').doc(uid).delete();
+    await getAdminDb().collection('users').doc(uid).delete();
 
     return NextResponse.json({ success: true, message: 'User deleted successfully' });
   } catch (error: any) {

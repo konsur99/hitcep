@@ -1,22 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { getAdminAuth, getAdminDb } from '@/lib/firebase-admin';
 import { checkRateLimit } from '@/lib/rateLimit';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
-
-if (!getApps().length) {
-  try {
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      }),
-    });
-  } catch (error) {
-    console.error('Firebase admin initialization error', error);
-  }
-}
 
 export async function POST(request: Request) {
   try {
@@ -33,12 +17,12 @@ export async function POST(request: Request) {
     
     let decodedToken;
     try {
-      decodedToken = await getAuth().verifyIdToken(token);
+      decodedToken = await getAdminAuth().verifyIdToken(token);
     } catch (e) {
       return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
     }
     
-    const callerDoc = await getFirestore().collection('users').doc(decodedToken.uid).get();
+    const callerDoc = await getAdminDb().collection('users').doc(decodedToken.uid).get();
     const callerData = callerDoc.data();
     
     if (callerData?.role !== 'Developer' && !callerData?.permissions?.can_kill_session && !callerData?.permissions?.manage_accounts) {
@@ -52,7 +36,7 @@ export async function POST(request: Request) {
     }
 
     // Revoke all refresh tokens for the user, forcing them to re-authenticate
-    await getAuth().revokeRefreshTokens(uid);
+    await getAdminAuth().revokeRefreshTokens(uid);
 
     return NextResponse.json({ success: true, message: 'Semua sesi pengguna berhasil diakhiri' });
   } catch (error: any) {
