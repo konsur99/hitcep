@@ -222,26 +222,24 @@ export default function DeveloperDashboard() {
     setIsCreating(true);
     
     try {
-      // 1. Initialize Secondary Firebase App so we don't log out the Developer
-      const apps = getApps();
-      const secondaryApp = apps.find(app => app.name === "SecondaryAppInstance") || initializeApp(firebaseConfig, "SecondaryAppInstance");
-      const secondaryAuth = getAuth(secondaryApp);
-      
-      // 2. Create the user
       const finalEmail = `${newEmail}${newDomainSuffix}`;
-      const userCredential = await createUserWithEmailAndPassword(secondaryAuth, finalEmail, newPassword);
-      const newUserId = userCredential.user.uid;
+      const token = await auth.currentUser?.getIdToken();
       
-      // 3. Save profile to Firestore
-      await setDoc(doc(db, "users", newUserId), {
-        name: newName,
-        email: finalEmail,
-        role: newRole,
-        createdAt: new Date().toISOString()
+      const response = await fetch('/api/create-user', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: finalEmail,
+          password: newPassword,
+          name: newName,
+          role: newRole
+        })
       });
       
-      // 4. Clean up secondary auth (sign out)
-      await signOut(secondaryAuth);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Gagal membuat pengguna');
+      }
       
       setCreateMessage({ type: 'success', text: `Akun ${newName} berhasil dibuat!` });
       setNewEmail('');

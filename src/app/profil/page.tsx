@@ -82,10 +82,7 @@ export default function Profil() {
     setLoginError('');
     setResetMessage('');
     
-    if (!email.toLowerCase().endsWith('@gmail.com')) {
-      setLoginError('Harap gunakan email @gmail.com yang terdaftar.');
-      return;
-    }
+    
     
     try {
       showLoading('Memproses Login...');
