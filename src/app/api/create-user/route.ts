@@ -4,12 +4,14 @@ import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { checkRateLimit } from '@/lib/rateLimit';
 
+// Initialize Firebase Admin if not already initialized
 if (!getApps().length) {
   try {
     initializeApp({
       credential: cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        // Replace literal \n with actual newlines
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       }),
     });
