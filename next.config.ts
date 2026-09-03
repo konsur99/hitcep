@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       static: 30,
     },
   },
+  serverExternalPackages: ['firebase-admin'],
   async headers() {
     return [
       {
