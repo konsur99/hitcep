@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getAdminDb } from '@/lib/firebase-admin';
+import { getAdminDb, getAdminAuth } from '@/lib/firebase-admin';
 
 export async function GET() {
   try {
     const db = getAdminDb();
-    return NextResponse.json({ success: true, dbDefined: !!db });
+    const auth = getAdminAuth();
+    return NextResponse.json({ success: true, dbDefined: !!db, authDefined: !!auth });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message, stack: err.stack });
   }
