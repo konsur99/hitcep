@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       static: 30,
     },
   },
-  serverExternalPackages: ['firebase-admin'],
+  serverExternalPackages: ['firebase-admin', 'jwks-rsa', 'jose'],
   async headers() {
     return [
       {
