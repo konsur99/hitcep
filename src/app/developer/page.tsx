@@ -128,24 +128,37 @@ export default function DeveloperDashboard() {
   const filteredTableRoles = allRoles.filter(r => r.toLowerCase().includes(tableRoleSearch.toLowerCase()));
 
   useEffect(() => {
-    let unsubscribeUsers: () => void;
+    let unsubscribeUsers: (() => void) | null = null;
+    let unsubscribeUser: (() => void) | null = null;
+    let unsubscribeSystem: (() => void) | null = null;
+    let usersLoaded = false;
+
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      // Clean up previous listeners when auth state changes
+      if (unsubscribeUser) { unsubscribeUser(); unsubscribeUser = null; }
+      if (unsubscribeSystem) { unsubscribeSystem(); unsubscribeSystem = null; }
+      if (unsubscribeUsers) { unsubscribeUsers(); unsubscribeUsers = null; }
+      usersLoaded = false;
+
       if (!user) {
         setIsAuthChecking(false);
         return;
       }
       
-      // Check if user is developer
+      // Listen to current user doc
       const docRef = doc(db, "users", user.uid);
-      const unsubscribeUser = onSnapshot(docRef, async (docSnap) => {
+      unsubscribeUser = onSnapshot(docRef, async (docSnap) => {
         const data = docSnap.data();
         if (!docSnap.exists() || !data?.role) {
-          // Jika belum ada role di database, asumsikan akun pertama ini adalah Developer dan simpan ke database
           await setDoc(docRef, { role: 'Developer' }, { merge: true });
           setCurrentUserRole('Developer');
           setCurrentUserPermissions({});
           setIsAuthChecking(false);
-          loadUsers();
+          // Load users list only once
+          if (!usersLoaded) {
+            usersLoaded = true;
+            startUsersListener();
+          }
         } else {
           const perms = data.permissions || {};
           const hasAnyPermission = perms.manage_accounts || perms.can_add_account || perms.can_edit_account || perms.can_delete_account || perms.can_kill_session;
@@ -155,7 +168,11 @@ export default function DeveloperDashboard() {
           } else {
             setCurrentUserRole(data.role);
             setCurrentUserPermissions(perms);
-            loadUsers();
+            // Load users list only once, not on every user doc update
+            if (!usersLoaded) {
+              usersLoaded = true;
+              startUsersListener();
+            }
           }
           setIsAuthChecking(false);
         }
@@ -163,7 +180,8 @@ export default function DeveloperDashboard() {
         console.error("Developer page user snapshot error:", error);
       });
       
-      const loadUsers = () => {
+      // Start users collection listener (called only once per auth session)
+      const startUsersListener = () => {
         if (unsubscribeUsers) unsubscribeUsers();
         unsubscribeUsers = onSnapshot(collection(db, "users"), (snapshot) => {
           const usersData: UserData[] = [];
@@ -176,26 +194,24 @@ export default function DeveloperDashboard() {
         });
       };
       
+      // Listen to system settings
       const systemRef = doc(db, "settings", "system");
-      const unsubscribeSystem = onSnapshot(systemRef, (sysSnap) => {
+      unsubscribeSystem = onSnapshot(systemRef, (sysSnap) => {
         if (sysSnap.exists()) {
           setIsSystemFrozen(!!sysSnap.data().isFrozen);
         }
       }, (error) => {
         console.error("Developer page system snapshot error:", error);
       });
-      
-      return () => {
-        unsubscribeUser();
-        unsubscribeSystem();
-      };
     });
     
     return () => {
       unsubscribeAuth();
+      if (unsubscribeUser) unsubscribeUser();
+      if (unsubscribeSystem) unsubscribeSystem();
       if (unsubscribeUsers) unsubscribeUsers();
     };
-  }, [router]);
+  }, []);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -753,7 +769,7 @@ export default function DeveloperDashboard() {
           <p className="text-[10px] text-yellow-900 font-bold uppercase tracking-wide">Control keseluruhan</p>
         </div>
       </div>
-      <div className="px-5 mt-6 relative z-20 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-6 items-start pb-20">
+      <div className="px-5 mt-6 relative max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-6 items-start pb-20">
         <div className="w-full lg:w-1/2 flex flex-col gap-6">
       
         {/* Form Create Account (Only if Dev or has can_add_account) */}
