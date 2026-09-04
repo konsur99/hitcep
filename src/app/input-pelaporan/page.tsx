@@ -248,10 +248,9 @@ export default function InputPelaporan() {
       setLocation('');
       setSpecificLocation('');
       setSelectedCategories([]);
-      setCustomCategory('');
       setIncidentTime('');
       setImagePreview(null);
-      router.push('/pelaporan');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
       console.error(err);
       toast.error(err.message || "Gagal mengirim laporan.");
