@@ -550,18 +550,28 @@ export default function DeveloperDashboard() {
 
   const executeKillAllSessions = async () => {
     try {
-      // Iterate through all users and delete their sessions
+      const token = await auth.currentUser?.getIdToken();
+      
+      // Iterate through all users and delete their sessions (one-time fetch)
       for (const u of users) {
-        // Unfortunately, without a collectionGroup index, we have to fetch manually per user
-        // This is acceptable since this is a rare emergency action and user count isn't millions
-        const sessionsRef = collection(db, "users", u.id, "sessions");
-        onSnapshot(sessionsRef, (snapshot) => {
-           snapshot.forEach(d => deleteDoc(d.ref));
-        }, (error) => {
-          console.error("Developer page kill all sessions snapshot error:", error);
-        });
+        try {
+          const sessionsRef = collection(db, "users", u.id, "sessions");
+          const snap = await getDocs(sessionsRef);
+          snap.forEach(d => deleteDoc(d.ref));
+          
+          // As a secondary security measure, revoke Firebase Auth tokens (if not Developer)
+          if (u.role !== 'Developer') {
+            await fetch('/api/revoke-session', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ uid: u.id }),
+            }).catch(() => {});
+          }
+        } catch (e) {
+          console.error(`Failed to kill sessions for user ${u.id}`, e);
+        }
       }
-      toast.success('Perintah eksekusi Kill All Sessions telah dikirim!');
+      toast.success('Sesi seluruh pengguna (kecuali sesi Developer) berhasil diakhiri!');
     } catch (err) {
       console.error(err);
       toast.error('Gagal mengeksekusi Kill All Sessions!');
@@ -620,144 +630,173 @@ export default function DeveloperDashboard() {
   };
 
   const [isBackingUp, setIsBackingUp] = useState(false);
+  const [backupProgress, setBackupProgress] = useState(0);
+  const [backupStatusText, setBackupStatusText] = useState('');
 
   const executeBackup = async () => {
     if (isBackingUp) return;
     setIsBackingUp(true);
+    setBackupProgress(0);
+    setBackupStatusText('Menyiapkan koleksi data...');
     try {
       const JSZip = (await import('jszip')).default;
       const zip = new JSZip();
-      
       const wb = XLSX.utils.book_new();
       
-      const collectionsToBackup = [
-        { name: 'users', sheetName: 'Akun' },
-        { name: 'cabors', sheetName: 'Cabor' },
-        { name: 'reports', sheetName: 'Laporan Cabor' },
-        { name: 'medals', sheetName: 'Dokumentasi Medali' },
-        { name: 'settings', sheetName: 'Pengaturan' }
-      ];
+      // ============================================
+      // FASE 1 & 2: Penarikan Data JSON & Persiapan Mapping Excel + Task Download
+      // ============================================
+      setBackupStatusText('Menarik data dari database & Memetakan path foto...');
+      const medalsSnap = await getDocs(collection(db, 'medals'));
+      const reportsSnap = await getDocs(collection(db, 'reports'));
+      const caborsSnap = await getDocs(collection(db, 'cabors'));
       
-      let imageCounter = 1;
-      
-      let summaryText = `LAPORAN PENCADANGAN DATA (BACKUP) SISTEM PORPROV KONI SURAKARTA\n`;
-      summaryText += `===============================================================\n`;
-      summaryText += `Tanggal Backup : ${new Date().toLocaleString('id-ID')}\n`;
-      summaryText += `Total Koleksi  : ${collectionsToBackup.length} koleksi\n\n`;
-      summaryText += `RINCIAN DATA:\n`;
-      summaryText += `---------------------------------------------------------------\n`;
-      
-      for (const col of collectionsToBackup) {
-        const snap = await getDocs(collection(db, col.name));
-        summaryText += `- ${col.sheetName.padEnd(20)} : ${snap.size} baris data\n`;
+      // Bikin map Cabor untuk resolusi nama Cabor
+      const caborMap: Record<string, string> = {};
+      caborsSnap.forEach(d => {
+        caborMap[d.id] = d.data().name || d.id;
+      });
+
+      const medalsExcelData: any[] = [];
+      const reportsExcelData: any[] = [];
+      const downloadTasks: { url: string; zipPath: string }[] = [];
+
+      // Loop Medali
+      medalsSnap.docs.forEach(doc => {
+        const d = doc.data();
+        const caborName = caborMap[d.caborId] || d.caborId || 'Tidak Diketahui';
+        const cat = d.category || 'Umum';
+        const athlete = d.athleteName || doc.id;
         
-        // Folder khusus untuk tiap kategori gambar
-        const colImagesFolder = zip.folder(`Foto_&_Dokumentasi/${col.sheetName.replace(/ /g, '_')}`);
+        // Sanitasi untuk path Windows (Hindari karakter ilegal dan spasi ekstra)
+        const safeCabor = caborName.replace(/[<>:"/\\|?*]+/g, '').trim();
+        const safeCat = cat.replace(/[<>:"/\\|?*]+/g, '').trim();
+        const safeAthlete = athlete.replace(/[<>:"/\\|?*]+/g, '').trim();
+        // Suffix unik untuk memastikan jika ada 2 nama atlet sama persis tidak akan saling menimpa
+        const uniqueSuffix = doc.id.substring(0, 5); 
         
-        const data = await Promise.all(snap.docs.map(async doc => {
-          const docData = doc.data();
-          const cleanData: any = { id: doc.id };
-          
-          for (const key in docData) {
-            const val = docData[key];
-            if (typeof val === 'string' && val.startsWith('https://res.cloudinary.com/')) {
-              try {
-                // Fetch the image from Cloudinary
-                const res = await fetch(val);
-                if (!res.ok) throw new Error('Network response was not ok');
-                
+        let pathFotoAtlet = 'Tidak Ada';
+        let pathFotoUPP = 'Tidak Ada';
+
+        if (d.portraitUrl && typeof d.portraitUrl === 'string' && d.portraitUrl.startsWith('http')) {
+          pathFotoAtlet = `Foto_&_Dokumentasi/Medali/${safeCabor}/${safeCat}/${safeAthlete}_${uniqueSuffix} - Foto Atlet.webp`;
+          downloadTasks.push({ url: d.portraitUrl, zipPath: pathFotoAtlet });
+        }
+        if (d.ceremonyUrl && typeof d.ceremonyUrl === 'string' && d.ceremonyUrl.startsWith('http')) {
+          pathFotoUPP = `Foto_&_Dokumentasi/Medali/${safeCabor}/${safeCat}/${safeAthlete}_${uniqueSuffix} - Foto UPP.webp`;
+          downloadTasks.push({ url: d.ceremonyUrl, zipPath: pathFotoUPP });
+        }
+
+        medalsExcelData.push({
+          'ID Sistem': doc.id,
+          'Cabor': caborName,
+          'Nomor Pertandingan / Kategori': d.category || '-',
+          'Nama Atlet': d.athleteName || '-',
+          'Perolehan Medali': d.medalType ? d.medalType.toUpperCase() : '-',
+          'Tanggal Input': d.createdAt && typeof d.createdAt.toDate === 'function' ? d.createdAt.toDate().toLocaleString('id-ID') : (d.createdAt || '-'),
+          'Status Validasi': d.status || '-',
+          'Petunjuk Foto Atlet': pathFotoAtlet,
+          'Petunjuk Foto UPP': pathFotoUPP
+        });
+      });
+
+      // Loop Pelaporan
+      reportsSnap.docs.forEach(doc => {
+        const d = doc.data();
+        const caborName = caborMap[d.caborId] || d.caborId || 'Umum';
+        
+        let incidentTimeStr = '-';
+        if (d.incidentTime) {
+          if (typeof d.incidentTime.toDate === 'function') incidentTimeStr = d.incidentTime.toDate().toLocaleString('id-ID');
+          else incidentTimeStr = new Date(d.incidentTime).toLocaleString('id-ID');
+        }
+        
+        const safeCabor = caborName.replace(/[<>:"/\\|?*]+/g, '').trim();
+        const safeTitle = (d.title || 'Laporan').replace(/[<>:"/\\|?*]+/g, '').trim();
+        let fileSuffix = incidentTimeStr !== '-' ? incidentTimeStr.replace(/[/:]/g, '-').replace(/, /g, '_') : doc.id.substring(0, 5);
+        const uniqueSuffix = doc.id.substring(0, 5);
+
+        let pathFotoBukti = 'Tidak Ada';
+        if (d.imageUrl && typeof d.imageUrl === 'string' && d.imageUrl.startsWith('http')) {
+          pathFotoBukti = `Foto_&_Dokumentasi/Pelaporan/${safeCabor}/${fileSuffix}_${uniqueSuffix} - ${safeTitle}.webp`;
+          downloadTasks.push({ url: d.imageUrl, zipPath: pathFotoBukti });
+        }
+
+        reportsExcelData.push({
+          'ID Sistem': doc.id,
+          'Judul Laporan': d.title || '-',
+          'Jenis Laporan': d.type || '-',
+          'Cabor Pelapor': caborName,
+          'Nama Pelapor': d.reporterName || '-',
+          'Lokasi Kejadian': d.location || '-',
+          'Waktu Kejadian': incidentTimeStr,
+          'Deskripsi Lengkap': d.description || '-',
+          'Status Laporan': d.status === 'resolved' ? 'Selesai' : 'Dalam Proses',
+          'Tanggapan Pusat': d.response || '-',
+          'Tanggal Input': d.createdAt && typeof d.createdAt.toDate === 'function' ? d.createdAt.toDate().toLocaleString('id-ID') : '-',
+          'Petunjuk Foto Bukti': pathFotoBukti
+        });
+      });
+
+      // Bikin sheet excel
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(medalsExcelData.length > 0 ? medalsExcelData : [{ Status: 'Kosong' }]), 'Data Medali');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(reportsExcelData.length > 0 ? reportsExcelData : [{ Status: 'Kosong' }]), 'Data Pelaporan');
+      
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      zip.file('Data_Database_Lengkap.xlsx', excelBuffer);
+
+      // ============================================
+      // FASE 3: Eksekusi Download Batch
+      // ============================================
+      const totalTasks = downloadTasks.length;
+      let completedTasks = 0;
+      
+      if (totalTasks > 0) {
+        // Limit concurrent fetch to prevent network/browser crash
+        const concurrentLimit = 5;
+        for (let i = 0; i < downloadTasks.length; i += concurrentLimit) {
+          const chunk = downloadTasks.slice(i, i + concurrentLimit);
+          await Promise.all(chunk.map(async (task) => {
+            try {
+              const res = await fetch(task.url);
+              if (res.ok) {
                 const blob = await res.blob();
                 const arrayBuffer = await blob.arrayBuffer();
-                
-                // Try to guess the extension from the URL
-                let ext = 'webp';
-                const urlParts = val.split('?')[0].split('.');
-                if (urlParts.length > 1) {
-                  const possibleExt = urlParts[urlParts.length - 1];
-                  if (possibleExt.length <= 4 && possibleExt.length > 0) ext = possibleExt;
-                }
-                
-                const fileName = `${doc.id}_${key}_${imageCounter++}.${ext}`;
-                if (colImagesFolder) {
-                  colImagesFolder.file(fileName, arrayBuffer);
-                }
-                cleanData[key] = `[Tersimpan di: Foto_&_Dokumentasi/${col.sheetName.replace(/ /g, '_')}/${fileName}]`;
-              } catch (e) {
-                console.error("Failed to download image for backup", e);
-                cleanData[key] = val; // fallback to just storing the URL
+                zip.file(task.zipPath, arrayBuffer);
               }
-            } else if (typeof val === 'string' && val.startsWith('data:image/')) {
-              // Extract base64 image and save it into the ZIP (Legacy data)
-              let base64Data = val;
-              let ext = 'webp';
-              
-              const parts = val.split(';');
-              if (parts[0]) ext = parts[0].replace('data:image/', '');
-              const commaParts = val.split(',');
-              if (commaParts.length > 1) base64Data = commaParts[1];
-              
-              const fileName = `${doc.id}_${key}_${imageCounter++}.${ext}`;
-              if (colImagesFolder) {
-                colImagesFolder.file(fileName, base64Data, { base64: true });
-              }
-              
-              cleanData[key] = `[Tersimpan di: Foto_&_Dokumentasi/${col.sheetName.replace(/ /g, '_')}/${fileName}]`;
-            } else if (typeof val === 'string' && val.length > 32000) {
-              // Fallback for any other long strings to prevent Excel crash
-              cleanData[key] = '[Teks Terlalu Panjang]';
-            } else if (typeof val === 'object' && val !== null) {
-              try {
-                // Konversi Timestamp firebase ke format Date/String agar rapi di excel
-                if (val.seconds && val.nanoseconds && typeof val.toDate === 'function') {
-                  cleanData[key] = val.toDate().toLocaleString('id-ID');
-                } else {
-                  const strVal = JSON.stringify(val);
-                  cleanData[key] = strVal.length > 30000 ? '[Data Object Terlalu Panjang]' : strVal;
-                }
-              } catch (e) {
-                cleanData[key] = '[Object]';
-              }
-            } else {
-              cleanData[key] = val;
+            } catch (err) {
+              console.error('Failed to download image', task.url, err);
+            } finally {
+              completedTasks++;
+              setBackupProgress(Math.floor((completedTasks / totalTasks) * 100));
+              setBackupStatusText(`Mengunduh foto ${completedTasks} dari ${totalTasks}...`);
             }
-          }
-          return cleanData;
-        }));
-        
-        const ws = XLSX.utils.json_to_sheet(data.length > 0 ? data : [{ status: 'Kosong' }]);
-        XLSX.utils.book_append_sheet(wb, ws, col.sheetName);
+          }));
+        }
       }
-      
-      summaryText += `---------------------------------------------------------------\n`;
-      summaryText += `\nStruktur Folder Backup:\n`;
-      summaryText += `1. File_Excel_Database.xlsx (Berisi seluruh data teks/tabel)\n`;
-      summaryText += `2. Foto_&_Dokumentasi/ (Folder berisi file foto, dipisah per kategori)\n`;
-      summaryText += `3. Ringkasan_Backup.txt (File ini)\n`;
 
-      // 1. Simpan file Excel ke dalam ZIP
-      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      zip.file(`File_Excel_Database.xlsx`, excelBuffer);
-      
-      // 2. Simpan file TXT Ringkasan ke dalam ZIP
-      zip.file('Ringkasan_Backup.txt', summaryText);
-      
-      // 2. Buat file ZIP
+      // ============================================
+      // FASE 4: Zipping & Download
+      // ============================================
+      setBackupStatusText('Membungkus menjadi file ZIP (Harap Tunggu)...');
       const zipContent = await zip.generateAsync({ type: 'blob' });
-      
-      // 3. Unduh ZIP
       const url = URL.createObjectURL(zipContent);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `Backup_Porprov_KONI_${new Date().toISOString().split('T')[0]}.zip`;
+      link.download = `Backup_Super_Porprov_KONI_${new Date().toISOString().split('T')[0]}.zip`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+      
+      toast.success('Backup berhasil diunduh!');
     } catch (error) {
       console.error("Backup failed", error);
-      toast.error("Gagal melakukan backup data ZIP. Pastikan koneksi internet stabil.");
+      toast.error("Gagal melakukan backup data. Pastikan koneksi internet stabil.");
     } finally {
       setIsBackingUp(false);
+      setBackupProgress(0);
+      setBackupStatusText('');
     }
   };
 
@@ -1794,6 +1833,37 @@ export default function DeveloperDashboard() {
                     <><i className="fa-solid fa-skull-crossbones"></i> Eksekusi Kiamat</>
                   )}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Backup Progress Modal */}
+        {isBackingUp && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm pointer-events-none"></div>
+            <div className="bg-white rounded-3xl p-6 shadow-2xl w-full max-w-md relative z-10 border border-blue-100 flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+              <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 shadow-inner border border-blue-100 relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-400 opacity-20 animate-pulse"></div>
+                <i className="fa-solid fa-cloud-arrow-down text-2xl relative z-10 animate-bounce"></i>
+              </div>
+              
+              <h3 className="text-lg font-black text-gray-800 mb-1">Mencadangkan Data</h3>
+              <p className="text-xs text-gray-500 font-medium mb-6">Mohon jangan tutup jendela ini atau mematikan koneksi internet Anda.</p>
+              
+              <div className="w-full bg-gray-100 rounded-full h-4 mb-2 overflow-hidden border border-gray-200 relative">
+                <div 
+                  className="bg-blue-600 h-full rounded-full transition-all duration-300 relative overflow-hidden" 
+                  style={{ width: `${backupProgress}%` }}
+                >
+                  <div className="absolute inset-0 bg-white/20 w-full" style={{ backgroundImage: 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)', backgroundSize: '1rem 1rem' }}></div>
+                </div>
+              </div>
+              
+              <div className="flex justify-between w-full items-center">
+                <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                  {backupStatusText}
+                </span>
+                <span className="text-sm font-black text-gray-800">{backupProgress}%</span>
               </div>
             </div>
           </div>

@@ -253,7 +253,7 @@ export default function Header() {
               {notifications.length > 0 ? notifications.map(notif => {
                 const cabor = cabors.find(c => c.id === notif.caborId);
                 const title = `Medali ${notif.medalType.charAt(0).toUpperCase() + notif.medalType.slice(1)}`;
-                const isUnread = notif.createdAt && notif.createdAt.toMillis() > lastReadTime;
+                const isUnread = notif.createdAt && notif.createdAt > lastReadTime;
                 
                 return (
                   <div key={notif.id} className={`p-2 rounded-xl transition-colors cursor-pointer flex gap-3 items-start ${isUnread ? 'bg-red-50/50' : 'hover:bg-gray-50'}`}>

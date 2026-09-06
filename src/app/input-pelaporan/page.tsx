@@ -208,28 +208,33 @@ export default function InputPelaporan() {
         imagePublicId: finalImagePublicId,
         status: 'approved',
         authorUid: auth.currentUser?.uid || 'unknown',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        incidentTime: incidentTime ? new Date(incidentTime).toISOString() : null
       };
       
-      const colRef = collection(db, 'reports');
-      const docRef = await addDoc(colRef, {
-        ...reportData,
-        incidentTime: incidentTime ? new Date(incidentTime) : null, // Store as Date/Timestamp in DB
-        createdAt: serverTimestamp() // Store as serverTimestamp in DB
-      });
+      await runTransaction(db, async (transaction) => {
+        // 1. READS
+        const cacheRef = doc(db, 'public_cache', 'v1');
+        const cacheDoc = await transaction.get(cacheRef);
 
-      // Update public_cache directly on client (optimistic)
-      const cacheRef = doc(db, 'public_cache', 'v1');
-      const cacheDoc = await getDoc(cacheRef);
-      if (cacheDoc.exists()) {
-        const cacheData = cacheDoc.data();
-        cacheData.reports = cacheData.reports || [];
-        cacheData.reports.push({
-          id: docRef.id,
-          ...reportData
+        // 2. WRITES
+        const newReportRef = doc(collection(db, 'reports'));
+        transaction.set(newReportRef, {
+          ...reportData,
+          incidentTime: incidentTime ? new Date(incidentTime) : null,
+          createdAt: serverTimestamp()
         });
-        await updateDoc(cacheRef, { reports: cacheData.reports });
-      }
+
+        if (cacheDoc.exists()) {
+          const cacheData = cacheDoc.data();
+          cacheData.reports = cacheData.reports || [];
+          cacheData.reports.push({
+            id: newReportRef.id,
+            ...reportData
+          });
+          transaction.update(cacheRef, { reports: cacheData.reports });
+        }
+      });
 
       // Trigger revalidation immediately (non-blocking)
       try {

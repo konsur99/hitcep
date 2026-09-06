@@ -99,6 +99,8 @@ export default function SessionGuard({ children }: { children: React.ReactNode }
           if (unsubscribeSystem) unsubscribeSystem();
           if (unsubscribeSession) unsubscribeSession();
           if (unsubscribeUser) unsubscribeUser();
+          setCurrentUserRole(null);
+          localStorage.removeItem('userRole');
         }
         setIsReady(true);
       });
