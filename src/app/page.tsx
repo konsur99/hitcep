@@ -122,8 +122,6 @@ export default async function Home() {
 
   return (
     <div id="page-beranda" className="page-content block">
-      <link rel="preload" href="/hero-bg-desktop.webp" as="image" media="(min-width: 768px)" fetchPriority="high" />
-      <link rel="preload" href="/hero-bg.webp" as="image" media="(max-width: 767px)" fetchPriority="high" />
       {/* BEGIN: Hero Section */}
       <section 
         className="relative overflow-hidden pt-6 md:pt-8 lg:pt-12 pb-16 md:pb-36 lg:pb-40 text-white rounded-b-3xl md:rounded-b-[4rem]"
