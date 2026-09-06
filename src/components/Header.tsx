@@ -2,9 +2,6 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
@@ -24,20 +21,31 @@ export default function Header() {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
     
-    const unsub = onAuthStateChanged(auth, async (user: any) => {
-      if (user) {
-        const d = await getDoc(doc(db, 'users', user.uid));
-        if (d.exists()) {
-          const fetchedRole = d.data().role;
-          setRole(fetchedRole);
-          localStorage.setItem('userRole', fetchedRole);
+    let unsub: any;
+    const initAuth = async () => {
+      const { auth, db } = await import('@/lib/firebase');
+      const { onAuthStateChanged } = await import('firebase/auth');
+      const { doc, getDoc } = await import('firebase/firestore');
+
+      unsub = onAuthStateChanged(auth, async (user: any) => {
+        if (user) {
+          const d = await getDoc(doc(db, 'users', user.uid));
+          if (d.exists()) {
+            const fetchedRole = d.data().role;
+            setRole(fetchedRole);
+            localStorage.setItem('userRole', fetchedRole);
+          }
+        } else {
+          setRole(null);
+          localStorage.removeItem('userRole');
         }
-      } else {
-        setRole(null);
-        localStorage.removeItem('userRole');
-      }
-    });
-    return () => unsub();
+      });
+    };
+    initAuth();
+
+    return () => {
+      if (unsub) unsub();
+    };
   }, []);
 
   // Load last read time from local storage on mount

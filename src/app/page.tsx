@@ -127,21 +127,15 @@ export default async function Home() {
         className="relative overflow-hidden pt-6 md:pt-8 lg:pt-12 pb-16 md:pb-36 lg:pb-40 text-white rounded-b-3xl md:rounded-b-[4rem]"
       >
         {/* Mobile Background */}
-        <div 
-          className="absolute inset-0 md:hidden z-0"
-          style={{ background: `url('/hero-bg.webp') center top / cover no-repeat, linear-gradient(135deg, #960309 0%, #520111 100%)` }}
-        ></div>
+        <div className="absolute inset-0 md:hidden z-0">
+          <Image src="/hero-bg.webp" alt="Background" fill priority className="object-cover object-top" sizes="100vw" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, #960309 0%, #520111 100%)`, mixBlendMode: 'multiply' }}></div>
+        </div>
         
         {/* Desktop Background */}
-        <div 
-          className="absolute inset-0 hidden md:block z-0"
-          style={{ 
-            backgroundImage: `url('/hero-bg-desktop.webp')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'right center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        ></div>
+        <div className="absolute inset-0 hidden md:block z-0">
+          <Image src="/hero-bg-desktop.webp" alt="Background" fill priority className="object-cover object-right" sizes="100vw" />
+        </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 xl:px-12">
           <div className="hero-content flex flex-col items-start text-left w-full md:w-2/3 lg:w-1/2">

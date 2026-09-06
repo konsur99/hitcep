@@ -2,9 +2,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { auth, db } from '@/lib/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 export default function SessionGuard({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
@@ -22,72 +19,81 @@ export default function SessionGuard({ children }: { children: React.ReactNode }
     let unsubscribeSession: () => void;
     let unsubscribeUser: () => void;
     let unsubscribeSystem: () => void;
+    let unsubscribeAuth: any;
     
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // 1. Dapatkan role pengguna saat ini
-        const userRef = doc(db, "users", user.uid);
-        unsubscribeUser = onSnapshot(userRef, (userSnap) => {
-          if (userSnap.exists()) {
-            const role = userSnap.data().role;
-            setCurrentUserRole(role);
-            localStorage.setItem('userRole', role);
-          }
-        }, (error) => {
-          if (error.code !== "permission-denied") console.error("SessionGuard user snapshot error:", error);
-        });
+    const initAuth = async () => {
+      const { auth, db } = await import('@/lib/firebase');
+      const { onAuthStateChanged, signOut } = await import('firebase/auth');
+      const { doc, onSnapshot } = await import('firebase/firestore');
 
-        // 2. Dengarkan status Freeze & Force Refresh dari sistem
-        const systemRef = doc(db, "settings", "system");
-        unsubscribeSystem = onSnapshot(systemRef, (sysSnap) => {
-          if (sysSnap.exists()) {
-            const sysData = sysSnap.data();
-            // Handle Freeze
-            if (sysData.isFrozen) {
-              setSystemFrozen(true);
-            } else {
-              setSystemFrozen(false);
-            }
-            
-            // Handle Force Refresh
-            if (sysData.forceRefresh) {
-              const lastRefresh = localStorage.getItem('lastForceRefresh');
-              if (!lastRefresh || parseInt(lastRefresh) < sysData.forceRefresh) {
-                localStorage.setItem('lastForceRefresh', sysData.forceRefresh.toString());
-                window.location.reload();
-              }
-            }
-          }
-        }, (error) => {
-          if (error.code !== "permission-denied") console.error("SessionGuard system snapshot error:", error);
-        });
-
-        const sessionId = localStorage.getItem('sessionId');
-        if (sessionId) {
-          const sessionRef = doc(db, "users", user.uid, "sessions", sessionId);
-          
-          // Listen to this specific session document for remote kills
-          unsubscribeSession = onSnapshot(sessionRef, (docSnap) => {
-            if (!docSnap.exists()) {
-              // Session was deleted (e.g. killed from developer dashboard)
-              localStorage.removeItem('sessionId');
-              signOut(auth);
-              window.location.reload();
+      unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // 1. Dapatkan role pengguna saat ini
+          const userRef = doc(db, "users", user.uid);
+          unsubscribeUser = onSnapshot(userRef, (userSnap) => {
+            if (userSnap.exists()) {
+              const role = userSnap.data().role;
+              setCurrentUserRole(role);
+              localStorage.setItem('userRole', role);
             }
           }, (error) => {
-            if (error.code !== "permission-denied") console.error("SessionGuard session snapshot error:", error);
+            if (error.code !== "permission-denied") console.error("SessionGuard user snapshot error:", error);
           });
+
+          // 2. Dengarkan status Freeze & Force Refresh dari sistem
+          const systemRef = doc(db, "settings", "system");
+          unsubscribeSystem = onSnapshot(systemRef, (sysSnap) => {
+            if (sysSnap.exists()) {
+              const sysData = sysSnap.data();
+              // Handle Freeze
+              if (sysData.isFrozen) {
+                setSystemFrozen(true);
+              } else {
+                setSystemFrozen(false);
+              }
+              
+              // Handle Force Refresh
+              if (sysData.forceRefresh) {
+                const lastRefresh = localStorage.getItem('lastForceRefresh');
+                if (!lastRefresh || parseInt(lastRefresh) < sysData.forceRefresh) {
+                  localStorage.setItem('lastForceRefresh', sysData.forceRefresh.toString());
+                  window.location.reload();
+                }
+              }
+            }
+          }, (error) => {
+            if (error.code !== "permission-denied") console.error("SessionGuard system snapshot error:", error);
+          });
+
+          const sessionId = localStorage.getItem('sessionId');
+          if (sessionId) {
+            const sessionRef = doc(db, "users", user.uid, "sessions", sessionId);
+            
+            // Listen to this specific session document for remote kills
+            unsubscribeSession = onSnapshot(sessionRef, (docSnap) => {
+              if (!docSnap.exists()) {
+                // Session was deleted (e.g. killed from developer dashboard)
+                localStorage.removeItem('sessionId');
+                signOut(auth);
+                window.location.reload();
+              }
+            }, (error) => {
+              if (error.code !== "permission-denied") console.error("SessionGuard session snapshot error:", error);
+            });
+          }
+        } else {
+          if (unsubscribeSystem) unsubscribeSystem();
+          if (unsubscribeSession) unsubscribeSession();
+          if (unsubscribeUser) unsubscribeUser();
         }
-      } else {
-        if (unsubscribeSystem) unsubscribeSystem();
-        if (unsubscribeSession) unsubscribeSession();
-        if (unsubscribeUser) unsubscribeUser();
-      }
-      setIsReady(true);
-    });
+        setIsReady(true);
+      });
+    };
+
+    initAuth();
 
     return () => {
-      unsubscribeAuth();
+      if (unsubscribeAuth) unsubscribeAuth();
       if (unsubscribeSystem) unsubscribeSystem();
       if (unsubscribeSession) unsubscribeSession();
       if (unsubscribeUser) unsubscribeUser();
