@@ -81,7 +81,7 @@ export default function RootLayout({
         <link rel="preload" href="/fontawesome/css/all.min.css" as="style" />
         <link rel="preload" href="/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fontawesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="/fontawesome/css/all.min.css" precedence="default" />
+        <style dangerouslySetInnerHTML={{ __html: `</style><link rel="stylesheet" href="/fontawesome/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/fontawesome/css/all.min.css"></noscript><style>` }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
