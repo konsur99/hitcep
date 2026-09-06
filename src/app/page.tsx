@@ -3,6 +3,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import nextDynamic from 'next/dynamic';
 import { getPublicCache } from '@/lib/publicData';
+import Image from 'next/image';
 
 const AnimatedBarChart = nextDynamic(() => import('@/components/AnimatedBarChart'), { 
   loading: () => <div className="h-[250px] md:h-[300px] w-full bg-gray-100 animate-pulse rounded-2xl flex items-center justify-center"><span className="text-gray-400 font-medium">Memuat Grafik...</span></div>
@@ -172,19 +173,19 @@ export default async function Home() {
           <div className="grid grid-cols-3 gap-3 md:gap-6 mb-3 md:mb-6">
             {/* Gold */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <img src="/medal-gold.webp" alt="Emas" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <Image src="/medal-gold.webp" alt="Emas" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
               <span className="text-xs md:text-sm font-bold text-solo-gold mb-1 md:mb-2">EMAS</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.emas}</span>
             </div>
             {/* Silver */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <img src="/medal-silver.webp" alt="Perak" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <Image src="/medal-silver.webp" alt="Perak" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
               <span className="text-xs md:text-sm font-bold text-gray-500 mb-1 md:mb-2">PERAK</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.perak}</span>
             </div>
             {/* Bronze */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <img src="/medal-bronze.webp" alt="Perunggu" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <Image src="/medal-bronze.webp" alt="Perunggu" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
               <span className="text-xs md:text-sm font-bold text-amber-700 mb-1 md:mb-2">PERUNGGU</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.perunggu}</span>
             </div>
@@ -195,7 +196,7 @@ export default async function Home() {
               <div className="text-xs md:text-sm font-bold text-gray-800 tracking-widest mb-1 md:mb-2">TOTAL MEDALI</div>
               <div className="text-4xl md:text-6xl font-black text-gray-900">{totals.total}</div>
             </div>
-            <img src="/daun.webp" alt="Daun" className="h-24 md:h-40 w-auto absolute -bottom-2 md:-bottom-4 right-0 opacity-40 object-contain drop-shadow-sm mix-blend-multiply" />
+            <Image src="/daun.webp" alt="Daun" width={168} height={168} className="h-24 md:h-40 w-auto absolute -bottom-2 md:-bottom-4 right-0 opacity-40 object-contain drop-shadow-sm mix-blend-multiply" />
           </div>
         </section>
         {/* END: Medal Tally Cards */}
@@ -215,7 +216,7 @@ export default async function Home() {
             <section className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-gray-100 h-fit" data-purpose="kontribusi-cabor">
               <div className="flex justify-between items-center mb-4 md:mb-6">
                 <h3 className="font-bold text-gray-800 text-sm md:text-base">KONTRIBUSI CABOR</h3>
-                <Link href="/cabor" className="text-xs md:text-sm text-solo-red font-semibold hover:underline">
+                <Link href="/cabor" aria-label="Lihat Semua Cabang Olahraga" className="text-xs md:text-sm text-solo-red font-semibold hover:underline">
                   Lihat Semua
                 </Link>
               </div>
@@ -227,14 +228,14 @@ export default async function Home() {
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 overflow-hidden shrink-0">
-                        <img src={getMicroThumbnail(cabor.image, cabor.id)} alt={cabor.name} className="w-4 h-4 md:w-5 md:h-5 object-contain drop-shadow-sm" />
+                        <Image src={getMicroThumbnail(cabor.image, cabor.id)} alt={cabor.name} width={32} height={32} className="w-4 h-4 md:w-5 md:h-5 object-contain drop-shadow-sm" />
                       </div>
                       <span className="text-sm md:text-base font-semibold text-gray-800 truncate max-w-[120px] md:max-w-[180px]">{cabor.name}</span>
                     </div>
                     <div className="flex items-center gap-1.5 md:gap-3 text-xs md:text-sm font-bold justify-end shrink-0">
-                      <span className="flex items-center justify-between w-7 md:w-9"><img src="/medal-gold.webp" alt="Emas" className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.gold || 0}</span></span>
-                      <span className="flex items-center justify-between w-7 md:w-9"><img src="/medal-silver.webp" alt="Perak" className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.silver || 0}</span></span>
-                      <span className="flex items-center justify-between w-7 md:w-9"><img src="/medal-bronze.webp" alt="Perunggu" className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.bronze || 0}</span></span>
+                      <span className="flex items-center justify-between w-7 md:w-9"><Image src="/medal-gold.webp" alt="Emas" width={20} height={20} className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.gold || 0}</span></span>
+                      <span className="flex items-center justify-between w-7 md:w-9"><Image src="/medal-silver.webp" alt="Perak" width={20} height={20} className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.silver || 0}</span></span>
+                      <span className="flex items-center justify-between w-7 md:w-9"><Image src="/medal-bronze.webp" alt="Perunggu" width={20} height={20} className="h-4 w-4 md:h-5 md:w-5 object-contain" /> <span>{cabor.bronze || 0}</span></span>
                     </div>
                   </li>
                 ))}
@@ -245,7 +246,7 @@ export default async function Home() {
             <section className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-card border border-gray-100 flex-1" data-purpose="medali-terbaru">
               <div className="flex justify-between items-center mb-3 md:mb-5">
                 <h3 className="font-bold text-gray-800 text-sm md:text-base">MEDALI TERBARU</h3>
-                <Link href="/medali" className="text-xs md:text-sm text-solo-red font-semibold hover:underline">
+                <Link href="/medali" aria-label="Lihat Semua Medali Terbaru" className="text-xs md:text-sm text-solo-red font-semibold hover:underline">
                   Lihat Semua
                 </Link>
               </div>
@@ -256,7 +257,7 @@ export default async function Home() {
                     <div key={item.id} className="flex items-center justify-between bg-gray-50 p-2 md:p-3 rounded-lg md:rounded-xl border border-gray-100 shadow-sm">
                       <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
                         <div className="relative shrink-0">
-                          <img alt="Medal" className="h-8 w-8 md:h-10 md:w-10 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
+                          <Image alt="Medal" width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
                         </div>
                         <div className="min-w-0">
                           <div className="text-sm md:text-base font-bold text-gray-800 truncate">{item.athleteName}</div>

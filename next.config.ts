@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
       static: 30,
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+    ],
+  },
   serverExternalPackages: ['firebase-admin', 'jwks-rsa', 'jose'],
   async headers() {
     return [

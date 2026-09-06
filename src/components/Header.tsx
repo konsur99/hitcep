@@ -210,6 +210,7 @@ export default function Header() {
         <div className="flex items-center gap-4 shrink-0 z-10">
           <button 
             onClick={handleOpenNotif}
+            aria-label="Notifikasi"
             className={`relative p-2 text-xl md:text-2xl xl:text-3xl focus:outline-none transition-colors ${isNotifOpen ? 'text-solo-red' : 'text-gray-700 hover:text-solo-red'}`}
           >
             <i className="fa-regular fa-bell"></i>
