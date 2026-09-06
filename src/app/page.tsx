@@ -174,7 +174,7 @@ export default async function Home() {
             {/* Gold */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
               <Image src="/medal-gold.webp" alt="Emas" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
-              <span className="text-xs md:text-sm font-bold text-solo-gold mb-1 md:mb-2">EMAS</span>
+              <span className="text-xs md:text-sm font-bold text-[#B8860B] mb-1 md:mb-2">EMAS</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.emas}</span>
             </div>
             {/* Silver */}

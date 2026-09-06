@@ -84,11 +84,11 @@ export default function AnimatedBarChart({ emas, perak, perunggu }: AnimatedBarC
             <div 
               className="w-full relative bg-gradient-to-t from-[#B8860B] to-[#FFD700] rounded-t-sm md:rounded-t-lg transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(255,215,0,0.4)]" 
               style={{ height: mounted ? `${emasPct * 100}%` : '0%' }}>
-              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#FFD700] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#b8860b] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
                 {displayEmas} <span className="hidden md:inline">Medali</span>
               </div>
             </div>
-            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#FFD700] text-[10px] md:text-sm uppercase tracking-wider">Emas</div>
+            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#b8860b] text-[10px] md:text-sm uppercase tracking-wider">Emas</div>
           </div>
 
           {/* Bar Perak */}
@@ -96,11 +96,11 @@ export default function AnimatedBarChart({ emas, perak, perunggu }: AnimatedBarC
             <div 
               className="w-full relative bg-gradient-to-t from-[#808080] to-[#C0C0C0] rounded-t-sm md:rounded-t-lg transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(192,192,192,0.4)]" 
               style={{ height: mounted ? `${perakPct * 100}%` : '0%' }}>
-              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#C0C0C0] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-gray-600 whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
                 {displayPerak} <span className="hidden md:inline">Medali</span>
               </div>
             </div>
-            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#C0C0C0] text-[10px] md:text-sm uppercase tracking-wider">Perak</div>
+            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-gray-600 text-[10px] md:text-sm uppercase tracking-wider">Perak</div>
           </div>
 
           {/* Bar Perunggu */}
@@ -108,11 +108,11 @@ export default function AnimatedBarChart({ emas, perak, perunggu }: AnimatedBarC
             <div 
               className="w-full relative bg-gradient-to-t from-[#8B4513] to-[#CD7F32] rounded-t-sm md:rounded-t-lg transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(205,127,50,0.4)]" 
               style={{ height: mounted ? `${perungguPct * 100}%` : '0%' }}>
-              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#CD7F32] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#8b4513] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
                 {displayPerunggu} <span className="hidden md:inline">Medali</span>
               </div>
             </div>
-            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#CD7F32] text-[10px] md:text-sm uppercase tracking-wider">Perunggu</div>
+            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#8b4513] text-[10px] md:text-sm uppercase tracking-wider">Perunggu</div>
           </div>
         </div>
       </div>
