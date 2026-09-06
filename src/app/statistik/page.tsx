@@ -1,22 +1,11 @@
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
 import StatistikClient from './StatistikClient';
+import { getPublicCache } from '@/lib/publicData';
 
-export const revalidate = 10; // Cache 10 detik (ISR)
+// Vercel Edge caching config: Cache this page for 1 hour.
+export const revalidate = 3600; 
 
 export default async function Statistik() {
-  const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
-    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
-    
-    // Normalize timestamps for Server Component serialization
-    const cacheData: any = {
-      ...rawData,
-      medals: rawData.medals?.map((m: any) => ({
-        ...m,
-        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
-      })) || []
-    };
+  const cacheData = await getPublicCache();
   const cabors: any[] = cacheData.cabors || [];
 
   // Hitung total keseluruhan medali Surakarta

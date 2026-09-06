@@ -241,7 +241,7 @@ export default function InputMedali() {
       });
 
       // Purge public Vercel cache immediately
-      await fetch('/api/revalidate', { method: 'POST' }).catch(e => console.error("Cache purge failed:", e));
+      await fetch('/api/revalidate?tag=public-data').catch(e => console.error("Cache purge failed:", e));
       toast.success("Sukses! Medali berhasil ditambahkan ke klasemen publik.");
       
       // Reset form

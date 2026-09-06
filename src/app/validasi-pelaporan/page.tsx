@@ -307,7 +307,7 @@ export default function ValidasiPelaporan() {
     } catch (e: any) {
       toast.error("Gagal menyimpan perubahan: " + e.message);
     } finally {
-      fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
+      fetch('/api/revalidate?tag=public-data').then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
       setIsSavingEdit(false);
       hideLoading();
     }
@@ -355,7 +355,7 @@ export default function ValidasiPelaporan() {
     } catch (e: any) {
       toast.error("Gagal menghapus laporan: " + e.message);
     } finally {
-      fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
+      fetch('/api/revalidate?tag=public-data').then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
       setIsProcessingId(null);
       hideLoading();
     }

@@ -233,7 +233,7 @@ export default function InputPelaporan() {
 
       // Trigger revalidation immediately (non-blocking)
       try {
-        fetch('/api/revalidate', { method: 'POST' }).catch(() => {});
+        fetch('/api/revalidate?tag=public-data').catch(() => {});
       } catch(e) {}
 
       toast.success("Berhasil! Laporan berhasil dikirim dan terpublikasi.");

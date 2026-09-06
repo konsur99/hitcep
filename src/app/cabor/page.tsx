@@ -1,26 +1,13 @@
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { getPublicCache } from '@/lib/publicData';
 import CaborClient from './CaborClient';
 
-export const revalidate = 10;
+export const revalidate = 3600;
 
-export default async function Cabor() {
-  const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
-    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
-    
-    // Normalize timestamps for Server Component serialization
-    const cacheData: any = {
-      ...rawData,
-      medals: rawData.medals?.map((m: any) => ({
-        ...m,
-        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
-      })) || []
-    };
+export default async function CaborPage() {
+  const cacheData = await getPublicCache();
   const cabors: any[] = cacheData.cabors || [];
   let medals: any[] = cacheData.medals || [];
   medals = medals.filter((m: any) => m.status === 'approved' || !m.status);
-
-  // Use real data exclusively for sync
 
   return (
     <div className="pb-6">

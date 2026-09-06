@@ -1,27 +1,11 @@
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
 import PelaporanClient from './PelaporanClient';
+import { getPublicCache } from '@/lib/publicData';
 
-export const revalidate = 10;
+export const revalidate = 3600;
 
 export default async function Pelaporan() {
   try {
-    const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
-    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
-    
-    // Normalize timestamps for Server Component serialization
-    const cacheData: any = {
-      ...rawData,
-      reports: rawData.reports?.map((r: any) => ({
-        ...r,
-        createdAt: r.createdAt ? (typeof r.createdAt.toDate === 'function' ? r.createdAt.toDate().getTime() : (r.createdAt.seconds ? r.createdAt.seconds * 1000 : (typeof r.createdAt === 'string' ? new Date(r.createdAt).getTime() : (typeof r.createdAt === 'number' ? r.createdAt : null)))) : null
-      })) || [],
-      medals: rawData.medals?.map((m: any) => ({
-        ...m,
-        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
-      })) || []
-    };
+    const cacheData = await getPublicCache();
 
   const cabors: any[] = cacheData.cabors || [];
   cabors.sort((a: any, b: any) => a.name.localeCompare(b.name));

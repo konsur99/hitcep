@@ -1,9 +1,8 @@
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 import nextDynamic from 'next/dynamic';
+import { getPublicCache } from '@/lib/publicData';
 
 const AnimatedBarChart = nextDynamic(() => import('@/components/AnimatedBarChart'), { 
   loading: () => <div className="h-[250px] md:h-[300px] w-full bg-gray-100 animate-pulse rounded-2xl flex items-center justify-center"><span className="text-gray-400 font-medium">Memuat Grafik...</span></div>
@@ -17,23 +16,12 @@ const getMedalImage = (type: string) => {
   return '/medal-bronze.webp';
 };
 
-export const revalidate = 10;
+// Vercel Edge Cache: Cache for 1 hour
+export const revalidate = 3600;
 
 export default async function Home() {
   try {
-    // 1. Fetch data dari endpoint public_cache menggunakan native fetch agar ISR berfungsi!
-    const cacheSnap = await getDoc(doc(db, 'public_cache', 'v1'));
-    const rawData = cacheSnap.exists() ? cacheSnap.data() : { cabors: [], medals: [], reports: [] };
-    
-    // Normalize timestamps for Server Component serialization
-    const cacheData: any = {
-      ...rawData,
-      medals: rawData.medals?.map((m: any) => ({
-        ...m,
-        createdAt: m.createdAt ? (typeof m.createdAt.toDate === 'function' ? m.createdAt.toDate().getTime() : (m.createdAt.seconds ? m.createdAt.seconds * 1000 : (typeof m.createdAt === 'string' ? new Date(m.createdAt).getTime() : (typeof m.createdAt === 'number' ? m.createdAt : null)))) : null
-      })) || []
-    };
-    
+    const cacheData = await getPublicCache();
     const cabors: any[] = cacheData.cabors || [];
   
   let emas = 0, perak = 0, perunggu = 0;

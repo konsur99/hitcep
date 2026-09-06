@@ -594,6 +594,20 @@ export default function DeveloperDashboard() {
     }
   };
 
+  const executeFlushCache = async () => {
+    try {
+      const res = await fetch('/api/revalidate?tag=public-data');
+      if (res.ok) {
+        toast.success('Public Cache (Juru Bicara) berhasil di-flush (Dikosongkan)!');
+      } else {
+        throw new Error('Gagal dari API');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Gagal melakukan flush pada Public Cache!');
+    }
+  };
+
   const handleOpenConfirm = (title: string, description: string, keyword: string, onConfirm: () => void) => {
     setConfirmInput('');
     setConfirmModal({
@@ -1263,6 +1277,18 @@ export default function DeveloperDashboard() {
                 >
                   <i className="fa-solid fa-rotate text-sm"></i>
                   Force Refresh Clients
+                </button>
+                <button 
+                  onClick={() => handleOpenConfirm(
+                    'Flush Public Cache (Juru Bicara)',
+                    'Fitur ini akan secara paksa menghancurkan cache Vercel Edge. Data publik akan dimuat ulang dari Firebase pada request berikutnya. Lanjutkan?',
+                    'konfirmasi flush cache',
+                    executeFlushCache
+                  )}
+                  className="w-full py-2.5 bg-purple-100 hover:bg-purple-200 text-purple-800 text-[10px] font-bold rounded-xl transition-colors border border-purple-300 flex flex-col items-center justify-center gap-1.5 text-center px-1 col-span-2"
+                >
+                  <i className="fa-solid fa-bolt text-sm"></i>
+                  Flush Public Cache
                 </button>
               </div>
             </div>

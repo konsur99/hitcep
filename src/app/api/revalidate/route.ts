@@ -1,20 +1,22 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rateLimit';
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    // Rate limit to prevent abuse
-    const { success } = checkRateLimit(request);
-    if (!success) {
-      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
-    }
+    const { searchParams } = new URL(request.url);
+    const tag = searchParams.get('tag');
 
-    // Purge cache for the entire site (layout)
+    if (tag) {
+      revalidateTag(tag, 'max');
+    }
+    
+    // Purge cache for the entire site (layout) as a fallback
     revalidatePath('/', 'layout');
-    return NextResponse.json({ revalidated: true, now: Date.now() });
+    
+    return NextResponse.json({ revalidated: true, now: Date.now(), tag });
   } catch (err) {
     return NextResponse.json({ revalidated: false, message: 'Error revalidating' }, { status: 500 });
   }
 }
+
 

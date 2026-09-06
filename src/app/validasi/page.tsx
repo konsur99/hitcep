@@ -198,7 +198,7 @@ export default function ValidasiMedali() {
       } catch (e: any) {
         toast.error("Gagal menghapus: " + e.message);
       } finally {
-        fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
+        fetch('/api/revalidate?tag=public-data').then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
         setIsProcessingId(null);
         hideLoading();
       }
@@ -384,7 +384,7 @@ export default function ValidasiMedali() {
       } catch (e: any) {
         toast.error("Gagal menyimpan perubahan: " + e.message);
       } finally {
-        fetch('/api/revalidate', { method: 'POST' }).then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
+        fetch('/api/revalidate?tag=public-data').then(() => setRefreshTrigger(prev => prev + 1)).catch(e => console.error(e));
         setIsSavingEdit(false);
         hideLoading();
       }
