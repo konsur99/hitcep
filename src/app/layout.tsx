@@ -8,7 +8,6 @@ import SessionGuard from "@/components/SessionGuard";
 import { ConfirmProvider } from "@/components/ConfirmDialog";
 import { GlobalLoaderProvider } from "@/components/GlobalLoader";
 import { Toaster } from "sonner";
-import FontAwesome from "@/components/FontAwesome";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -80,7 +79,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
         <link rel="preconnect" href="https://porprov-koni-solo.firebaseapp.com" />
         <link rel="preconnect" href="https://apis.google.com" />
-        <FontAwesome />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
