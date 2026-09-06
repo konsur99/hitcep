@@ -64,9 +64,9 @@ export default async function Home() {
 
   const getRankBg = (index: number) => {
     if (index === 0) return 'bg-solo-red';
-    if (index === 1) return 'bg-gray-500';
-    if (index === 2) return 'bg-amber-600';
-    return 'bg-gray-400';
+    if (index === 1) return 'bg-gray-600';
+    if (index === 2) return 'bg-amber-700';
+    return 'bg-gray-500';
   };
 
   const formatTime = (input: any) => {
@@ -122,7 +122,8 @@ export default async function Home() {
 
   return (
     <div id="page-beranda" className="page-content block">
-      <link rel="preload" href="/hero-bg-desktop.webp" as="image" />
+      <link rel="preload" href="/hero-bg-desktop.webp" as="image" media="(min-width: 768px)" fetchPriority="high" />
+      <link rel="preload" href="/hero-bg.webp" as="image" media="(max-width: 767px)" fetchPriority="high" />
       {/* BEGIN: Hero Section */}
       <section 
         className="relative overflow-hidden pt-6 md:pt-8 lg:pt-12 pb-16 md:pb-36 lg:pb-40 text-white rounded-b-3xl md:rounded-b-[4rem]"
@@ -173,20 +174,20 @@ export default async function Home() {
           <div className="grid grid-cols-3 gap-3 md:gap-6 mb-3 md:mb-6">
             {/* Gold */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <Image src="/medal-gold.webp" alt="Emas" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
-              <span className="text-xs md:text-sm font-bold text-[#B8860B] mb-1 md:mb-2">EMAS</span>
+              <Image src="/medal-gold.webp" alt="Emas" width={128} height={128} sizes="(max-width: 768px) 96px, 128px" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <span className="text-xs md:text-sm font-bold text-[#8a6300] mb-1 md:mb-2">EMAS</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.emas}</span>
             </div>
             {/* Silver */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <Image src="/medal-silver.webp" alt="Perak" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
-              <span className="text-xs md:text-sm font-bold text-gray-500 mb-1 md:mb-2">PERAK</span>
+              <Image src="/medal-silver.webp" alt="Perak" width={128} height={128} sizes="(max-width: 768px) 96px, 128px" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <span className="text-xs md:text-sm font-bold text-gray-600 mb-1 md:mb-2">PERAK</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.perak}</span>
             </div>
             {/* Bronze */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 pt-0 md:pt-0 flex flex-col items-center justify-start shadow-card border border-gray-100">
-              <Image src="/medal-bronze.webp" alt="Perunggu" width={128} height={128} className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
-              <span className="text-xs md:text-sm font-bold text-amber-700 mb-1 md:mb-2">PERUNGGU</span>
+              <Image src="/medal-bronze.webp" alt="Perunggu" width={128} height={128} sizes="(max-width: 768px) 96px, 128px" className="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-md" />
+              <span className="text-xs md:text-sm font-bold text-amber-800 mb-1 md:mb-2">PERUNGGU</span>
               <span className="text-3xl md:text-5xl font-extrabold text-gray-800">{totals.perunggu}</span>
             </div>
           </div>

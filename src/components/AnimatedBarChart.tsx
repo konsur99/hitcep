@@ -61,11 +61,11 @@ export default function AnimatedBarChart({ emas, perak, perunggu }: AnimatedBarC
         
         {/* Y-Axis Column */}
         <div className="h-full w-10 md:w-14 relative flex-shrink-0 border-r border-gray-200 z-10">
-          <span className="absolute top-0 right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-400">100%</span>
-          <span className="absolute top-[25%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-400">75%</span>
-          <span className="absolute top-[50%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-400">50%</span>
-          <span className="absolute top-[75%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-400">25%</span>
-          <span className="absolute top-[100%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-400">0%</span>
+          <span className="absolute top-0 right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-500">100%</span>
+          <span className="absolute top-[25%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-500">75%</span>
+          <span className="absolute top-[50%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-500">50%</span>
+          <span className="absolute top-[75%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-500">25%</span>
+          <span className="absolute top-[100%] right-2 transform -translate-y-1/2 text-[10px] md:text-xs text-gray-500">0%</span>
         </div>
 
         {/* Chart Area */}
@@ -84,11 +84,11 @@ export default function AnimatedBarChart({ emas, perak, perunggu }: AnimatedBarC
             <div 
               className="w-full relative bg-gradient-to-t from-[#B8860B] to-[#FFD700] rounded-t-sm md:rounded-t-lg transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(255,215,0,0.4)]" 
               style={{ height: mounted ? `${emasPct * 100}%` : '0%' }}>
-              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#b8860b] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-[10px] md:text-sm font-bold text-[#8a6300] whitespace-nowrap transition-opacity duration-1000 delay-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
                 {displayEmas} <span className="hidden md:inline">Medali</span>
               </div>
             </div>
-            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#b8860b] text-[10px] md:text-sm uppercase tracking-wider">Emas</div>
+            <div className="absolute -bottom-6 md:-bottom-8 font-semibold text-[#8a6300] text-[10px] md:text-sm uppercase tracking-wider">Emas</div>
           </div>
 
           {/* Bar Perak */}
