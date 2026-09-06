@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useState, useEffect, use } from 'react';
 import LoadingUI from '@/components/LoadingUI';
-import { doc, collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { formatDistanceToNow } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import { getOptimizedUrl } from '@/lib/cloudinary';

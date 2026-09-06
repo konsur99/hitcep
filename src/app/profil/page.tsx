@@ -55,12 +55,15 @@ export default function Profil() {
             if (data.permissions) setUserPermissions(data.permissions);
             if (data.role) {
               setUserRole(data.role);
+              localStorage.setItem('userRole', data.role);
             } else {
               // Jika belum ada role di database, asumsikan akun pertama adalah Developer
               setUserRole('Developer');
+              localStorage.setItem('userRole', 'Developer');
             }
           } else {
             setUserRole('Developer');
+            localStorage.setItem('userRole', 'Developer');
           }
         }, (error) => {
           if (error.code !== "permission-denied") console.error("Profil user snapshot error:", error);
@@ -216,6 +219,7 @@ export default function Profil() {
       await signOut(auth);
       setEmail('');
       setPassword('');
+      localStorage.removeItem('userRole');
     } catch (error: any) {
       if (error.code !== "permission-denied") console.error("Logout error:", error);
     }
