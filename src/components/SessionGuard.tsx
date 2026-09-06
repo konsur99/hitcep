@@ -15,12 +15,26 @@ export default function SessionGuard({ children }: { children: React.ReactNode }
   const pathname = usePathname();
   const router = useRouter();
 
+  const authInitialized = useRef(false);
+
   useEffect(() => {
     let unsubscribeSession: () => void;
     let unsubscribeUser: () => void;
     let unsubscribeSystem: () => void;
     let unsubscribeAuth: any;
     
+    const publicRoutes = ['/', '/medali', '/cabor', '/riwayat', '/statistik', '/bantuan', '/profil'];
+    const isPublic = publicRoutes.includes(pathname) || pathname.startsWith('/cabor/');
+    const savedRole = localStorage.getItem('userRole');
+
+    if (isPublic && !savedRole) {
+      setIsReady(true);
+      return;
+    }
+
+    if (authInitialized.current) return;
+    authInitialized.current = true;
+
     const initAuth = async () => {
       const { auth, db } = await import('@/lib/firebase');
       const { onAuthStateChanged, signOut } = await import('firebase/auth');
@@ -98,7 +112,7 @@ export default function SessionGuard({ children }: { children: React.ReactNode }
       if (unsubscribeSession) unsubscribeSession();
       if (unsubscribeUser) unsubscribeUser();
     };
-  }, []);
+  }, [pathname]);
 
 
   // Role-Based Route Protection

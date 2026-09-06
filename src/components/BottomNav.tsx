@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -8,9 +8,21 @@ export default function BottomNav() {
   const pathname = usePathname();
   const [role, setRole] = useState<string | null>(null);
 
+  const authInitialized = useRef(false);
+
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
+
+    const publicRoutes = ['/', '/medali', '/cabor', '/riwayat', '/statistik', '/bantuan', '/profil'];
+    const isPublic = publicRoutes.includes(pathname) || pathname.startsWith('/cabor/');
+
+    if (isPublic && !savedRole) {
+      return;
+    }
+
+    if (authInitialized.current) return;
+    authInitialized.current = true;
 
     let unsub: any;
     const initAuth = async () => {
@@ -38,7 +50,7 @@ export default function BottomNav() {
     return () => {
       if (unsub) unsub();
     };
-  }, []);
+  }, [pathname]);
 
   const navItems = [
     { name: 'Beranda', path: '/', icon: 'fa-house' },

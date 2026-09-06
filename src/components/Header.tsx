@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
@@ -16,11 +16,22 @@ export default function Header() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [lastReadTime, setLastReadTime] = useState<number>(0);
   const [role, setRole] = useState<string | null>(null);
+  const authInitialized = useRef(false);
 
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
     
+    const publicRoutes = ['/', '/medali', '/cabor', '/riwayat', '/statistik', '/bantuan', '/profil'];
+    const isPublic = publicRoutes.includes(pathname) || pathname.startsWith('/cabor/');
+
+    if (isPublic && !savedRole) {
+      return;
+    }
+
+    if (authInitialized.current) return;
+    authInitialized.current = true;
+
     let unsub: any;
     const initAuth = async () => {
       const { auth, db } = await import('@/lib/firebase');
@@ -46,7 +57,7 @@ export default function Header() {
     return () => {
       if (unsub) unsub();
     };
-  }, []);
+  }, [pathname]);
 
   // Load last read time from local storage on mount
   useEffect(() => {
