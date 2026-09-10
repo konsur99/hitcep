@@ -88,6 +88,7 @@ export default function CaborClient({ initialCabors, initialMedals = [] }: { ini
 
   const normalizeCaborId = (id: string) => {
     const map: Record<string, string> = {
+      'aeromedelling': 'aeromodelling',
       'akuatik': 'renang',
       'balap-motor': 'bermotor',
       'billiar': 'biliar',
@@ -106,8 +107,7 @@ export default function CaborClient({ initialCabors, initialMedals = [] }: { ini
       'sepak-bola': 'sepakbola',
       'softball-baseball': 'softball-dan-baseball',
       'soft-ball': 'softball-dan-baseball',
-      'shorinji-kempo': 'kempo',
-      'tinju-amatir': 'tinju'
+      'tinju-pertina': 'tinju'
     };
     return map[id] || id;
   };

@@ -15,6 +15,23 @@ export async function generateStaticParams() {
   }
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const cacheData = await getPublicCache();
+  const caborData = cacheData.cabors?.find((c: any) => c.id === id);
+  
+  if (!caborData) {
+    return {
+      title: "Cabor Tidak Ditemukan - QuikKONI",
+    };
+  }
+
+  return {
+    title: `Klasemen Medali ${caborData.name} - PORPROV Jateng 2026 | QuikKONI`,
+    description: `Pantau perolehan medali, hasil pertandingan, dan daftar atlet ${caborData.name} kontingen KONI Surakarta pada ajang PORPROV Jawa Tengah 2026.`,
+    keywords: [`${caborData.name}`, `medali ${caborData.name}`, `atlet ${caborData.name}`, `hasil ${caborData.name} porprov 2026`, `klasemen ${caborData.name}`],
+  };
+}
 export default async function CaborDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   

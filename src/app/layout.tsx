@@ -46,11 +46,20 @@ export const metadata: Metadata = {
     siteName: "QuikKONI Porprov Jateng",
     locale: "id_ID",
     type: "website",
+    images: [
+      {
+        url: "https://quikkoni.com/hero-bg-desktop.webp",
+        width: 1200,
+        height: 630,
+        alt: "QuikKONI Porprov Jateng 2026",
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "QuikKONI - Live Klasemen Medali Porprov Jateng 2026",
     description: "Pantau hasil lomba, perolehan medali, dan statistik cabor pada Pekan Olahraga Provinsi (Porprov) Jawa Tengah (Jateng) 2026.",
+    images: ["https://quikkoni.com/hero-bg-desktop.webp"],
   },
   robots: {
     index: true,
@@ -115,6 +124,22 @@ export default function RootLayout({
                   "name": "KONI Surakarta",
                   "url": "https://quikkoni.com",
                   "logo": "https://quikkoni.com/icon.png"
+                },
+                "image": [
+                  "https://quikkoni.com/hero-bg.webp",
+                  "https://quikkoni.com/icon.png"
+                ],
+                "performer": {
+                  "@type": "Organization",
+                  "name": "KONI Surakarta Kontingen"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "url": "https://quikkoni.com",
+                  "price": "0",
+                  "priceCurrency": "IDR",
+                  "availability": "https://schema.org/InStock",
+                  "validFrom": "2026-01-01"
                 }
               }
             ])

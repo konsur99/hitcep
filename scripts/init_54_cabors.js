@@ -11,7 +11,7 @@ initializeApp({
 const db = getFirestore();
 
 const TARGET_CABORS = [
-  { name: "AEROMODELLING", image: "/cabor/aeromodelling.png" },
+  { name: "AEROMEDELLING", image: "/cabor/aeromodelling.png" },
   { name: "AKUATIK", image: "/cabor/renang.png" },
   { name: "ANGGAR", image: "/cabor/anggar.png" },
   { name: "ANGKAT BERAT", image: "/cabor/angkat-berat.png" },
@@ -41,7 +41,7 @@ const TARGET_CABORS = [
   { name: "JUDO", image: "/cabor/judo.png" },
   { name: "JUJITSU", image: "/cabor/jujitsu.png" },
   { name: "KARATE", image: "/cabor/karate.png" },
-  { name: "KEMPO", image: "/cabor/kempo.png" }, // No official scraped logo, fallback
+  { name: "KEMPO", image: "/cabor/kempo.png" },
   { name: "KICKBOXING", image: "/cabor/kick-boxing.png" },
   { name: "MENEMBAK", image: "/cabor/menembak.png" },
   { name: "MUAYTHAI", image: "/cabor/muaythai.png" },
@@ -56,12 +56,12 @@ const TARGET_CABORS = [
   { name: "SENAM", image: "/cabor/senam.png" },
   { name: "SEPAK BOLA", image: "/cabor/sepakbola.png" },
   { name: "SEPATU RODA", image: "/cabor/sepatu-roda.png" },
-  { name: "SOFTBALL & BASEBALL", image: "/cabor/softball-dan-baseball.png" },
+  { name: "SOFTBALL&BASEBALL", image: "/cabor/softball-dan-baseball.png" },
   { name: "TAEKWONDO", image: "/cabor/taekwondo.png" },
   { name: "TARUNG DERAJAT", image: "/cabor/tarung-derajat.png" },
   { name: "TENIS LAPANGAN", image: "/cabor/tenis-lapangan.png" },
   { name: "TENIS MEJA", image: "/cabor/tenis-meja.png" },
-  { name: "TINJU AMATIR", image: "/cabor/tinju.png" },
+  { name: "TINJU (PERTINA)", image: "/cabor/tinju.png" },
   { name: "WOODBALL", image: "/cabor/woodball.png" },
   { name: "WUSHU", image: "/cabor/wushu.png" },
   { name: "XIANGQI", image: "/cabor/xiangqi.png" }

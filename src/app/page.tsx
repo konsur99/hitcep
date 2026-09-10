@@ -99,6 +99,7 @@ export default async function Home() {
     if (url) return url;
     
     const map: Record<string, string> = {
+      'aeromedelling': 'aeromodelling',
       'akuatik': 'renang',
       'balap-motor': 'bermotor',
       'billiar': 'biliar',
@@ -114,7 +115,7 @@ export default async function Home() {
       'pencaksilat': 'pencak-silat',
       'sepak-bola': 'sepakbola',
       'softball-baseball': 'softball-dan-baseball',
-      'tinju-amatir': 'tinju'
+      'tinju-pertina': 'tinju'
     };
     const mappedId = map[id] || id;
     return `/cabor/${mappedId}.png`;
@@ -122,6 +123,41 @@ export default async function Home() {
 
   return (
     <div id="page-beranda" className="page-content block">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Di mana bisa melihat klasemen Porprov Jateng 2026?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Anda dapat memantau klasemen medali resmi dan ter-update dari Pekan Olahraga Provinsi (Porprov) Jawa Tengah 2026 langsung di website QuikKONI."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Siapa pemuncak klasemen Porprov Jateng 2026?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Klasemen kontingen Porprov Jateng 2026 diperbarui secara real-time. Anda bisa melihat daftar lengkap perolehan medali Emas, Perak, dan Perunggu di halaman utama kami."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Berapa cabang olahraga di Porprov 2026?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Porprov Jawa Tengah 2026 mempertandingkan puluhan cabang olahraga resmi. Anda dapat melihat hasil pertandingan spesifik untuk setiap cabor di menu Cabor."
+                }
+              }
+            ]
+          })
+        }}
+      />
       {/* BEGIN: Hero Section */}
       <section 
         className="relative overflow-hidden pt-6 md:pt-8 lg:pt-12 pb-16 md:pb-36 lg:pb-40 text-white rounded-b-3xl md:rounded-b-[4rem]"
