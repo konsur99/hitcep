@@ -22,15 +22,7 @@ export default function Header() {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
     
-    const publicRoutes = ['/', '/medali', '/cabor', '/riwayat', '/statistik', '/bantuan', '/profil'];
-    const isPublic = publicRoutes.includes(pathname) || pathname.startsWith('/cabor/');
-
-    if (isPublic && !savedRole) {
-      return;
-    }
-
-    if (authInitialized.current) return;
-    authInitialized.current = true;
+    // Removed early return to always listen for auth changes
 
     let unsub: any;
     const initAuth = async () => {
@@ -174,7 +166,7 @@ export default function Header() {
     { name: 'Cabor', path: '/cabor' },
     { name: 'Medali', path: '/medali' },
     { name: 'Statistik', path: '/statistik' },
-    ...(role === 'Developer' || role === 'Admin' ? [{ name: 'Pelaporan', path: '/pelaporan' }] : []),
+    ...(role?.toLowerCase() === 'developer' || role?.toLowerCase() === 'admin' ? [{ name: 'Pelaporan', path: '/pelaporan' }] : []),
     { name: 'Profil', path: '/profil' },
   ];
 
@@ -226,20 +218,22 @@ export default function Header() {
         </div>
         
         {/* Right Side: Notification */}
-        <div className="flex items-center gap-4 shrink-0 z-10">
-          <button 
-            onClick={handleOpenNotif}
-            aria-label="Notifikasi"
-            className={`relative p-2 text-xl md:text-2xl xl:text-3xl focus:outline-none transition-colors ${isNotifOpen ? 'text-solo-red' : 'text-gray-700 hover:text-solo-red'}`}
-          >
-            <i className="fa-regular fa-bell"></i>
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-solo-red text-white text-[10px] font-extrabold rounded-full shadow-sm border-[2px] border-white">
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </button>
-        </div>
+        {role && (
+          <div className="flex items-center gap-4 shrink-0 z-10">
+            <button 
+              onClick={handleOpenNotif}
+              aria-label="Notifikasi"
+              className={`relative p-2 text-xl md:text-2xl xl:text-3xl focus:outline-none transition-colors ${isNotifOpen ? 'text-solo-red' : 'text-gray-700 hover:text-solo-red'}`}
+            >
+              <i className="fa-regular fa-bell"></i>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-solo-red text-white text-[10px] font-extrabold rounded-full shadow-sm border-[2px] border-white">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+          </div>
+        )}
 
         {/* Notification Dropdown */}
         {isNotifOpen && (

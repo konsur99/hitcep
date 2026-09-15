@@ -14,15 +14,7 @@ export default function BottomNav() {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
 
-    const publicRoutes = ['/', '/medali', '/cabor', '/riwayat', '/statistik', '/bantuan', '/profil'];
-    const isPublic = publicRoutes.includes(pathname) || pathname.startsWith('/cabor/');
-
-    if (isPublic && !savedRole) {
-      return;
-    }
-
-    if (authInitialized.current) return;
-    authInitialized.current = true;
+    // Removed early return to always listen for auth changes
 
     let unsub: any;
     const initAuth = async () => {
@@ -57,7 +49,7 @@ export default function BottomNav() {
     { name: 'Cabor', path: '/cabor', icon: 'fa-dharmachakra' },
     { name: 'Medali', path: '/medali', icon: 'fa-medal' },
     { name: 'Statistik', path: '/statistik', icon: 'fa-chart-pie' },
-    ...(role === 'Developer' || role === 'Admin' ? [{ name: 'Pelaporan', path: '/pelaporan', icon: 'fa-bullhorn' }] : []),
+    ...(role?.toLowerCase() === 'developer' || role?.toLowerCase() === 'admin' ? [{ name: 'Pelaporan', path: '/pelaporan', icon: 'fa-bullhorn' }] : []),
     { name: 'Profil', path: '/profil', icon: 'fa-user' },
   ];
 

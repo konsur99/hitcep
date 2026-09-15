@@ -165,10 +165,7 @@ export default function InputPelaporan() {
       toast.error("Harap isi Nama Pelapor!");
       return;
     }
-    if (!imagePreview) {
-      toast.error("Harap unggah Foto Bukti Kondisi Lapangan!");
-      return;
-    }
+    // Foto bukti lapangan opsional
 
     const isConfirmed = await confirm({
       title: 'Kirim Laporan',

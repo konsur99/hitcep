@@ -222,20 +222,37 @@ export default function MedaliClient({ initialMedals, cabors }: { initialMedals:
                 {(items as any[]).map((item) => {
                   const cabor = cabors.find(c => c.id === item.caborId);
                   return (
-                    <div key={item.id} className="flex items-center justify-between bg-gray-50 p-2 md:p-4 rounded-lg md:rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-center gap-3 md:gap-5 overflow-hidden">
-                        <div className="relative shrink-0">
-                          <img alt="Medal" className="h-8 w-8 md:h-12 md:w-12 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
+                    <details key={item.id} className="group bg-gray-50 rounded-lg md:rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                      <summary className="flex items-center justify-between p-2 md:p-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                        <div className="flex items-center gap-3 md:gap-5 overflow-hidden">
+                          <div className="relative shrink-0">
+                            <img alt="Medal" className="h-8 w-8 md:h-12 md:w-12 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
+                          </div>
+                          <div className="min-w-0 flex flex-col justify-center">
+                            <div className="text-sm md:text-lg font-bold text-gray-800 truncate flex items-center gap-2">
+                              <span className="truncate">{item.athleteName}</span>
+                              {item.isTeam && <i className="fa-solid fa-chevron-down text-[10px] md:text-xs text-gray-400 group-open:rotate-180 transition-transform shrink-0"></i>}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 truncate">{cabor?.name} - {item.category}</div>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <div className="text-sm md:text-lg font-bold text-gray-800 truncate">{item.athleteName}</div>
-                          <div className="text-xs md:text-sm text-gray-500 truncate">{cabor?.name} - {item.category}</div>
+                        <div className="text-[10px] md:text-sm font-bold text-solo-red shrink-0 whitespace-nowrap pl-2">
+                          {item.createdAt ? format(safeParseDate(item.createdAt), "dd MMM yyyy", { locale: idLocale }) : ''}
                         </div>
-                      </div>
-                      <div className="text-[10px] md:text-sm font-bold text-solo-red shrink-0 whitespace-nowrap pl-2">
-                        {item.createdAt ? format(safeParseDate(item.createdAt), "dd MMM yyyy", { locale: idLocale }) : ''}
-                      </div>
-                    </div>
+                      </summary>
+                      {item.isTeam && item.athleteNames && item.athleteNames.length > 0 && (
+                        <div className="px-3 pb-3 md:px-5 md:pb-5 pt-1 ml-11 md:ml-17">
+                          <div className="border-t border-gray-200 pt-3 md:pt-4">
+                            <p className="text-[10px] md:text-xs font-bold text-gray-400 mb-2">ANGGOTA TIM ({item.athleteNames.length}):</p>
+                            <ul className="list-disc list-inside text-xs md:text-sm text-gray-700 font-medium space-y-1 columns-1 sm:columns-2">
+                              {item.athleteNames.map((name: string, i: number) => (
+                                <li key={i}>{name}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </details>
                   );
                 })}
               </div>

@@ -96,23 +96,40 @@ export default function CaborDetailClient({ id, initialCabor, initialAthletes }:
             {athletes.length > 0 ? (
                <div className="space-y-3">
                  {athletes.map(atlet => (
-                   <div key={atlet.id} className="flex items-center justify-between p-3 bg-gray-50/80 rounded-xl border border-gray-100 shadow-sm">
-                     <div className="flex items-center gap-3 overflow-hidden">
-                        <div className="w-12 h-12 rounded-full overflow-hidden border-[3px] border-white shadow-sm flex-shrink-0">
-                           <img src={getOptimizedUrl(atlet.portraitUrl, 100) || "/portrait-dummy.webp"} alt={atlet.athleteName} loading="lazy" className="w-full h-full object-cover bg-gray-200" />
-                        </div>
-                        <div className="min-w-0">
-                           <div className="font-extrabold text-gray-800 text-sm truncate">{atlet.athleteName}</div>
-                           <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-0.5 truncate">{atlet.category}</div>
-                        </div>
-                     </div>
-                     <div className="flex flex-col items-end gap-1 shrink-0">
-                        {atlet.medalType === 'emas' && <img src="/medal-gold.webp" alt="Emas" className="w-6 h-6 object-contain drop-shadow-sm" />}
-                        {atlet.medalType === 'perak' && <img src="/medal-silver.webp" alt="Perak" className="w-6 h-6 object-contain drop-shadow-sm" />}
-                        {atlet.medalType === 'perunggu' && <img src="/medal-bronze.webp" alt="Perunggu" className="w-6 h-6 object-contain drop-shadow-sm" />}
-                        <span className="text-[9px] font-bold text-gray-400 mt-1"><i className="fa-regular fa-calendar-check mr-0.5"></i> {atlet.date}</span>
-                     </div>
-                   </div>
+                   <details key={atlet.id} className="group bg-gray-50/80 rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                     <summary className="flex items-center justify-between p-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                       <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="w-12 h-12 rounded-full overflow-hidden border-[3px] border-white shadow-sm flex-shrink-0">
+                             <img src={getOptimizedUrl(atlet.portraitUrl, 100) || "/portrait-dummy.webp"} alt={atlet.athleteName} loading="lazy" className="w-full h-full object-cover bg-gray-200" />
+                          </div>
+                          <div className="min-w-0 flex flex-col justify-center">
+                             <div className="font-extrabold text-gray-800 text-sm truncate flex items-center gap-2">
+                               <span className="truncate">{atlet.athleteName}</span>
+                               {atlet.isTeam && <i className="fa-solid fa-chevron-down text-[10px] text-gray-400 group-open:rotate-180 transition-transform shrink-0"></i>}
+                             </div>
+                             <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-0.5 truncate">{atlet.category}</div>
+                          </div>
+                       </div>
+                       <div className="flex flex-col items-end gap-1 shrink-0">
+                          {atlet.medalType === 'emas' && <img src="/medal-gold.webp" alt="Emas" className="w-6 h-6 object-contain drop-shadow-sm" />}
+                          {atlet.medalType === 'perak' && <img src="/medal-silver.webp" alt="Perak" className="w-6 h-6 object-contain drop-shadow-sm" />}
+                          {atlet.medalType === 'perunggu' && <img src="/medal-bronze.webp" alt="Perunggu" className="w-6 h-6 object-contain drop-shadow-sm" />}
+                          <span className="text-[9px] font-bold text-gray-400 mt-1"><i className="fa-regular fa-calendar-check mr-0.5"></i> {atlet.date}</span>
+                       </div>
+                     </summary>
+                     {atlet.isTeam && atlet.athleteNames && atlet.athleteNames.length > 0 && (
+                       <div className="px-4 pb-4 pt-1 ml-12">
+                         <div className="border-t border-gray-200 pt-3">
+                           <p className="text-[10px] md:text-xs font-bold text-gray-400 mb-2">ANGGOTA TIM ({atlet.athleteNames.length}):</p>
+                           <ul className="list-disc list-inside text-xs md:text-sm text-gray-700 font-medium space-y-1 columns-1 sm:columns-2">
+                             {atlet.athleteNames.map((name: string, i: number) => (
+                               <li key={i}>{name}</li>
+                             ))}
+                           </ul>
+                         </div>
+                       </div>
+                     )}
+                   </details>
                  ))}
                </div>
             ) : (

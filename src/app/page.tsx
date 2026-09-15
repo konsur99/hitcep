@@ -283,20 +283,37 @@ export default async function Home() {
                 {recentMedals.length > 0 ? recentMedals.map((item: any) => {
                   const cabor = cabors.find(c => c.id === item.caborId);
                   return (
-                    <div key={item.id} className="flex items-center justify-between bg-gray-50 p-2 md:p-3 rounded-lg md:rounded-xl border border-gray-100 shadow-sm">
-                      <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
-                        <div className="relative shrink-0">
-                          <Image alt="Medal" width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
+                    <details key={item.id} className="group bg-gray-50 rounded-lg md:rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                      <summary className="flex items-center justify-between p-2 md:p-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                        <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+                          <div className="relative shrink-0">
+                            <Image alt="Medal" width={40} height={40} className="h-8 w-8 md:h-10 md:w-10 object-contain drop-shadow-sm" src={getMedalImage(item.medalType)} />
+                          </div>
+                          <div className="min-w-0 flex flex-col justify-center">
+                            <div className="text-sm md:text-base font-bold text-gray-800 truncate flex items-center gap-2">
+                              <span className="truncate">{item.athleteName}</span>
+                              {item.isTeam && <i className="fa-solid fa-chevron-down text-[10px] text-gray-400 group-open:rotate-180 transition-transform shrink-0"></i>}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-500 truncate">{cabor?.name} - {item.category}</div>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <div className="text-sm md:text-base font-bold text-gray-800 truncate">{item.athleteName}</div>
-                          <div className="text-xs md:text-sm text-gray-500 truncate">{cabor?.name} - {item.category}</div>
+                        <div className="text-[10px] md:text-xs font-bold text-solo-red shrink-0 whitespace-nowrap pl-2">
+                          {formatTime(item.createdAt)}
                         </div>
-                      </div>
-                      <div className="text-[10px] md:text-xs font-bold text-solo-red shrink-0 whitespace-nowrap pl-2">
-                        {formatTime(item.createdAt)}
-                      </div>
-                    </div>
+                      </summary>
+                      {item.isTeam && item.athleteNames && item.athleteNames.length > 0 && (
+                        <div className="px-3 pb-3 md:px-4 md:pb-4 pt-1 ml-11 md:ml-14">
+                          <div className="border-t border-gray-200 pt-2">
+                            <p className="text-[10px] md:text-xs font-bold text-gray-400 mb-1">ANGGOTA TIM ({item.athleteNames.length}):</p>
+                            <ul className="list-disc list-inside text-xs md:text-sm text-gray-700 font-medium space-y-0.5">
+                              {item.athleteNames.map((name: string, i: number) => (
+                                <li key={i}>{name}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </details>
                   );
                 }) : (
                   <div className="text-center py-4 text-xs font-medium text-gray-400">Belum ada medali</div>

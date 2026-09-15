@@ -46,6 +46,7 @@ export default function InputMedali() {
 
   const [selectedMedal, setSelectedMedal] = useState<string | null>(null);
   const [athleteName, setAthleteName] = useState('');
+  const [selectedAthleteObj, setSelectedAthleteObj] = useState<any>(null);
   const [category, setCategory] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [portraitPreview, setPortraitPreview] = useState<string | null>(null);
@@ -131,16 +132,7 @@ export default function InputMedali() {
       return;
     }
 
-    if (!portraitPreview) {
-      toast.error("Harap unggah Foto Potret Atlet!");
-      return;
-    }
-
-    if (!ceremonyPreview) {
-      toast.error("Harap unggah Foto Dokumentasi Penyerahan Medali!");
-      return;
-    }
-
+    // Foto sekarang bersifat opsional, tidak ada pengecekan lagi.
     setIsSubmitting(true);
     showLoading("Mengunggah foto...");
 
@@ -190,6 +182,8 @@ export default function InputMedali() {
         ceremonyUrl: finalCeremonyUrl,
         ceremonyPublicId: finalCeremonyPublicId,
         status: finalStatus,
+        isTeam: selectedAthleteObj?.isTeam || false,
+        athleteNames: selectedAthleteObj?.athleteNames || [athleteName],
         authorUid: auth.currentUser?.uid || 'unknown',
         createdAt: new Date().toISOString()
       };
@@ -491,6 +485,7 @@ export default function InputMedali() {
                               className={`px-4 py-3 text-sm cursor-pointer hover:bg-gray-50 border-b border-gray-50 last:border-0 ${athleteName === a.name ? 'font-bold text-solo-red bg-red-50' : 'font-medium text-gray-700'}`}
                               onClick={() => {
                                 setAthleteName(a.name);
+                                setSelectedAthleteObj(a);
                                 setIsAthleteDropdownOpen(false);
                                 setAthleteSearchQuery('');
                                 if (a.matchCategory && !category) {
@@ -498,8 +493,9 @@ export default function InputMedali() {
                                 }
                               }}
                             >
-                              <div>
-                                {a.name}
+                              <div className="flex flex-col">
+                                <span>{a.name}</span>
+                                {a.isTeam && <span className="text-[10px] text-gray-500 mt-0.5"><i className="fa-solid fa-users mr-1"></i> Tim Beregu ({a.athleteNames?.length || 0} Atlet)</span>}
                                 {a.matchCategory && (
                                   <p className="text-[10px] text-gray-400 mt-0.5 font-normal">Kategori: {a.matchCategory}</p>
                                 )}
