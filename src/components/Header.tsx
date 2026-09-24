@@ -16,9 +16,11 @@ export default function Header() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [lastReadTime, setLastReadTime] = useState<number>(0);
   const [role, setRole] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const authInitialized = useRef(false);
 
   useEffect(() => {
+    setMounted(true);
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
     
@@ -197,7 +199,7 @@ export default function Header() {
 
         {/* Center: Desktop Navigation */}
         <div className="hidden xl:flex items-center justify-center gap-1 xl:gap-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-max z-0">
-            {navItems.map((item) => {
+            {mounted && navItems.map((item) => {
               const isActive = pathname === item.path || (item.path !== '/' && pathname?.startsWith(item.path));
               return (
                 <Link 
@@ -218,7 +220,7 @@ export default function Header() {
         </div>
         
         {/* Right Side: Notification */}
-        {role && (
+        {mounted && role && (
           <div className="flex items-center gap-4 shrink-0 z-10">
             <button 
               onClick={handleOpenNotif}

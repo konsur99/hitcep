@@ -7,10 +7,12 @@ import { usePathname } from 'next/navigation';
 export default function BottomNav() {
   const pathname = usePathname();
   const [role, setRole] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   const authInitialized = useRef(false);
 
   useEffect(() => {
+    setMounted(true);
     const savedRole = localStorage.getItem('userRole');
     if (savedRole) setRole(savedRole);
 
@@ -53,7 +55,7 @@ export default function BottomNav() {
     { name: 'Profil', path: '/profil', icon: 'fa-user' },
   ];
 
-  if (pathname === '/developer') {
+  if (!mounted || pathname === '/developer') {
     return null;
   }
 

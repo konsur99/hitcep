@@ -466,22 +466,22 @@ export default function Profil() {
         
         <h2 className="text-2xl md:text-4xl font-extrabold text-white mt-3 md:mt-5">{userName}</h2>
         <div className={`inline-flex items-center mt-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full text-[11px] md:text-xs font-bold tracking-wide shadow-md border relative overflow-hidden ${
-          userRole === 'Developer' ? 'bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 text-yellow-950 border-yellow-300 ring-2 ring-yellow-400/50 shadow-[0_0_15px_rgba(250,204,21,0.5)]' :
-          userRole === 'Admin' ? 'bg-gradient-to-r from-orange-400 via-orange-200 to-orange-500 text-orange-950 border-orange-300 ring-2 ring-orange-400/50 shadow-[0_0_15px_rgba(249,115,22,0.5)]' :
+          userRole.toLowerCase() === 'developer' ? 'bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 text-yellow-950 border-yellow-300 ring-2 ring-yellow-400/50 shadow-[0_0_15px_rgba(250,204,21,0.5)]' :
+          userRole.toLowerCase() === 'admin' ? 'bg-gradient-to-r from-orange-400 via-orange-200 to-orange-500 text-orange-950 border-orange-300 ring-2 ring-orange-400/50 shadow-[0_0_15px_rgba(249,115,22,0.5)]' :
           'bg-gradient-to-r from-blue-600 to-blue-400 text-white border-blue-300'
         }`}>
           {/* Efek Kilau Berjalan (Shimmer) untuk Developer & Admin */}
-          {(userRole === 'Developer' || userRole === 'Admin') && (
+          {(userRole.toLowerCase() === 'developer' || userRole.toLowerCase() === 'admin') && (
             <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer"></div>
           )}
           
           <i className={`fa-solid mr-1.5 md:mr-2 text-[10px] md:text-xs opacity-90 relative z-10 ${
-            userRole === 'Developer' ? 'fa-crown text-yellow-800 drop-shadow-sm' :
-            userRole === 'Admin' ? 'fa-user-shield text-orange-800 drop-shadow-sm' : 'fa-medal'
+            userRole.toLowerCase() === 'developer' ? 'fa-crown text-yellow-800 drop-shadow-sm' :
+            userRole.toLowerCase() === 'admin' ? 'fa-user-shield text-orange-800 drop-shadow-sm' : 'fa-medal'
           }`}></i>
           <span className="relative z-10 drop-shadow-sm">
-            {userRole === 'Developer' ? 'DEVELOPER' :
-             userRole === 'Admin' ? 'ADMIN' :
+            {userRole.toLowerCase() === 'developer' ? 'DEVELOPER' :
+             userRole.toLowerCase() === 'admin' ? 'ADMIN' :
              userRole.toUpperCase()}
           </span>
         </div>
@@ -491,7 +491,7 @@ export default function Profil() {
       <div className="px-5 md:px-8 -mt-8 md:-mt-12 relative z-20 max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
         
         {/* Menu Khusus Developer / Admin dengan Izin */}
-        {(userRole === 'Developer' || 
+        {(userRole.toLowerCase() === 'developer' || 
           userPermissions?.can_add_account || 
           userPermissions?.can_edit_account || 
           userPermissions?.can_delete_account || 
@@ -516,7 +516,7 @@ export default function Profil() {
         )}
 
         {/* Menu Khusus Kelola Medali */}
-        {(userRole === 'Developer' || userRole === 'Admin' || userPermissions?.can_validate_medals) && (
+        {(userRole.toLowerCase() === 'developer' || userRole.toLowerCase() === 'admin' || userPermissions?.can_validate_medals) && (
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-card border border-blue-200 overflow-hidden relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer w-full h-full pointer-events-none z-0"></div>
             <Link 
@@ -536,7 +536,7 @@ export default function Profil() {
         )}
         
         {/* Menu Khusus Kelola Pelaporan */}
-        {(userRole === 'Developer' || userRole === 'Admin') && (
+        {(userRole.toLowerCase() === 'developer' || userRole.toLowerCase() === 'admin') && (
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-card border border-indigo-200 overflow-hidden relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer w-full h-full pointer-events-none z-0"></div>
             <Link 
