@@ -23,6 +23,7 @@ export default function ValidasiMedali() {
   const [medals, setMedals] = useState<any[]>([]);
   const [cabors, setCabors] = useState<any>({});
   const [athletes, setAthletes] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [isProcessingId, setIsProcessingId] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
@@ -450,6 +451,28 @@ export default function ValidasiMedali() {
 
       <div className="px-5 mt-6 relative z-20 space-y-5 max-w-4xl mx-auto w-full">
 
+        {/* Search Bar */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i className="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
+          </div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari nama atlet atau cabor..."
+            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-2xl text-xs font-semibold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 shadow-sm transition-all"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <i className="fa-solid fa-xmark text-sm"></i>
+            </button>
+          )}
+        </div>
+
         {/* List Usulan */}
         <div className="space-y-4">
           {medals.length === 0 ? (
@@ -460,8 +483,30 @@ export default function ValidasiMedali() {
               <h3 className="text-gray-900 font-bold mb-1">Data Kosong</h3>
               <p className="text-xs text-gray-500">Tidak ada medali dalam daftar ini.</p>
             </div>
-          ) : (
-            medals.map(medal => (
+          ) : (() => {
+            const q = searchQuery.toLowerCase().trim();
+            const filtered = q ? medals.filter(m => {
+              const athleteName = (m.athleteName || '').toLowerCase();
+              const caborName = (cabors[m.caborId] || '').toLowerCase();
+              const category = (m.category || '').toLowerCase();
+              return athleteName.includes(q) || caborName.includes(q) || category.includes(q);
+            }) : medals;
+
+            if (filtered.length === 0) {
+              return (
+                <div className="text-center py-12 px-4">
+                  <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                    <i className="fa-solid fa-magnifying-glass text-2xl text-gray-300"></i>
+                  </div>
+                  <h3 className="text-gray-900 font-bold mb-1 text-sm">Tidak Ditemukan</h3>
+                  <p className="text-xs text-gray-500">Tidak ada medali yang cocok dengan &ldquo;{searchQuery}&rdquo;</p>
+                </div>
+              );
+            }
+
+            return (<>
+              {q && <p className="text-[11px] font-bold text-gray-400">Menampilkan {filtered.length} dari {medals.length} data</p>}
+              {filtered.map(medal => (
               <div key={medal.id} className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden relative">
                 
                 {isProcessingId === medal.id && (
@@ -529,8 +574,9 @@ export default function ValidasiMedali() {
                   </button>
                 </div>
               </div>
-            ))
-          )}
+            ))}
+            </>);
+          })()}
         </div>
       </div>
       

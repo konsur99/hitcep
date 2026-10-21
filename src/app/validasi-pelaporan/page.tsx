@@ -42,6 +42,7 @@ export default function ValidasiPelaporan() {
   const [reports, setReports] = useState<any[]>([]);
   const [cabors, setCabors] = useState<any>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [isProcessingId, setIsProcessingId] = useState<string | null>(null);
   
@@ -403,6 +404,28 @@ export default function ValidasiPelaporan() {
 
       <div className="px-5 mt-6 relative z-20 space-y-6 pb-20 max-w-4xl mx-auto w-full">
 
+        {/* Search Bar */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i className="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
+          </div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari judul, pelapor, atau cabor..."
+            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-2xl text-xs font-semibold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 shadow-sm transition-all"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <i className="fa-solid fa-xmark text-sm"></i>
+            </button>
+          )}
+        </div>
+
         {isLoading ? (
           <div className="py-20 flex flex-col items-center justify-center">
             <div className="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
@@ -415,9 +438,33 @@ export default function ValidasiPelaporan() {
             </div>
             <p className="text-sm font-bold text-gray-500">Tidak ada data</p>
           </div>
-        ) : (
+        ) : (() => {
+          const q = searchQuery.toLowerCase().trim();
+          const filtered = q ? reports.filter(r => {
+            const title = (r.title || '').toLowerCase();
+            const desc = (r.description || '').toLowerCase();
+            const reporter = (r.reporterName || '').toLowerCase();
+            const cabor = (r.caborName || '').toLowerCase();
+            const location = (r.location || '').toLowerCase();
+            return title.includes(q) || desc.includes(q) || reporter.includes(q) || cabor.includes(q) || location.includes(q);
+          }) : reports;
+
+          if (filtered.length === 0) {
+            return (
+              <div className="text-center py-12 px-4">
+                <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                  <i className="fa-solid fa-magnifying-glass text-2xl text-gray-300"></i>
+                </div>
+                <h3 className="text-gray-900 font-bold mb-1 text-sm">Tidak Ditemukan</h3>
+                <p className="text-xs text-gray-500">Tidak ada laporan yang cocok dengan &ldquo;{searchQuery}&rdquo;</p>
+              </div>
+            );
+          }
+
+          return (
           <div className="space-y-4">
-            {reports.map((report) => {
+            {q && <p className="text-[11px] font-bold text-gray-400">Menampilkan {filtered.length} dari {reports.length} data</p>}
+            {filtered.map((report) => {
               const isExpanded = expandedId === report.id;
               
               return (
@@ -558,7 +605,8 @@ export default function ValidasiPelaporan() {
               </div>
             )})}
           </div>
-        )}
+        );
+        })()}
       </div>
 
       {/* Modal Edit Laporan */}

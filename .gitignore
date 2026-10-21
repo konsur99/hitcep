@@ -43,3 +43,8 @@ next-env.d.ts
 # firebase admin
 *serviceAccount*.json
 *firebase-adminsdk*.json
+
+# backups and sensitive exports
+Backup_Porprov/
+*.xlsx
+*accounts*.txt
