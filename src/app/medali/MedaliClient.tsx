@@ -44,7 +44,7 @@ export default function MedaliClient({ initialMedals, cabors }: { initialMedals:
     const query = searchQuery.toLowerCase();
     filteredMedals = filteredMedals.filter(m => {
       const caborName = (cabors.find(c => c.id === m.caborId || c.id.replace(/-/g, '') === (m.caborId || '').replace(/-/g, ''))?.name || '').toLowerCase();
-      const matchAthlete = m.athleteName?.toLowerCase().includes(query) || false;
+      const matchAthlete = m.athleteName?.toLowerCase().includes(query) || (Array.isArray(m.athleteNames) && m.athleteNames.some((name: string) => name.toLowerCase().includes(query))) || false;
       const matchCategory = m.category?.toLowerCase().includes(query) || false;
       const matchCabor = caborName.includes(query);
       return matchAthlete || matchCategory || matchCabor;
