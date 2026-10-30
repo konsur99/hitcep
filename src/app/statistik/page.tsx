@@ -6,18 +6,13 @@ export const revalidate = 3600;
 
 export default async function Statistik() {
   const cacheData = await getPublicCache();
-  const cabors: any[] = cacheData.cabors || [];
+  let allMedals: any[] = cacheData.medals || [];
+  allMedals = allMedals.filter((m: any) => m.status === 'approved' || !m.status);
 
-  // Hitung total keseluruhan medali Surakarta
-  let totalEmas = 0;
-  let totalPerak = 0;
-  let totalPerunggu = 0;
-
-  cabors.forEach(cabor => {
-    totalEmas += (cabor.gold || 0);
-    totalPerak += (cabor.silver || 0);
-    totalPerunggu += (cabor.bronze || 0);
-  });
+  // Hitung total keseluruhan medali Surakarta langsung dari daftar medali approved agar sinkron 100%
+  const totalEmas = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'emas').length;
+  const totalPerak = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'perak').length;
+  const totalPerunggu = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'perunggu').length;
 
   return (
     <main className="min-h-screen bg-gray-50 pb-24 font-sans">

@@ -43,7 +43,7 @@ export default function MedaliClient({ initialMedals, cabors }: { initialMedals:
   if (searchQuery.trim() !== '') {
     const query = searchQuery.toLowerCase();
     filteredMedals = filteredMedals.filter(m => {
-      const caborName = cabors.find(c => c.id === m.caborId)?.name?.toLowerCase() || '';
+      const caborName = (cabors.find(c => c.id === m.caborId || c.id.replace(/-/g, '') === (m.caborId || '').replace(/-/g, ''))?.name || '').toLowerCase();
       const matchAthlete = m.athleteName?.toLowerCase().includes(query) || false;
       const matchCategory = m.category?.toLowerCase().includes(query) || false;
       const matchCabor = caborName.includes(query);
@@ -220,7 +220,7 @@ export default function MedaliClient({ initialMedals, cabors }: { initialMedals:
               <div className="text-[10px] md:text-xs font-extrabold text-gray-500 tracking-widest uppercase mb-2 md:mb-4 ml-1">{month}</div>
               <div className="space-y-3 md:space-y-4">
                 {(items as any[]).map((item) => {
-                  const cabor = cabors.find(c => c.id === item.caborId);
+                  const cabor = cabors.find(c => c.id === item.caborId || c.id.replace(/-/g, '') === (item.caborId || '').replace(/-/g, ''));
                   return (
                     <details key={item.id} className="group bg-gray-50 rounded-lg md:rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                       <summary className="flex items-center justify-between p-2 md:p-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">

@@ -24,14 +24,6 @@ export default async function Home() {
   try {
     const cacheData = await getPublicCache();
     const cabors: any[] = cacheData.cabors || [];
-  
-  let emas = 0, perak = 0, perunggu = 0;
-  cabors.forEach((cabor: any) => {
-    emas += cabor.gold || 0;
-    perak += cabor.silver || 0;
-    perunggu += cabor.bronze || 0;
-  });
-  const totals = { emas, perak, perunggu, total: emas + perak + perunggu };
 
   const safeParseDate = (input: any) => {
     if (!input) return new Date(0);
@@ -41,9 +33,16 @@ export default async function Home() {
     return new Date(input);
   };
 
-  // 2. Ambil Recent Medals (5 terbaru) dari Cache array
+  // 2. Ambil Recent Medals dari Cache array & hitung total medali
   let allMedals: any[] = cacheData.medals || [];
   allMedals = allMedals.filter((m: any) => m.status === 'approved' || !m.status);
+
+  // Hitung total medali langsung dari daftar medali approved agar sinkron 100% dengan halaman /medali
+  const emas = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'emas').length;
+  const perak = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'perak').length;
+  const perunggu = allMedals.filter((m: any) => (m.medalType || '').toLowerCase() === 'perunggu').length;
+  const totals = { emas, perak, perunggu, total: emas + perak + perunggu };
+
   // Sort descending by createdAt
   const sortedMedals = [...allMedals].sort((a, b) => safeParseDate(b.createdAt).getTime() - safeParseDate(a.createdAt).getTime());
   const recentMedals = sortedMedals.slice(0, 5);
